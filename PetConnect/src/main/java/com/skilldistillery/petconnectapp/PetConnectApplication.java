@@ -2,6 +2,9 @@ package com.skilldistillery.petconnectapp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 public class PetConnectApplication {
@@ -10,4 +13,8 @@ public class PetConnectApplication {
 		SpringApplication.run(PetConnectApplication.class, args);
 	}
 
+	@Bean
+	PasswordEncoder configurePasswordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 }

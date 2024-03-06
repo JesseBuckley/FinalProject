@@ -14,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
@@ -48,7 +49,10 @@ public class Post {
 	private User user;
 
 	@OneToMany(mappedBy = "post")
-	private List<Comment> comments = new ArrayList<>();
+	private List<Comment> comments;
+
+	@ManyToMany(mappedBy = "posts")
+	private List<Category> categories;
 
 	public Post() {
 		super();
@@ -68,6 +72,29 @@ public class Post {
 
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
+	}
+	
+	public void addComment(Comment comment) {
+		if (comments == null) {
+			comments = new ArrayList<>();
+		}
+
+		if (!comments.contains(comment)) {
+			comments.add(comment);
+		}
+
+		if (comment.getPost() != null) {
+			comment.getPost().removeComment(comment);
+
+		}
+		comment.setPost(this);
+	}
+
+	public void removeComment(Comment comment) {
+		if (comments != null && comments.contains(comment)) {
+			comments.remove(comment);
+			comment.setPost(null);
+		}
 	}
 
 	public int getId() {
@@ -134,6 +161,31 @@ public class Post {
 		this.pinned = pinned;
 	}
 
+	public List<Category> getCategories() {
+		return categories;
+	}
+
+	public void setCategories(List<Category> categories) {
+		this.categories = categories;
+	}
+
+	public void addCategory(Category category) {
+		if (categories == null) {
+			categories = new ArrayList<>();
+		}
+		if (!categories.contains(category)) {
+			categories.add(category);
+			category.addPost(this);
+		}
+	}
+
+	public void removeCategory(Category category) {
+		if (categories != null && categories.contains(category)) {
+			categories.remove(category);
+			category.removePost(this);
+		}
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -155,7 +207,7 @@ public class Post {
 	public String toString() {
 		return "Post [id=" + id + ", content=" + content + ", imageUrl=" + imageUrl + ", createdAt=" + createdAt
 				+ ", updatedAt=" + updatedAt + ", enabled=" + enabled + ", title=" + title + ", pinned=" + pinned
-				+ ", user=" + user + ", comments=" + comments + "]";
+				+ ", user=" + user + ", comments=" + comments.size() + ", Categories=" + categories.size() + "]";
 	}
 
 }

@@ -1,6 +1,6 @@
 package com.skilldistillery.petconnectapp.entities;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.AfterAll;
@@ -13,11 +13,10 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
-class PostTest {
-
+public class ResourceTest {
 	private static EntityManagerFactory emf;
 	private EntityManager em;
-	private Post post;
+	private Resource resource;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
@@ -32,36 +31,31 @@ class PostTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		em = emf.createEntityManager();
-		post = em.find(Post.class, 1);
+		resource = em.find(Resource.class, 1);
 	}
 
 	@AfterEach
 	void tearDown() throws Exception {
-		post = null;
 		em.close();
 	}
 
 	@Test
-	void test_post_entity_mapping() {
-		assertNotNull(post);
-		assertEquals("this is a post", post.getContent());
-		assertEquals("newtitle", post.getTitle());
+	void test_Resource_entity_mapping() {
+		assertNotNull(resource);
+		assertEquals("dog clinic", resource.getName());
+
+	}
+	@Test
+	void test_Resource_Category_entity_mapping() {
+		assertNotNull(resource);
+		assertEquals("Pet Health", resource.getCategory().getType());
+		
+	}
+	@Test
+	void test_Resource_Address_entity_mapping() {
+		assertNotNull(resource);
+		assertEquals("12345", resource.getAddress().getZip());
+		
 	}
 
-	@Test
-	void test_post_has_one_user() {
-		assertNotNull(post.getUser());
-		assertEquals("admin", post.getUser().getUsername());
-	}
-
-	@Test
-	void test_post_has_one_or_many_comments() {
-		assertNotNull(post);
-		assertEquals("this is a post", post.getContent());
-	}
-	@Test
-	void test_post_has_category() {
-		assertNotNull(post);
-		assertEquals("Pet Health", post.getCategories().get(0).getType());
-	}
 }

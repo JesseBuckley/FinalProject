@@ -66,6 +66,13 @@ public class User {
 
 	@OneToMany(mappedBy = "user")
 	private List<Comment> comments = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "user")
+	private List<DirectMessage> messagesSent = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "receivingUser")
+	private List<DirectMessage> receivedMessages = new ArrayList<>();
+	
 
 	public User() {
 		super();
@@ -205,6 +212,23 @@ public class User {
 
 	public void setFollowedUser(List<Follower> followedUser) {
 		this.followedUser = followedUser;
+	}
+
+	
+	public List<DirectMessage> getMessagesSent() {
+		return messagesSent;
+	}
+
+	public void setMessagesSent(List<DirectMessage> messagesSent) {
+		this.messagesSent = messagesSent;
+	}
+
+	public List<DirectMessage> getReceivedMessages() {
+		return receivedMessages;
+	}
+
+	public void setReceivedMessages(List<DirectMessage> receivedMessages) {
+		this.receivedMessages = receivedMessages;
 	}
 
 	@Override

@@ -3,6 +3,16 @@
 	<persistence-unit name="JPAPetConnect">
 	<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
+		<class>com.skilldistillery.petconnectapp.entities.Address</class>
+		<class>com.skilldistillery.petconnectapp.entities.Category</class>
+		<class>com.skilldistillery.petconnectapp.entities.Comment</class>
+		<class>com.skilldistillery.petconnectapp.entities.DirectMessage</class>
+		<class>com.skilldistillery.petconnectapp.entities.Follower</class>
+		<class>com.skilldistillery.petconnectapp.entities.Pet</class>
+		<class>com.skilldistillery.petconnectapp.entities.PetPicture</class>
+		<class>com.skilldistillery.petconnectapp.entities.Post</class>
+		<class>com.skilldistillery.petconnectapp.entities.Resource</class>
+		<class>com.skilldistillery.petconnectapp.entities.Species</class>
 		<class>com.skilldistillery.petconnectapp.entities.User</class>
 
 		<properties>

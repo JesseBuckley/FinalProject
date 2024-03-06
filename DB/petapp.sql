@@ -16,16 +16,16 @@ CREATE SCHEMA IF NOT EXISTS `petappdb` DEFAULT CHARACTER SET utf8 ;
 USE `petappdb` ;
 
 -- -----------------------------------------------------
--- Table `profile`
+-- Table `address`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `profile` ;
+DROP TABLE IF EXISTS `address` ;
 
-CREATE TABLE IF NOT EXISTS `profile` (
+CREATE TABLE IF NOT EXISTS `address` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `profile_picture` TEXT NULL,
-  `bio` VARCHAR(250) NULL,
-  `backround_picture` TEXT NULL,
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC),
+  `street` VARCHAR(100) NULL,
+  `city` VARCHAR(45) NULL,
+  `state` VARCHAR(25) NULL,
+  `zip` VARCHAR(10) NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -39,15 +39,68 @@ CREATE TABLE IF NOT EXISTS `user` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(75) NOT NULL,
   `password` VARCHAR(100) NOT NULL,
-  `profile_id` INT NOT NULL,
   `enabled` TINYINT NOT NULL,
   `role` VARCHAR(45) NULL,
-  PRIMARY KEY (`id`, `profile_id`),
-  INDEX `fk_user_profile1_idx` (`profile_id` ASC),
+  `profile_picture` VARCHAR(2000) NULL,
+  `biography` TEXT NULL,
+  `backround_picture` VARCHAR(2000) NULL,
+  `first_name` VARCHAR(75) NULL,
+  `last_name` VARCHAR(75) NULL,
+  `created_at` DATETIME NULL,
+  `updated_at` DATETIME NULL,
+  `address_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
   UNIQUE INDEX `username_UNIQUE` (`username` ASC),
-  CONSTRAINT `fk_user_profile1`
-    FOREIGN KEY (`profile_id`)
-    REFERENCES `profile` (`id`)
+  INDEX `fk_user_address1_idx` (`address_id` ASC),
+  CONSTRAINT `fk_user_address1`
+    FOREIGN KEY (`address_id`)
+    REFERENCES `address` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `species`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `species` ;
+
+CREATE TABLE IF NOT EXISTS `species` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `species` VARCHAR(75) NOT NULL,
+  `image_url` TEXT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `pet`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `pet` ;
+
+CREATE TABLE IF NOT EXISTS `pet` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(75) NOT NULL,
+  `species` VARCHAR(75) NULL,
+  `date_of_birth` DATE NULL,
+  `breed` VARCHAR(75) NULL,
+  `profile_picture` TEXT NULL,
+  `description` TEXT NULL,
+  `user_id` INT NOT NULL,
+  `enabled` TINYINT NOT NULL,
+  `species_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC),
+  INDEX `fk_pet_user1_idx` (`user_id` ASC),
+  INDEX `fk_pet_species1_idx` (`species_id` ASC),
+  CONSTRAINT `fk_pet_user1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `user` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_pet_species1`
+    FOREIGN KEY (`species_id`)
+    REFERENCES `species` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -67,62 +120,24 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `pet`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `pet` ;
-
-CREATE TABLE IF NOT EXISTS `pet` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(75) NOT NULL,
-  `species` VARCHAR(75) NULL,
-  `age` INT NULL,
-  `breed` VARCHAR(75) NULL,
-  `profile_picture` TEXT NULL,
-  `description` VARCHAR(250) NULL,
-  `user_id` INT NOT NULL,
-  `user_profile_id` INT NOT NULL,
-  `category_id` INT NOT NULL,
-  PRIMARY KEY (`id`, `user_id`, `user_profile_id`, `category_id`),
-  UNIQUE INDEX `id_UNIQUE` (`id` ASC),
-  INDEX `fk_pet_user1_idx` (`user_id` ASC, `user_profile_id` ASC),
-  INDEX `fk_pet_category1_idx` (`category_id` ASC),
-  CONSTRAINT `fk_pet_user1`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_pet_category1`
-    FOREIGN KEY (`category_id`)
-    REFERENCES `category` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `post`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `post` ;
 
 CREATE TABLE IF NOT EXISTS `post` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `content` VARCHAR(250) NOT NULL,
-  `img_url` TEXT NULL,
+  `content` TEXT NOT NULL,
+  `image_url` TEXT NULL,
   `created_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `category_id` INT NOT NULL,
   `user_id` INT NOT NULL,
-  `user_profile_id` INT NOT NULL,
-  PRIMARY KEY (`id`, `category_id`, `user_id`, `user_profile_id`),
+  `enabled` TINYINT NOT NULL,
+  `title` VARCHAR(75) NOT NULL,
+  `pinned` TINYINT NULL,
+  PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC),
-  INDEX `fk_post_category1_idx` (`category_id` ASC),
-  INDEX `fk_post_user1_idx` (`user_id` ASC, `user_profile_id` ASC),
-  CONSTRAINT `fk_post_category1`
-    FOREIGN KEY (`category_id`)
-    REFERENCES `category` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_post_user1`
+  INDEX `fk_post_user_idx` (`user_id` ASC),
+  CONSTRAINT `fk_post_user`
     FOREIGN KEY (`user_id`)
     REFERENCES `user` (`id`)
     ON DELETE NO ACTION
@@ -140,15 +155,163 @@ CREATE TABLE IF NOT EXISTS `comment` (
   `content` VARCHAR(250) NOT NULL,
   `created_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
   `post_id` INT NOT NULL,
-  `post_category_id` INT NOT NULL,
-  `post_user_id` INT NOT NULL,
-  `post_user_profile_id` INT NOT NULL,
+  `user_id` INT NOT NULL,
+  `reply_to_id` INT NULL,
+  `enabled` TINYINT NOT NULL,
   UNIQUE INDEX `id_UNIQUE` (`id` ASC),
-  PRIMARY KEY (`id`, `post_id`, `post_category_id`, `post_user_id`, `post_user_profile_id`),
-  INDEX `fk_comment_post1_idx` (`post_id` ASC, `post_category_id` ASC, `post_user_id` ASC, `post_user_profile_id` ASC),
+  PRIMARY KEY (`id`),
+  INDEX `fk_comment_post1_idx` (`post_id` ASC),
+  INDEX `fk_comment_user1_idx` (`user_id` ASC),
+  INDEX `fk_comment_comment1_idx` (`reply_to_id` ASC),
   CONSTRAINT `fk_comment_post1`
-    FOREIGN KEY (`post_id` , `post_category_id` , `post_user_id` , `post_user_profile_id`)
-    REFERENCES `post` (`id` , `category_id` , `user_id` , `user_profile_id`)
+    FOREIGN KEY (`post_id`)
+    REFERENCES `post` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_comment_user1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `user` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_comment_comment1`
+    FOREIGN KEY (`reply_to_id`)
+    REFERENCES `comment` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `post_has_category`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `post_has_category` ;
+
+CREATE TABLE IF NOT EXISTS `post_has_category` (
+  `post_id` INT NOT NULL,
+  `category_id` INT NOT NULL,
+  PRIMARY KEY (`post_id`, `category_id`),
+  INDEX `fk_post_has_category_category1_idx` (`category_id` ASC),
+  INDEX `fk_post_has_category_post1_idx` (`post_id` ASC),
+  CONSTRAINT `fk_post_has_category_post1`
+    FOREIGN KEY (`post_id`)
+    REFERENCES `post` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_post_has_category_category1`
+    FOREIGN KEY (`category_id`)
+    REFERENCES `category` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `pet_picture`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `pet_picture` ;
+
+CREATE TABLE IF NOT EXISTS `pet_picture` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `image_url` VARCHAR(2000) NOT NULL,
+  `caption` TEXT NULL,
+  `date_posted` DATETIME NULL,
+  `pet_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_pet_picture_pet1_idx` (`pet_id` ASC),
+  CONSTRAINT `fk_pet_picture_pet1`
+    FOREIGN KEY (`pet_id`)
+    REFERENCES `pet` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `follower`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `follower` ;
+
+CREATE TABLE IF NOT EXISTS `follower` (
+  `user_id` INT NOT NULL,
+  `followed_user_id` INT NOT NULL,
+  PRIMARY KEY (`user_id`, `followed_user_id`),
+  INDEX `fk_user_has_user_user2_idx` (`followed_user_id` ASC),
+  INDEX `fk_user_has_user_user1_idx` (`user_id` ASC),
+  CONSTRAINT `fk_user_has_user_user1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `user` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_user_has_user_user2`
+    FOREIGN KEY (`followed_user_id`)
+    REFERENCES `user` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `direct_message`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `direct_message` ;
+
+CREATE TABLE IF NOT EXISTS `direct_message` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `content` TEXT NOT NULL,
+  `create_at` DATETIME NULL,
+  `user_id` INT NOT NULL,
+  `receiving_user_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_direct_message_user1_idx` (`user_id` ASC),
+  INDEX `fk_direct_message_user2_idx` (`receiving_user_id` ASC),
+  CONSTRAINT `fk_direct_message_user1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `user` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_direct_message_user2`
+    FOREIGN KEY (`receiving_user_id`)
+    REFERENCES `user` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `resource_type`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `resource_type` ;
+
+CREATE TABLE IF NOT EXISTS `resource_type` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `type` VARCHAR(75) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `resource`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `resource` ;
+
+CREATE TABLE IF NOT EXISTS `resource` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(75) NULL,
+  `description` TEXT NULL,
+  `image_url` VARCHAR(2000) NULL,
+  `address_id` INT NOT NULL,
+  `resource_type_id` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_resource_address1_idx` (`address_id` ASC),
+  INDEX `fk_resource_resource_type1_idx` (`resource_type_id` ASC),
+  CONSTRAINT `fk_resource_address1`
+    FOREIGN KEY (`address_id`)
+    REFERENCES `address` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_resource_resource_type1`
+    FOREIGN KEY (`resource_type_id`)
+    REFERENCES `resource_type` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -165,11 +328,11 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 -- -----------------------------------------------------
--- Data for table `profile`
+-- Data for table `address`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `petappdb`;
-INSERT INTO `profile` (`id`, `profile_picture`, `bio`, `backround_picture`) VALUES (1, NULL, 'hello', NULL);
+INSERT INTO `address` (`id`, `street`, `city`, `state`, `zip`) VALUES (1, '123 fake ', 'butter', 'ohio', '12345');
 
 COMMIT;
 
@@ -179,7 +342,27 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `petappdb`;
-INSERT INTO `user` (`id`, `username`, `password`, `profile_id`, `enabled`, `role`) VALUES (1, 'admin', '$2a$10$nShOi5/f0bKNvHB8x0u3qOpeivazbuN0NE4TO0LGvQiTMafaBxLJS', 1, 1, NULL);
+INSERT INTO `user` (`id`, `username`, `password`, `enabled`, `role`, `profile_picture`, `biography`, `backround_picture`, `first_name`, `last_name`, `created_at`, `updated_at`, `address_id`) VALUES (1, 'admin', '$2a$10$nShOi5/f0bKNvHB8x0u3qOpeivazbuN0NE4TO0LGvQiTMafaBxLJS', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `species`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `petappdb`;
+INSERT INTO `species` (`id`, `species`, `image_url`) VALUES (1, 'dog', NULL);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `pet`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `petappdb`;
+INSERT INTO `pet` (`id`, `name`, `species`, `date_of_birth`, `breed`, `profile_picture`, `description`, `user_id`, `enabled`, `species_id`) VALUES (1, 'butterball', NULL, NULL, NULL, NULL, NULL, 1, 1, 1);
 
 COMMIT;
 
@@ -195,21 +378,11 @@ COMMIT;
 
 
 -- -----------------------------------------------------
--- Data for table `pet`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `petappdb`;
-INSERT INTO `pet` (`id`, `name`, `species`, `age`, `breed`, `profile_picture`, `description`, `user_id`, `user_profile_id`, `category_id`) VALUES (1, 'butterball', NULL, NULL, NULL, NULL, NULL, 1, 1, 1);
-
-COMMIT;
-
-
--- -----------------------------------------------------
 -- Data for table `post`
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `petappdb`;
-INSERT INTO `post` (`id`, `content`, `img_url`, `created_at`, `updated_at`, `category_id`, `user_id`, `user_profile_id`) VALUES (1, 'this is a post', NULL, NULL, NULL, 1, 1, 1);
+INSERT INTO `post` (`id`, `content`, `image_url`, `created_at`, `updated_at`, `user_id`, `enabled`, `title`, `pinned`) VALUES (1, 'this is a post', NULL, NULL, NULL, 1, 1, 'newtitle', NULL);
 
 COMMIT;
 
@@ -219,7 +392,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `petappdb`;
-INSERT INTO `comment` (`id`, `content`, `created_at`, `post_id`, `post_category_id`, `post_user_id`, `post_user_profile_id`) VALUES (1, 'this is a comment', NULL, 1, 1, 1, 1);
+INSERT INTO `comment` (`id`, `content`, `created_at`, `post_id`, `user_id`, `reply_to_id`, `enabled`) VALUES (1, 'this is a comment', NULL, 1, 1, NULL, 1);
 
 COMMIT;
 

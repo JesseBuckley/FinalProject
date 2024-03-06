@@ -1,7 +1,12 @@
 package com.skilldistillery.petconnectapp.entities;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,6 +24,36 @@ public class User {
 	private boolean enabled;
 	private String role;
 	
+	@Column(name = "profile_picture")
+	private String profilePicture;
+	
+	
+	private String biography;
+	
+	
+	@Column(name = "background_picture")
+	private String backgroundPicture;
+	
+	
+	@Column(name = "first_name")
+	private String firstName;
+	
+	
+	@Column(name = "last_name")
+	private String lastName;
+	
+	@Column(name = "created_at")
+	@CreationTimestamp
+	private LocalDateTime createdAt;
+	
+	
+	
+	@Column(name = "updated_at")
+	@UpdateTimestamp
+	private String updatedAt;
+	
+	
+//	private Address address;
 	
 	public User() {
 		super();
@@ -73,6 +108,76 @@ public class User {
 	public void setRole(String role) {
 		this.role = role;
 	}
+	
+
+	public String getProfilePicture() {
+		return profilePicture;
+	}
+
+
+	public void setProfilePicture(String profilePicture) {
+		this.profilePicture = profilePicture;
+	}
+
+
+	public String getBiography() {
+		return biography;
+	}
+
+
+	public void setBiography(String biography) {
+		this.biography = biography;
+	}
+
+
+	public String getBackgroundPicture() {
+		return backgroundPicture;
+	}
+
+
+	public void setBackgroundPicture(String backgroundPicture) {
+		this.backgroundPicture = backgroundPicture;
+	}
+
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+
+	public String getLastName() {
+		return lastName;
+	}
+
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+
+	public String getUpdatedAt() {
+		return updatedAt;
+	}
+
+
+	public void setUpdatedAt(String updatedAt) {
+		this.updatedAt = updatedAt;
+	}
 
 
 	@Override
@@ -97,7 +202,9 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", enabled=" + enabled
-				+ ", role=" + role + "]";
+				+ ", role=" + role + ", profilePicture=" + profilePicture + ", biography=" + biography
+				+ ", backgroundPicture=" + backgroundPicture + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
 	}
 	
 	

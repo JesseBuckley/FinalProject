@@ -3,6 +3,8 @@ package com.skilldistillery.petconnectapp.entities;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,6 +27,7 @@ public class Address {
 	
 	private String zip;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "addressId")
 	private List <User> user;
 	

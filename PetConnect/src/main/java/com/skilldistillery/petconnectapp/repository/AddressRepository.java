@@ -2,10 +2,10 @@ package com.skilldistillery.petconnectapp.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.skilldistillery.petconnectapp.entities.User;
+import com.skilldistillery.petconnectapp.entities.Address;
 
-public interface AddressRepository extends JpaRepository<User, Integer> {
+public interface AddressRepository extends JpaRepository<Address, Integer> {
 
-	User findByUsername(String username);
+	Address searchById(int id);
 
 }

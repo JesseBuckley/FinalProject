@@ -46,8 +46,10 @@ class UserTest {
 	@Test
 	void test_todo_entity_mapping() {
 		assertNotNull(user);
-		
+		assertEquals(1, user.getId());
 		assertEquals("admin", user.getUsername());
+		assertEquals("$2a$10$nShOi5/f0bKNvHB8x0u3qOpeivazbuN0NE4TO0LGvQiTMafaBxLJS", user.getPassword());
+				
 		}
 
 }

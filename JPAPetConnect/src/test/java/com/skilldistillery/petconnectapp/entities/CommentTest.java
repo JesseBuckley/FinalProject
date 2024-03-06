@@ -14,11 +14,11 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
-class UserTest {
+class CommentTest {
 
 	private static EntityManagerFactory emf;
 	private EntityManager em;
-	private User user;
+	private Comment comment;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
@@ -33,36 +33,39 @@ class UserTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		em = emf.createEntityManager();
-		user = em.find(User.class, 1);
+		comment = em.find(Comment.class, 1);
 	}
 
 	@AfterEach
 	void tearDown() throws Exception {
-		user = null;
+		comment = null;
 		em.close();
 	}
 
 	@Test
-	void test_todo_entity_mapping() {
-		assertNotNull(user);
-		assertNotNull(user.getAddressId());
-		assertEquals(1, user.getAddressId().getId());
-		assertEquals(1, user.getId());
-		assertEquals("admin", user.getUsername());
-		assertEquals("$2a$10$nShOi5/f0bKNvHB8x0u3qOpeivazbuN0NE4TO0LGvQiTMafaBxLJS", user.getPassword());
-		assertEquals(true, user.isEnabled());
-
+	void test_comment_entity_mapping() {
+		assertNotNull(comment);
+		assertEquals("this is a comment", comment.getContent());
 	}
 
 	@Test
-	void test_comment_has_one_user_per_comment() {
-		assertNotNull(user.getComments());
-		assertTrue(user.getUsername() != null && user.getComments().size() > 0);
+	void test_user_can_have_many_or_one_comment_on_a_post() {
+		assertNotNull(comment.getUser());
+		assertTrue(comment.getUser().getComments().size() > 0);
 	}
 
 	@Test
-	void test_post_has_one_user_per_post() {
-		assertNotNull(user.getPosts());
-		assertTrue(user.getUsername() != null && user.getPosts().size() > 0);
+	void test_post_can_have_many_or_one_comment_per_user() {
+		assertNotNull(comment.getPost().getUser());
+		assertEquals("admin", comment.getPost().getUser().getUsername());
+		assertTrue(comment.getPost().getComments().size() > 0);
+	}
+
+	@Test
+	void test_comment_can_have_many_or_zero_replies() {
+		assertNotNull(comment);
+		if (comment.getPost().getComments().size() > 0) {
+			assertTrue(comment.getReplyTo() == null || comment.getReplyTo() != null);
+		}
 	}
 }

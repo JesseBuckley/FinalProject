@@ -288,7 +288,6 @@ CREATE TABLE IF NOT EXISTS `resource` (
   `description` TEXT NULL,
   `image_url` VARCHAR(2000) NULL,
   `address_id` INT NOT NULL,
-  `resource_type_id` INT NOT NULL,
   `category_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_resource_address1_idx` (`address_id` ASC),
@@ -374,7 +373,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `petappdb`;
-INSERT INTO `post` (`id`, `content`, `image_url`, `created_at`, `updated_at`, `user_id`, `enabled`, `title`, `pinned`) VALUES (1, 'this is a post', NULL, NULL, NULL, 1, 1, 'newtitle', NULL);
+INSERT INTO `post` (`id`, `content`, `image_url`, `created_at`, `updated_at`, `user_id`, `enabled`, `title`, `pinned`) VALUES (1, 'this is a post', NULL, NULL, NULL, 1, 1, 'newtitle', 0);
 
 COMMIT;
 
@@ -434,7 +433,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `petappdb`;
-INSERT INTO `resource` (`id`, `name`, `description`, `image_url`, `address_id`, `resource_type_id`, `category_id`) VALUES (1, 'dog clinic', NULL, NULL, 1, 1, 1);
+INSERT INTO `resource` (`id`, `name`, `description`, `image_url`, `address_id`, `category_id`) VALUES (1, 'dog clinic', NULL, NULL, 1, 1);
 
 COMMIT;
 

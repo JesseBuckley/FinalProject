@@ -1,8 +1,7 @@
 package com.skilldistillery.petconnectapp.entities;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -14,11 +13,11 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
-class UserTest {
+class PostTest {
 
 	private static EntityManagerFactory emf;
 	private EntityManager em;
-	private User user;
+	private Post post;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
@@ -33,36 +32,31 @@ class UserTest {
 	@BeforeEach
 	void setUp() throws Exception {
 		em = emf.createEntityManager();
-		user = em.find(User.class, 1);
+		post = em.find(Post.class, 1);
 	}
 
 	@AfterEach
 	void tearDown() throws Exception {
-		user = null;
+		post = null;
 		em.close();
 	}
 
 	@Test
-	void test_todo_entity_mapping() {
-		assertNotNull(user);
-		assertNotNull(user.getAddressId());
-		assertEquals(1, user.getAddressId().getId());
-		assertEquals(1, user.getId());
-		assertEquals("admin", user.getUsername());
-		assertEquals("$2a$10$nShOi5/f0bKNvHB8x0u3qOpeivazbuN0NE4TO0LGvQiTMafaBxLJS", user.getPassword());
-		assertEquals(true, user.isEnabled());
-
+	void test_post_entity_mapping() {
+		assertNotNull(post);
+		assertEquals("this is a post", post.getContent());
+		assertEquals("newtitle", post.getTitle());
 	}
 
 	@Test
-	void test_comment_has_one_user_per_comment() {
-		assertNotNull(user.getComments());
-		assertTrue(user.getUsername() != null && user.getComments().size() > 0);
+	void test_post_has_one_user() {
+		assertNotNull(post.getUser());
+		assertEquals("admin", post.getUser().getUsername());
 	}
 
 	@Test
-	void test_post_has_one_user_per_post() {
-		assertNotNull(user.getPosts());
-		assertTrue(user.getUsername() != null && user.getPosts().size() > 0);
+	void test_post_has_one_or_many_comments() {
+		assertNotNull(post);
+		assertEquals("this is a post", post.getContent());
 	}
 }

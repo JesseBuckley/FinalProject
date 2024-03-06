@@ -13,46 +13,44 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
-class UserTest {
+public class AddressTest {
 
 	private static EntityManagerFactory emf;
 	private EntityManager em;
-	private User user;
-	
-	
-	
+	private Address address;
+
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
-	    emf = Persistence.createEntityManagerFactory("JPAPetConnect");
+		emf = Persistence.createEntityManagerFactory("JPAPetConnect");
 	}
 
 	@AfterAll
 	static void tearDownAfterClass() throws Exception {
-	    emf.close();
+		emf.close();
 	}
-	
+
 	@BeforeEach
 	void setUp() throws Exception {
-	    em = emf.createEntityManager();
-	    user = em.find(User.class, 1);
+		em = emf.createEntityManager();
+		address = em.find(Address.class, 1);
 	}
 
 	@AfterEach
 	void tearDown() throws Exception {
-	   user = null;
+		address = null;
 		em.close();
 	}
-	
+//  1 | test street 123 | fakecity   | fakestate | 12345
 	@Test
 	void test_todo_entity_mapping() {
-		assertNotNull(user);
-	  	assertNotNull(user.getAddressId());
-	    assertEquals(1, user.getAddressId().getId());
-	    assertEquals(1, user.getId());
-	    assertEquals("admin", user.getUsername());
-	    assertEquals("$2a$10$nShOi5/f0bKNvHB8x0u3qOpeivazbuN0NE4TO0LGvQiTMafaBxLJS", user.getPassword());
-	    assertEquals(true, user.isEnabled());
-				
-		}
+		assertNotNull(address);
+	    assertEquals(1, address.getId());
+	    assertEquals("test street 123", address.getStreet());
+	    assertEquals("fakecity", address.getCity());
+	    assertEquals("fakestate", address.getState());
+	    assertEquals("12345", address.getZip());
+	    
+
+	}
 
 }

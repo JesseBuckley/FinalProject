@@ -1,7 +1,6 @@
 package com.skilldistillery.petconnectapp.entities;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -13,11 +12,10 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
-class UserTest {
-
+class FollowerTest {
 	private static EntityManagerFactory emf;
 	private EntityManager em;
-	private User user;
+	private Follower follower;
 	
 	
 	
@@ -34,25 +32,22 @@ class UserTest {
 	@BeforeEach
 	void setUp() throws Exception {
 	    em = emf.createEntityManager();
-	    user = em.find(User.class, 1);
+	    follower = em.find(Follower.class, 1);
 	}
 
 	@AfterEach
 	void tearDown() throws Exception {
-	   user = null;
+	   follower = null;
 		em.close();
 	}
 	
 	@Test
 	void test_todo_entity_mapping() {
-		assertNotNull(user);
-	  	assertNotNull(user.getAddressId());
-	    assertEquals(1, user.getAddressId().getId());
-	    assertEquals(1, user.getId());
-	    assertEquals("admin", user.getUsername());
-	    assertEquals("$2a$10$nShOi5/f0bKNvHB8x0u3qOpeivazbuN0NE4TO0LGvQiTMafaBxLJS", user.getPassword());
-	    assertEquals(true, user.isEnabled());
+		assertNotNull(follower);
+		assertEquals(1, follower.getUser().getId());
+	    assertEquals(2, follower.getFollowedUser().getId());  
 				
 		}
 
+	
 }

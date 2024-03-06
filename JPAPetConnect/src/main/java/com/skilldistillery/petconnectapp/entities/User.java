@@ -1,6 +1,7 @@
 package com.skilldistillery.petconnectapp.entities;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -11,6 +12,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class User {
@@ -46,14 +50,20 @@ public class User {
 	@CreationTimestamp
 	private LocalDateTime createdAt;
 	
-	
-	
 	@Column(name = "updated_at")
 	@UpdateTimestamp
 	private String updatedAt;
 	
+	@ManyToOne
+	@JoinColumn(name = "address_id")
+	private Address addressId;
 	
-//	private Address address;
+	@OneToMany(mappedBy = "user")
+	private List<Follower> user;
+	
+	@OneToMany(mappedBy = "followedUser")
+	private List<Follower> followedUser;
+	
 	
 	public User() {
 		super();
@@ -177,6 +187,36 @@ public class User {
 
 	public void setUpdatedAt(String updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+
+	public Address getAddressId() {
+		return addressId;
+	}
+
+
+	public void setAddressId(Address addressId) {
+		this.addressId = addressId;
+	}
+
+
+	public List<Follower> getUser() {
+		return user;
+	}
+
+
+	public void setUser(List<Follower> user) {
+		this.user = user;
+	}
+
+
+	public List<Follower> getFollowedUser() {
+		return followedUser;
+	}
+
+
+	public void setFollowedUser(List<Follower> followedUser) {
+		this.followedUser = followedUser;
 	}
 
 

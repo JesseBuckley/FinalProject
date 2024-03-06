@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `role` VARCHAR(45) NULL,
   `profile_picture` VARCHAR(2000) NULL,
   `biography` TEXT NULL,
-  `backround_picture` VARCHAR(2000) NULL,
+  `background_picture` VARCHAR(2000) NULL,
   `first_name` VARCHAR(75) NULL,
   `last_name` VARCHAR(75) NULL,
   `created_at` DATETIME NULL,
@@ -81,7 +81,6 @@ DROP TABLE IF EXISTS `pet` ;
 CREATE TABLE IF NOT EXISTS `pet` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(75) NOT NULL,
-  `species` VARCHAR(75) NULL,
   `date_of_birth` DATE NULL,
   `breed` VARCHAR(75) NULL,
   `profile_picture` TEXT NULL,
@@ -153,11 +152,12 @@ DROP TABLE IF EXISTS `comment` ;
 CREATE TABLE IF NOT EXISTS `comment` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `content` VARCHAR(250) NOT NULL,
-  `created_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
   `post_id` INT NOT NULL,
   `user_id` INT NOT NULL,
   `reply_to_id` INT NULL,
   `enabled` TINYINT NOT NULL,
+  `created_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   UNIQUE INDEX `id_UNIQUE` (`id` ASC),
   PRIMARY KEY (`id`),
   INDEX `fk_comment_post1_idx` (`post_id` ASC),
@@ -278,18 +278,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `resource_type`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `resource_type` ;
-
-CREATE TABLE IF NOT EXISTS `resource_type` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `type` VARCHAR(75) NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `resource`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `resource` ;
@@ -301,17 +289,18 @@ CREATE TABLE IF NOT EXISTS `resource` (
   `image_url` VARCHAR(2000) NULL,
   `address_id` INT NOT NULL,
   `resource_type_id` INT NOT NULL,
+  `category_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_resource_address1_idx` (`address_id` ASC),
-  INDEX `fk_resource_resource_type1_idx` (`resource_type_id` ASC),
+  INDEX `fk_resource_category1_idx` (`category_id` ASC),
   CONSTRAINT `fk_resource_address1`
     FOREIGN KEY (`address_id`)
     REFERENCES `address` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_resource_resource_type1`
-    FOREIGN KEY (`resource_type_id`)
-    REFERENCES `resource_type` (`id`)
+  CONSTRAINT `fk_resource_category1`
+    FOREIGN KEY (`category_id`)
+    REFERENCES `category` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -332,7 +321,8 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `petappdb`;
-INSERT INTO `address` (`id`, `street`, `city`, `state`, `zip`) VALUES (1, '123 fake ', 'butter', 'ohio', '12345');
+INSERT INTO `address` (`id`, `street`, `city`, `state`, `zip`) VALUES (1, 'test street 123', 'fakecity', 'fakestate', '12345');
+INSERT INTO `address` (`id`, `street`, `city`, `state`, `zip`) VALUES (2, 'test street 321', 'citybefake', 'statefake', '54321');
 
 COMMIT;
 
@@ -342,7 +332,8 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `petappdb`;
-INSERT INTO `user` (`id`, `username`, `password`, `enabled`, `role`, `profile_picture`, `biography`, `backround_picture`, `first_name`, `last_name`, `created_at`, `updated_at`, `address_id`) VALUES (1, 'admin', '$2a$10$nShOi5/f0bKNvHB8x0u3qOpeivazbuN0NE4TO0LGvQiTMafaBxLJS', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `user` (`id`, `username`, `password`, `enabled`, `role`, `profile_picture`, `biography`, `background_picture`, `first_name`, `last_name`, `created_at`, `updated_at`, `address_id`) VALUES (1, 'admin', '$2a$10$nShOi5/f0bKNvHB8x0u3qOpeivazbuN0NE4TO0LGvQiTMafaBxLJS', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `user` (`id`, `username`, `password`, `enabled`, `role`, `profile_picture`, `biography`, `background_picture`, `first_name`, `last_name`, `created_at`, `updated_at`, `address_id`) VALUES (2, 'userone', '$2a$10$nShOi5/f0bKNvHB8x0u3qOpeivazbuN0NE4TO0LGvQiTMafaBxLJS', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2);
 
 COMMIT;
 
@@ -362,7 +353,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `petappdb`;
-INSERT INTO `pet` (`id`, `name`, `species`, `date_of_birth`, `breed`, `profile_picture`, `description`, `user_id`, `enabled`, `species_id`) VALUES (1, 'butterball', NULL, NULL, NULL, NULL, NULL, 1, 1, 1);
+INSERT INTO `pet` (`id`, `name`, `date_of_birth`, `breed`, `profile_picture`, `description`, `user_id`, `enabled`, `species_id`) VALUES (1, 'butterball', NULL, NULL, NULL, NULL, 1, 1, 1);
 
 COMMIT;
 
@@ -372,7 +363,8 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `petappdb`;
-INSERT INTO `category` (`id`, `type`) VALUES (1, 'dog post');
+INSERT INTO `category` (`id`, `type`) VALUES (1, 'Pet Health');
+INSERT INTO `category` (`id`, `type`) VALUES (2, 'Recreation');
 
 COMMIT;
 
@@ -392,7 +384,57 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `petappdb`;
-INSERT INTO `comment` (`id`, `content`, `created_at`, `post_id`, `user_id`, `reply_to_id`, `enabled`) VALUES (1, 'this is a comment', NULL, 1, 1, NULL, 1);
+INSERT INTO `comment` (`id`, `content`, `post_id`, `user_id`, `reply_to_id`, `enabled`, `created_at`, `updated_at`) VALUES (1, 'this is a comment', 1, 1, NULL, 1, NULL, NULL);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `post_has_category`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `petappdb`;
+INSERT INTO `post_has_category` (`post_id`, `category_id`) VALUES (1, 1);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `pet_picture`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `petappdb`;
+INSERT INTO `pet_picture` (`id`, `image_url`, `caption`, `date_posted`, `pet_id`) VALUES (1, 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.fox6now.com%2Fnews%2Fspecial-needs-dog-named-butterball-struggling-to-find-forever-home&psig=AOvVaw1lJ1ZSEeCMlovS4qdZmKa2&ust=1709833030356000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCLD-78WW4IQDFQAAAAAdAAAAABAD', 'i have a dog', NULL, 1);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `follower`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `petappdb`;
+INSERT INTO `follower` (`user_id`, `followed_user_id`) VALUES (1, 2);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `direct_message`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `petappdb`;
+INSERT INTO `direct_message` (`id`, `content`, `create_at`, `user_id`, `receiving_user_id`) VALUES (1, 'hi', NULL, 1, 2);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `resource`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `petappdb`;
+INSERT INTO `resource` (`id`, `name`, `description`, `image_url`, `address_id`, `resource_type_id`, `category_id`) VALUES (1, 'dog clinic', NULL, NULL, 1, 1, 1);
 
 COMMIT;
 

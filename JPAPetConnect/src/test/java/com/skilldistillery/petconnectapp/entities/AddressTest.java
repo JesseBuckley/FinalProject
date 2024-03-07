@@ -40,17 +40,30 @@ public class AddressTest {
 		address = null;
 		em.close();
 	}
+
 //  1 | test street 123 | fakecity   | fakestate | 12345
 	@Test
-	void test_todo_entity_mapping() {
+	void test_Address_entity_mapping() {
 		assertNotNull(address);
-	    assertEquals(1, address.getId());
-	    assertEquals("test street 123", address.getStreet());
-	    assertEquals("fakecity", address.getCity());
-	    assertEquals("fakestate", address.getState());
-	    assertEquals("12345", address.getZip());
-	    
+		assertEquals(1, address.getId());
+		assertEquals("test street 123", address.getStreet());
+		assertEquals("fakecity", address.getCity());
+		assertEquals("fakestate", address.getState());
+		assertEquals("12345", address.getZip());
 
+	}
+
+	@Test
+	void test_Address_User_entity_mapping() {
+		assertNotNull(address);
+		assertEquals("admin", address.getUsers().get(0).getUsername());
+
+	}
+	@Test
+	void test_Address_Resource_entity_mapping() {
+		assertNotNull(address);
+		assertEquals("dog clinic", address.getResources().get(0).getName());
+		
 	}
 
 }

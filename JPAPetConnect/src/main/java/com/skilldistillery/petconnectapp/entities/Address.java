@@ -13,24 +13,27 @@ import jakarta.persistence.OneToMany;
 
 @Entity
 public class Address {
-	
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
+
 	private String street;
-	
+
 	private String city;
-	
+
 	private String state;
-	
+
 	private String zip;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "address")
-	private List <User> user;
-	
+	private List<User> users;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "address")
+	private List<Resource> resources;
+
 	public Address() {
 		super();
 	}
@@ -75,13 +78,20 @@ public class Address {
 		this.zip = zip;
 	}
 
-
-	public List<User> getUser() {
-		return user;
+	public List<User> getUsers() {
+		return users;
 	}
 
-	public void setUser(List<User> user) {
-		this.user = user;
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
+
+	public List<Resource> getResources() {
+		return resources;
+	}
+
+	public void setResources(List<Resource> resources) {
+		this.resources = resources;
 	}
 
 	@Override
@@ -104,9 +114,7 @@ public class Address {
 	@Override
 	public String toString() {
 		return "Address [id=" + id + ", street=" + street + ", city=" + city + ", state=" + state + ", zip=" + zip
-				+ ", user=" + user + "]";
+				+ ", users=" + users + ", resources=" + resources + "]";
 	}
-
-	
 
 }

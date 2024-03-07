@@ -28,7 +28,7 @@ public class Address {
 	private String zip;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "addressId")
+	@OneToMany(mappedBy = "address")
 	private List <User> user;
 	
 	public Address() {

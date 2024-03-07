@@ -7,7 +7,6 @@
 		<class>com.skilldistillery.petconnectapp.entities.Category</class>
 		<class>com.skilldistillery.petconnectapp.entities.Comment</class>
 		<class>com.skilldistillery.petconnectapp.entities.DirectMessage</class>
-		<class>com.skilldistillery.petconnectapp.entities.Follower</class>
 		<class>com.skilldistillery.petconnectapp.entities.Pet</class>
 		<class>com.skilldistillery.petconnectapp.entities.PetPicture</class>
 		<class>com.skilldistillery.petconnectapp.entities.Post</class>

@@ -8,6 +8,8 @@ import java.util.Objects;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -55,21 +57,27 @@ public class User {
 	@JoinColumn(name = "address_id")
 	private Address addressId;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<Follower> user;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "followedUser")
 	private List<Follower> followedUser;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<Post> posts = new ArrayList<>();
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<Comment> comments = new ArrayList<>();
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<DirectMessage> messagesSent = new ArrayList<>();
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "receivingUser")
 	private List<DirectMessage> receivedMessages = new ArrayList<>();
 	

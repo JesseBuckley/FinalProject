@@ -45,8 +45,8 @@ class UserTest {
 	@Test
 	void test_todo_entity_mapping() {
 		assertNotNull(user);
-		assertNotNull(user.getAddressId());
-		assertEquals(1, user.getAddressId().getId());
+		assertNotNull(user.getAddress());
+		assertEquals(1, user.getAddress().getId());
 		assertEquals(1, user.getId());
 		assertEquals("admin", user.getUsername());
 		assertEquals("$2a$10$nShOi5/f0bKNvHB8x0u3qOpeivazbuN0NE4TO0LGvQiTMafaBxLJS", user.getPassword());
@@ -64,5 +64,10 @@ class UserTest {
 	void test_post_has_one_user_per_post() {
 		assertNotNull(user.getPosts());
 		assertTrue(user.getUsername() != null && user.getPosts().size() > 0);
+	}
+	@Test
+	void test_User_has_Followers() {
+		assertNotNull(user.getFollowedUsers());
+		assertEquals("userone", user.getFollowers().get(0).getUsername());
 	}
 }

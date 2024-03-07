@@ -16,6 +16,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
@@ -51,19 +53,21 @@ public class User {
 
 	@Column(name = "updated_at")
 	@UpdateTimestamp
-	private String updatedAt;
+	private LocalDateTime updatedAt;
 
 	@ManyToOne
 	@JoinColumn(name = "address_id")
-	private Address addressId;
+	private Address address;
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "user")
-	private List<Follower> user;
+	@ManyToMany
+	@JoinTable(name = "follower", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "followed_user_id"))
+	private List<User> followers;
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "followedUser")
-	private List<Follower> followedUser;
+	@ManyToMany
+	@JoinTable(name = "follower", joinColumns = @JoinColumn(name = "followed_user_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+	private List<User> followedUsers;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "user")
@@ -72,15 +76,18 @@ public class User {
 	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<Comment> comments = new ArrayList<>();
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<DirectMessage> messagesSent = new ArrayList<>();
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "receivingUser")
 	private List<DirectMessage> receivedMessages = new ArrayList<>();
-	
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "user")
+	private List<Pet> pets;
 
 	public User() {
 		super();
@@ -190,39 +197,38 @@ public class User {
 		this.createdAt = createdAt;
 	}
 
-	public String getUpdatedAt() {
+	public LocalDateTime getUpdatedAt() {
 		return updatedAt;
 	}
 
-	public void setUpdatedAt(String updatedAt) {
+	public void setUpdatedAt(LocalDateTime updatedAt) {
 		this.updatedAt = updatedAt;
 	}
 
-	public Address getAddressId() {
-		return addressId;
+	public Address getAddress() {
+		return address;
 	}
 
-	public void setAddressId(Address addressId) {
-		this.addressId = addressId;
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 
-	public List<Follower> getUser() {
-		return user;
+	public List<User> getFollowers() {
+		return followers;
 	}
 
-	public void setUser(List<Follower> user) {
-		this.user = user;
+	public void setFollowers(List<User> followers) {
+		this.followers = followers;
 	}
 
-	public List<Follower> getFollowedUser() {
-		return followedUser;
+	public List<User> getFollowedUsers() {
+		return followedUsers;
 	}
 
-	public void setFollowedUser(List<Follower> followedUser) {
-		this.followedUser = followedUser;
+	public void setFollowedUsers(List<User> followedUsers) {
+		this.followedUsers = followedUsers;
 	}
 
-	
 	public List<DirectMessage> getMessagesSent() {
 		return messagesSent;
 	}
@@ -237,6 +243,37 @@ public class User {
 
 	public void setReceivedMessages(List<DirectMessage> receivedMessages) {
 		this.receivedMessages = receivedMessages;
+	}
+
+	public List<Pet> getPets() {
+		return pets;
+	}
+
+	public void setPets(List<Pet> pets) {
+		this.pets = pets;
+	}
+
+	public void addPet(Pet pet) {
+		if (pets == null) {
+			pets = new ArrayList<>();
+		}
+
+		if (!pets.contains(pet)) {
+			pets.add(pet);
+		}
+
+		if (pet.getUser() != null) {
+			pet.getUser().removePet(pet);
+
+		}
+		pet.setUser(this);
+	}
+
+	public void removePet(Pet pet) {
+		if (pets != null && pets.contains(pet)) {
+			pets.remove(pet);
+			pet.setUser(null);
+		}
 	}
 
 	@Override
@@ -261,8 +298,9 @@ public class User {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", enabled=" + enabled
 				+ ", role=" + role + ", profilePicture=" + profilePicture + ", biography=" + biography
 				+ ", backgroundPicture=" + backgroundPicture + ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", addressId=" + addressId + ", user="
-				+ user + ", followedUser=" + followedUser + ", posts=" + posts + ", comments=" + comments + "]";
+				+ ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", address=" + address + ", followers="
+				+ followers + ", followedUsers=" + followedUsers + ", posts=" + posts + ", comments=" + comments
+				+ ", messagesSent=" + messagesSent + ", receivedMessages=" + receivedMessages + ", pets=" + pets + "]";
 	}
 
 }

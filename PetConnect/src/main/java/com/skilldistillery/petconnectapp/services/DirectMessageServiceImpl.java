@@ -45,20 +45,30 @@ public class DirectMessageServiceImpl implements DirectMessageService {
 	}
 
 	@Override
-	public DirectMessage update(DirectMessage directMessage, int id) {
+	public DirectMessage update(DirectMessage directMessage, int id, String userName) {
+		User sender = userRepo.findByUsername(userName);
+		if(sender != null) {
 		DirectMessage original = dmRepo.findById(id);
 		original.setContent(directMessage.getContent());
 		return dmRepo.save(original);
+		}
+		return null;
+		
 	}
 
 	@Override
-	public boolean deleteById(int dmId) {
+	public boolean deleteByIdAndUserName(int dmId, String userName) {
 		boolean deleted = false;
-		if (dmRepo.existsById(dmId)) {
-			dmRepo.deleteById(dmId);
-			deleted = true;
+		User sender = userRepo.findByUsername(userName);
+		if(sender != null) {
+			
+			if (dmRepo.existsById(dmId)) {
+				dmRepo.deleteById(dmId);
+				deleted = true;
+			}
+			return deleted;
 		}
-		return deleted;
+		return true;
 
 	}
 

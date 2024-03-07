@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skilldistillery.petconnectapp.entities.DirectMessage;
-import com.skilldistillery.petconnectapp.entities.User;
 import com.skilldistillery.petconnectapp.services.DirectMessageService;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -55,10 +53,13 @@ public class DirectMessageController {
 		}
 		return directMessage;
 	}
+	
+	//TODO: ADD USER PRINCIPAL TO THE REST OF THESE
 
-	@PutMapping("directMessages/{id}")
-	public DirectMessage update(@RequestBody DirectMessage dm, @PathVariable("id") int id, HttpServletResponse res) {
-		DirectMessage updated = dmService.update(dm, id);
+	@PutMapping("users/{id}/directMessages")
+	public DirectMessage update(@RequestBody DirectMessage dm, @PathVariable("id") int id, HttpServletResponse res,
+			Principal principal) {
+		DirectMessage updated = dmService.update(dm, id, principal.getName());
 		if (updated != null) {
 			res.setStatus(200);
 		} else {
@@ -68,10 +69,10 @@ public class DirectMessageController {
 
 	}
 
-	@DeleteMapping("directMessages/{id}")
-	public boolean delete(@PathVariable("id") int id, HttpServletResponse res) {
+	@DeleteMapping("users/{id}/directMessages")
+	public boolean delete(@PathVariable("id") Integer id, HttpServletResponse res, Principal principal) {
 		boolean deleted;
-		deleted = dmService.deleteById(id);
+		deleted = dmService.deleteByIdAndUserName(id, principal.getName());
 
 		if (deleted) {
 			res.setStatus(204);

@@ -31,6 +31,7 @@ public class Pet {
 	private String description;
 	private boolean enabled;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;

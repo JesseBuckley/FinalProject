@@ -65,10 +65,11 @@ public class DirectMessageServiceImpl implements DirectMessageService {
 			if (dmRepo.existsById(dmId)) {
 				dmRepo.deleteById(dmId);
 				deleted = true;
+				
+				return deleted;
 			}
-			return deleted;
 		}
-		return true;
+		return false;
 
 	}
 

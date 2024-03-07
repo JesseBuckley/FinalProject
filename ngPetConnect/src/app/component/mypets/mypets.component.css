@@ -1,0 +1,57 @@
+.circular-container {
+  width: 25%; /* Adjust according to your design */
+  height: 25%; /* Adjust according to your design */
+  border-radius: 50%;
+  margin-left: 15px;
+  overflow: hidden;
+  border: 2px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+
+}
+
+.circular-container img {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+  justify-content: center;
+}
+
+.edit-delete-buttons {
+text-align: right;
+top: 1px;
+right: 1px;
+}
+.edit-delete-buttons button {
+  width: 100px;
+}
+
+.add-pet-button {
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.add-pet-button button {
+  width: 300px;
+}
+
+.pet-details {
+  padding: 10px;
+  height: 120px;
+}
+
+.pet-details p {
+  margin-bottom: 5px;
+}
+
+.panel {
+  background-color: whitesmoke;
+}
+
+
+
+
+

@@ -1,12 +1,19 @@
 import { Routes } from '@angular/router';
 import { MypetsComponent } from './component/mypets/mypets.component';
 import { HomeComponent } from './component/home/home.component';
+import { RegisterComponent } from './component/register/register.component';
+import { AccountComponent } from './component/account/account.component';
+import { LoginComponent } from './component/login/login.component';
+import { LogoutComponent } from './component/logout/logout.component';
+import { NotfoundComponent } from './component/notfound/notfound.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'mypets', component: MypetsComponent },
-  // { path: 'login', component: LoginComponent},
-  // { path: 'login', component: LogoutComponent},
-
+  { path: 'register', component: RegisterComponent },
+  { path: 'account', component: AccountComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'logout', component: LogoutComponent },
+  { path: '**', component: NotfoundComponent },
 ];

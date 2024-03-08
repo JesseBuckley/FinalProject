@@ -47,8 +47,19 @@ public class UserController {
 	}
 
 	@PutMapping("users/{userId}")
-	public User updateUser(@PathVariable("userId") int userId, @RequestBody User user, Principal principal) {
-		return userService.update(userId, user, principal.getName());
+	public User updateUser(Principal principal, @PathVariable("userId") int userId, @RequestBody User user,
+			HttpServletResponse rsp) {
+		User updatedUser;
+		try {
+			updatedUser = userService.update(userId, user, principal.getName());
+			if (updatedUser == null) {
+				rsp.setStatus(404);
+			}
+		} catch (Exception e) {
+			rsp.setStatus(400);
+			updatedUser = null;
+		}
+		return updatedUser;
 	}
 
 	@DeleteMapping("users")

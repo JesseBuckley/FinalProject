@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.skilldistillery.petconnectapp.entities.User;
+import com.skilldistillery.petconnectapp.repository.AddressRepository;
 import com.skilldistillery.petconnectapp.repository.UserRepository;
 
 @Service
@@ -15,6 +16,9 @@ public class AuthServiceImpl implements AuthService {
 
 	@Autowired
 	private UserRepository userRepo;
+	
+	@Autowired
+	private AddressRepository addressRepo;
 
 	@Override
 	public User register(User user) {
@@ -25,6 +29,8 @@ public class AuthServiceImpl implements AuthService {
 		user.setEnabled(true);
 		user.setRole("standard");
 
+		addressRepo.saveAndFlush(user.getAddress());
+		
 		return userRepo.saveAndFlush(user);
 	}
 

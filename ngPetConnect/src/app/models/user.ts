@@ -1,3 +1,4 @@
+import { Address } from "./address";
 import { DirectMessage } from "./directmessage";
 import { Pet } from "./pet";
 import { Post } from "./post";
@@ -20,6 +21,9 @@ export class User {
   messagesSent: DirectMessage[];
   receivedMessages: DirectMessage[];
   pets: Pet[];
+  address: Address;
+  profilePictureUrl: any;
+  backgroundPictureUrl: any;
 
   constructor(
     id: number = 0,
@@ -38,7 +42,8 @@ export class User {
     comments: Comment[] = [],
     messagesSent: DirectMessage[] = [],
     receivedMessages: DirectMessage[] = [],
-    pets: Pet[] = []
+    pets: Pet[] = [],
+    address: Address = new Address()
   ) {
     this.id = id;
     this.username = username;
@@ -57,5 +62,6 @@ export class User {
     this.messagesSent = messagesSent;
     this.receivedMessages = receivedMessages;
     this.pets = pets;
+    this.address = address;
   }
 }

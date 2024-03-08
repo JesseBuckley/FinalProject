@@ -1,0 +1,78 @@
+<form (submit)="register(newUser)">
+  <div class="container vh-100 d-flex align-items-center justify-content-center">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card p-4">
+                <div class="row px-3 mb-4">
+                    <h2>Register new Account</h2>
+                </div>
+                    <div class="row px-3 mb-4">
+                        <label for="username"><h6 class="mb-0 text-sm">Username</h6></label>
+                        <input id="username" [(ngModel)]="newUser.username" name="username" type="text" class="form-control" placeholder="Enter your username">
+                    </div>
+
+                    <div class="row px-3 mb-4">
+                        <label for="password"><h6 class="mb-0 text-sm">Password</h6></label>
+                        <input id="password" [(ngModel)]="newUser.password" name="password" type="password" class="form-control" placeholder="Enter password">
+                    </div>
+
+                    <div class="row px-3 mb-4">
+                        <label for="firstName"><h6 class="mb-0 text-sm">First Name</h6></label>
+                        <input id="firstName" [(ngModel)]="newUser.firstName" name="firstName" type="text" class="form-control" placeholder="Enter your first name">
+                    </div>
+
+                    <div class="row px-3 mb-4">
+                        <label for="lastName"><h6 class="mb-0 text-sm">Last Name</h6></label>
+                        <input id="lastName" [(ngModel)]="newUser.lastName" name="lastName" type="text" class="form-control" placeholder="Enter your last name">
+                    </div>
+
+                    <!-- Profile Picture Options -->
+                    <div class="row px-3 mb-4">
+                      <label class="form-label"><h6 class="mb-0 text-sm">Profile Picture</h6></label>
+                      <div class="input-group">
+                        <input id="profilePictureUrl" [(ngModel)]="newUser.profilePictureUrl" name="profilePictureUrl" type="text" class="form-control" placeholder="Paste image URL">
+                        <input id="profilePictureFile" type="file" (change)="handleImageUpload($event, 'profilePicture')" class="form-control">
+                      </div>
+                    </div>
+                    <!-- Background Picture Options -->
+                    <div class="row px-3 mb-4">
+                      <label class="form-label"><h6 class="mb-0 text-sm">Background Picture</h6></label>
+                      <div class="input-group">
+                        <input id="backgroundPictureUrl" [(ngModel)]="newUser.backgroundPictureUrl" name="backgroundPictureUrl" type="text" class="form-control" placeholder="Paste image URL">
+                        <input id="backgroundPictureFile" type="file" (change)="handleImageUpload($event, 'backgroundPicture')" class="form-control">
+                      </div>
+                    </div>
+
+
+                    <!-- Address fields -->
+                    <div class="row px-3 mb-4">
+                        <label for="street"><h6 class="mb-0 text-sm">Street</h6></label>
+                        <input id="street" [(ngModel)]="newAddress.street" name="street" type="text" class="form-control" placeholder="Street">
+                    </div>
+
+                    <div class="row px-3 mb-4">
+                        <label for="city"><h6 class="mb-0 text-sm">City</h6></label>
+                        <input id="city" [(ngModel)]="newAddress.city" name="city" type="text" class="form-control" placeholder="City">
+                    </div>
+
+                    <div class="row px-3 mb-4">
+                        <label for="state"><h6 class="mb-0 text-sm">State</h6></label>
+                        <input id="state" [(ngModel)]="newAddress.state" name="state" type="text" class="form-control" placeholder="State">
+                    </div>
+
+                    <div class="row px-3 mb-4">
+                        <label for="zip"><h6 class="mb-0 text-sm">Zip</h6></label>
+                        <input id="zip" [(ngModel)]="newAddress.zip" name="zip" type="text" class="form-control" placeholder="Zip Code">
+                    </div>
+
+                    <div class="row px-3 mb-4">
+                        <button type="submit" class="btn btn-blue btn-block btn-success">Register</button>
+                    </div>
+                <div class="row px-3">
+                    <small class="font-weight-bold">Already have an account? <a [routerLink]="['/login']">Login</a></small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</form>

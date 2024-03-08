@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.skilldistillery.petconnectapp.entities.User;
 import com.skilldistillery.petconnectapp.exceptions.UsernameExistsException;
+import com.skilldistillery.petconnectapp.repository.AddressRepository;
 import com.skilldistillery.petconnectapp.repository.UserRepository;
 
 @Transactional
@@ -17,6 +18,8 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRepository userRepo;
+	@Autowired
+	private AddressRepository addressRepo;
 
 	@Override
 	public List<User> index(String username) {
@@ -70,14 +73,17 @@ public class UserServiceImpl implements UserService {
 
 				managedUser.setUsername(user.getUsername());
 			}
-			managedUser.setPassword(user.getPassword());
 			managedUser.setProfilePicture(user.getProfilePicture());
 			managedUser.setBiography(user.getBiography());
 			managedUser.setBackgroundPicture(user.getBackgroundPicture());
 			managedUser.setFirstName(user.getFirstName());
 			managedUser.setLastName(user.getLastName());
 			managedUser.setUpdatedAt(LocalDateTime.now());
-			managedUser.setAddress(user.getAddress());
+			managedUser.getAddress().setStreet(user.getAddress().getStreet());
+			managedUser.getAddress().setCity(user.getAddress().getCity());
+			managedUser.getAddress().setState(user.getAddress().getState());
+			managedUser.getAddress().setZip(user.getAddress().getZip());
+			addressRepo.saveAndFlush(managedUser.getAddress());
 			return userRepo.save(managedUser);
 		}
 

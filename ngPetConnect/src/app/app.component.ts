@@ -5,32 +5,21 @@ import { MypetsComponent } from './component/mypets/mypets.component';
 import { RouterLink, RouterModule } from '@angular/router';
 import { NavigationComponent } from './component/navigation/navigation.component';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { LogoutComponent } from './component/logout/logout.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  imports: [HomeComponent, MypetsComponent, NavigationComponent, RouterModule, RouterLink, CommonModule],
+  imports: [
+    HomeComponent,
+    MypetsComponent,
+    NavigationComponent,
+    RouterModule,
+    RouterLink,
+    LogoutComponent
+  ],
 })
-export class AppComponent {
-  constructor(private auth: AuthService) {}
-
-  ngOnInit() {
-    this.tempTestDeleteMeLater(); // DELETE LATER!!!
-  }
-
-  tempTestDeleteMeLater() {
-    this.auth.login('admin', 'test').subscribe({
-      // change username to match DB
-      next: (data) => {
-        console.log('Logged in:');
-        console.log(data);
-      },
-      error: (fail) => {
-        console.error('Error authenticating:');
-        console.error(fail);
-      },
-    });
-  }
-}
+export class AppComponent {}

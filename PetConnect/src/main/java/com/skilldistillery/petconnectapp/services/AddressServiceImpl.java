@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import com.skilldistillery.petconnectapp.entities.Address;
 import com.skilldistillery.petconnectapp.repository.AddressRepository;
-import com.skilldistillery.petconnectapp.repository.UserRepository;
 
 @Service
 public class AddressServiceImpl implements AddressService {
@@ -27,7 +26,7 @@ public class AddressServiceImpl implements AddressService {
 	@Override
 	public Address update(Address address, int id) {
 		Address original = addressRepo.searchById(id);
-		
+
 		original.setStreet(address.getStreet());
 		original.setCity(address.getCity());
 		original.setState(address.getState());

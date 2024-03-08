@@ -32,16 +32,18 @@ export class AccountComponent implements OnInit {
       this.auth.getLoggedInUser().subscribe({
         next: (user) => {
           this.user = user;
-          this.isAdmin = user.role === 'ADMIN';
-
+          this.isAdmin = user.role === 'admin';
 
           this.editUser = Object.assign({}, this.user);
-
 
           if (this.user.address) {
             this.editAddress = Object.assign({}, this.user.address);
           } else {
             this.editAddress = {};
+          }
+
+          if (this.isAdmin) {
+            this.fetchAllUsers();
           }
         },
         error: (err) => {
@@ -55,15 +57,22 @@ export class AccountComponent implements OnInit {
   }
 
 
+
+
   fetchAllUsers(): void {
     this.userService.findAllUsers().subscribe({
-      next: (users) => (this.Users = users),
+      next: (users) => {
+        this.allUsers = users;
+        console.log("All Users:", this.allUsers);
+      },
       error: (err) => {
         this.errorMessage = 'Error fetching all users';
         console.error(err);
       },
     });
   }
+
+
 
   updateUser(userToUpdate: User): void {
     if (this.user) {
@@ -90,11 +99,24 @@ export class AccountComponent implements OnInit {
     }
   }
 
+  enableUserAccount(userId: number): void {
+    this.userService.enableUserAccount(userId).subscribe({
+      next: () => {
+        alert('Account enabled successfully.');
+        this.fetchAllUsers();
+      },
+      error: (err) => {
+        this.errorMessage = 'Error enabling account';
+        console.error(err);
+      },
+    });
+  }
+
   disableUserAccount(userId: number): void {
     this.userService.disableUserAccount(userId).subscribe({
       next: () => {
         alert('Account disabled successfully.');
-        this.fetchAuthenticatedUserDetails();
+        this.fetchAllUsers();
       },
       error: (err) => {
         this.errorMessage = 'Error disabling account';
@@ -103,16 +125,4 @@ export class AccountComponent implements OnInit {
     });
   }
 
-  enableUserAccount(userId: number): void {
-    this.userService.enableUserAccount(userId).subscribe({
-      next: () => {
-        alert('Account enabled successfully.');
-        this.fetchAuthenticatedUserDetails();
-      },
-      error: (err) => {
-        this.errorMessage = 'Error enabling account';
-        console.error(err);
-      },
-    });
-  }
 }

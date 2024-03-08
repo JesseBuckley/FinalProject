@@ -21,14 +21,23 @@ public class PetServiceImpl implements PetService {
 	private UserRepository userRepo;
 
 	 @Override
-	    public List<Pet> findAllOwnedPets(int userId, String authenticatedUsername) {
+	    public List<Pet> findAllPetsOwnedByUser(String authenticatedUsername) {
+	        User owner = userRepo.findByUsername(authenticatedUsername);
+
+	        if (owner != null) {
+	 
+	            return petRepo.findPetsByUser_Username(authenticatedUsername);
+	        } else {
+	            return null;
+	        }
+	    }
+	 
+	 @Override
+	    public List<Pet> findAllOwnedPets(int userId) {
 	        Optional<User> owner = userRepo.findById(userId);
 
 	        if (owner.isPresent()) {
-	           
-	            if (!owner.get().getUsername().equals(authenticatedUsername)) {
-	            	return null;
-	            }
+	        
 	            return petRepo.findPetsByUserId(userId);
 	        } else {
 	            return null;

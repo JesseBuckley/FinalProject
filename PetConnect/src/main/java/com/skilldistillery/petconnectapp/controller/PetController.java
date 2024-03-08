@@ -27,9 +27,14 @@ public class PetController {
 	@Autowired
 	private PetService petService;
 
-	 @GetMapping("{userId}/pets")
-	 public List<Pet> findAllPetsOwnedByUser(@PathVariable("userId") Integer userId, Principal principal) {
-	     return petService.findAllOwnedPets(userId, principal.getName());
+	 @GetMapping("pets")
+	 public List<Pet> findAllPetsOwnedByUser(Principal principal) {
+	     return petService.findAllPetsOwnedByUser(principal.getName());
+	    }
+	 
+	 @GetMapping("pets/users/{userId}")
+	 public List<Pet> findUserOwnedPets(@PathVariable("userId") Integer userId) {
+	     return petService.findAllOwnedPets(userId);
 	    }
 
 	@GetMapping("pets/{petId}")

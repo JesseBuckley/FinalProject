@@ -361,7 +361,8 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `petappdb`;
-INSERT INTO `pet` (`id`, `name`, `date_of_birth`, `breed`, `profile_picture`, `description`, `user_id`, `enabled`, `species_id`) VALUES (1, 'butterball', NULL, NULL, NULL, NULL, 1, 1, 1);
+INSERT INTO `pet` (`id`, `name`, `date_of_birth`, `breed`, `profile_picture`, `description`, `user_id`, `enabled`, `species_id`) VALUES (1, 'Butterball', '2011-01-01', 'Golden Retriever', 'https://t3.ftcdn.net/jpg/00/66/74/90/360_F_66749097_nCsOYh69ix0o7h1DDXztTADd4N3q0Kze.jpg', 'This dog is literally mans best friend', 1, 1, 1);
+INSERT INTO `pet` (`id`, `name`, `date_of_birth`, `breed`, `profile_picture`, `description`, `user_id`, `enabled`, `species_id`) VALUES (2, 'Biggins', '1945-01-01', 'Sphynx', 'https://media.istockphoto.com/id/471421871/photo/portrait-of-sphynx-cat-6-months-old-sitting.jpg?s=612x612&w=0&k=20&c=dRiOcm4muMWGUD64pPCY9VorbnFAT2RtuNHJDkCPiSE=', 'The most precious angel', 1, 1, 1);
 
 COMMIT;
 

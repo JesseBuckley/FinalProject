@@ -67,6 +67,7 @@ export class AccountComponent implements OnInit {
 
   updateUser(userToUpdate: User): void {
     if (this.user) {
+      userToUpdate.address = this.editAddress
       this.userService.updateUser(this.user.id, userToUpdate).subscribe({
         next: (updatedUser) => {
           this.user = updatedUser;

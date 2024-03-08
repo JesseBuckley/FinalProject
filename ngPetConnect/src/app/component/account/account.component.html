@@ -64,12 +64,25 @@
   </div>
 </div>
 <!-- Admin specific section -->
-<div *ngIf="isAdmin">
-  <h3>All Users</h3>
-  <ul>
-    <li *ngFor="let user of allUsers">
-      {{ user.username }} - {{ user.enabled ? 'Enabled' : 'Disabled' }}
-      <button *ngIf="!user.enabled" (click)="enableUserAccount(user.id)">Enable</button>
-    </li>
-  </ul>
+<div *ngIf="isAdmin" class="container mt-5">
+  <h2>All Users</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Username</th>
+        <th scope="col">Status</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of allUsers">
+        <td>{{ user.username }}</td>
+        <td>{{ user.enabled ? 'Enabled' : 'Disabled' }}</td>
+        <td>
+          <button *ngIf="!user.enabled" (click)="enableUserAccount(user.id)" class="btn btn-sm btn-success">Enable</button>
+          <button *ngIf="user.enabled" (click)="disableUserAccount(user.id)" class="btn btn-sm btn-warning">Disable</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>

@@ -40,7 +40,7 @@ export class PetService {
     );
   }
   create(pet: Pet): Observable<Pet> {
-    return this.http.post<Pet>(this.url, this.getHttpOptions()).pipe(
+    return this.http.post<Pet>(this.url, pet, this.getHttpOptions()).pipe(
       catchError((err: any) => {
         console.error('PetService.create(): error creating pet', err);
         return throwError(
@@ -51,8 +51,8 @@ export class PetService {
   }
 
   update(pet: Pet): Observable<Pet> {
-    const updateUrl = `${this.url, this.getHttpOptions()}/${pet.id}`;
-    return this.http.put<Pet>(updateUrl, pet).pipe(
+    const updateUrl = `${this.url}/${pet.id}/update`;
+    return this.http.put<Pet>(updateUrl, pet, this.getHttpOptions()).pipe(
       catchError((err: any) => {
         console.error('petService.update(): error updating pet', err);
         return throwError(
@@ -63,8 +63,8 @@ export class PetService {
   }
 
   destroy(id: number): Observable<any> {
-    const deleteUrl = `${this.url, this.getHttpOptions()}/${id}`;
-    return this.http.delete(deleteUrl).pipe(
+    const deleteUrl = `${this.url}/${id}/delete`;
+    return this.http.delete(deleteUrl, this.getHttpOptions()).pipe(
       catchError((err: any) => {
         console.error('petService.destroy(): error deleting pet', err);
         return throwError(

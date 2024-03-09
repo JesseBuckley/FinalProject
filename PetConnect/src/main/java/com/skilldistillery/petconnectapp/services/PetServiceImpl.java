@@ -59,11 +59,9 @@ public class PetServiceImpl implements PetService {
 		User user = userRepo.findByUsername(name);
 		if( user != null) {
 			pet.setUser(user);
+			pet.setEnabled(true);
 			return petRepo.save(pet);
 		}
-		
-		
-		
 		return null;
 	}
 

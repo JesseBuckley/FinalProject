@@ -61,11 +61,13 @@ public class PetController {
 	
 	
 	@PostMapping("pets")
-	public Pet create(@RequestBody Pet pet, Principal principal) {
-		try {
-			pet = petService.create(pet, principal.getName());
-		} catch (Exception e) {
-			e.printStackTrace();
+	public Pet create(@RequestBody Pet pet, Principal principal, HttpServletResponse res) {
+		Pet created = petService.create(pet, principal.getName());
+		
+		if (created != null) {
+			res.setStatus(201);
+		} else if (created == null) {
+			res.setStatus(400);
 		}
 		return pet;
 	}

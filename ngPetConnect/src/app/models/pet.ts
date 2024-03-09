@@ -3,27 +3,30 @@ import { Species } from "./species";
 import { User } from "./user";
 
 export class Pet {
-  id: number;
-  name: string;
-  dateOfBirth: string;
-  breed: string;
-  profilePicture: string;
-  description: string;
-  enabled: boolean;
-  user: User;
-  petPictures: PetPicture[];
-  species: Species;
+  id: number = 0;
+  name: string = '';
+  dateOfBirth: string = '';
+  breed: string = '';
+  profilePicture: string = '';
+  description: string = '';
+  enabled: boolean = true;
+  user: User = new User();
+  petPictures: PetPicture[] = [];
+  species: Species = new Species();
 
-  constructor() {
-    this.id = 0;
-    this.name = '';
-    this.dateOfBirth = '';
-    this.breed = '';
-    this.profilePicture = '';
-    this.description = '';
-    this.enabled = false;
-    this.user = new User();
-    this.petPictures = [];
-    this.species = new Species();
+  constructor(
+    id: number = 0, name: string = '', dateOfBirth: string = '', breed: string = '',
+    profilePicture: string = '', description: string = '', enabled: boolean = true,
+    user: User = new User(), petPictures: PetPicture[] = [], species: Species = new Species()) {
+    this.id = this.id;
+    this.name = this.name;
+    this.dateOfBirth = this.dateOfBirth;
+    this.breed = this.breed;
+    this.profilePicture = this.profilePicture;
+    this.description = this.description;
+    this.enabled = this.enabled;
+    this.user = this.user;
+    this.petPictures = this.petPictures;
+    this.species = this.species;
   }
 }

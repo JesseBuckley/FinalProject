@@ -29,10 +29,11 @@
                     <p><strong>DOB: </strong>{{ details.dateOfBirth }}</p>
                   </div>
                   <!-- Edit and delete buttons -->
-                  <div class="edit-delete-buttons pull-right">
-                    <button class="btn btn-primary btn">Edit</button>
-                    <button class="btn btn-danger btn">Delete</button>
+                    <div class="edit-delete-buttons pull-right">
+                      <button class="btn btn-primary btn" (click)="setEditPets(details)">Update</button>
+                      <button class="btn btn-danger btn" (click)="deletePet(details.id)">Delete</button>
                   </div>
+
                 </div>
               </div>
             </div>
@@ -44,8 +45,61 @@
         </header>
       </div>
     </div>
-    <div class="add-pet-button">
-      <button class="btn btn-primary">Add Pet</button>
+
+
+                      <!-- pet form for editing -->
+    <div *ngIf="isEditing">
+      <div class="panel panel-primary rounded shadow">
+      <div class="panel-heading">
+      <h3 class="panel-title">Edit Pet</h3>
+      </div>
+      <div class="panel-body">
+        <div id="editPetsForm" *ngIf="selected">
+          <h2>Pet Details</h2>
+          <p>ID: {{ selected.id }}</p>
+          <p>Name: <span *ngIf="!isEditing">{{ selected.name }}</span><input *ngIf="isEditing" type="text" [(ngModel)]="editPet!.name"></p>
+          <p>Description: <span *ngIf="!isEditing">{{ selected.description }}</span><input *ngIf="isEditing" type="number" [(ngModel)]="editPet!.description"></p>
+          <p>Breed: <span *ngIf="!isEditing">{{ selected.breed }}</span><input *ngIf="isEditing" type="number" [(ngModel)]="editPet!.breed"></p>
+          <p>Date of Birth: <span *ngIf="!isEditing">{{ selected.dateOfBirth }}</span><input *ngIf="isEditing" type="text" [(ngModel)]="editPet!.dateOfBirth"></p>
+
+          <button *ngIf="!isEditing" class="btn btn-primary" (click)="setEditPets(newPet)">Edit</button>
+          <button *ngIf="isEditing" class="btn btn-success" (click)="updatePets()">Save</button>
+          </div>
+      </div>
+      </div>
+      </div>
+    <!-- Display pet form when add Pet is clicked-->
+    <div *ngIf="addPetClicked">
+      <div class="row">
+        <header>
+          <div class="col-lg-15 col-md-15 col-sm-15">
+            <div class="panel panel-primary rounded shadow">
+              <div class="panel-heading">
+                <h3 class="panel-title">Add Pet</h3>
+              </div>
+              <div class="panel-body">
+                <!-- my pet form -->
+                <form id="addPetsForm" (ngSubmit)="addPets()">
+                  <input type="text" id="name" name="name" placeholder="Pet name" [(ngModel)]="newPet.name" required/>
+                  <input type="date" id="dateOfBirth" name="dateOfBirth" placeholder="Date of Birth" [(ngModel)]="newPet.dateOfBirth"/>
+                  <input type="text" id="breed" name="Breed" placeholder="Breed" step="0.01" [(ngModel)]="newPet.breed"/>
+                  <input type="text" id="profilePicture" name="profilePicture" placeholder="Profile picture URL" [(ngModel)]="newPet.profilePicture"/>
+                  <input type="text" id="description" name="description" placeholder="Description" [(ngModel)]="newPet.description"/>
+                  <input type="number" id="species" name="species" placeholder="Species" [(ngModel)]="newPet.species.id" required/>
+
+
+                  <button type="submit" class="btn btn-primary">Add Pet</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </header>
+      </div>
     </div>
+  </div>
+
+  <!-- Add Pet Button -->
+  <div class="add-pet-button">
+    <button class="btn btn-primary" (click)="toggleAddPet()">Add Pet</button>
   </div>
 </div>

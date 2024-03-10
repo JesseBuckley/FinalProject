@@ -9,7 +9,7 @@ export class Comment {
   updatedAt: string;
   user: User;
   post: Post;
-  replyTo: Comment | null;
+  replies: Comment [];
 
   constructor() {
     this.id = 0;
@@ -19,6 +19,6 @@ export class Comment {
     this.updatedAt = '';
     this.user = new User();
     this.post = new Post();
-    this.replyTo = null;
+    this.replies = [];
   }
 }

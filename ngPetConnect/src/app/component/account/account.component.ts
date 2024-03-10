@@ -56,14 +56,11 @@ export class AccountComponent implements OnInit {
     }
   }
 
-
-
-
   fetchAllUsers(): void {
     this.userService.findAllUsers().subscribe({
       next: (users) => {
         this.allUsers = users;
-        console.log("All Users:", this.allUsers);
+        console.log('All Users:', this.allUsers);
       },
       error: (err) => {
         this.errorMessage = 'Error fetching all users';
@@ -72,11 +69,9 @@ export class AccountComponent implements OnInit {
     });
   }
 
-
-
   updateUser(userToUpdate: User): void {
     if (this.user) {
-      userToUpdate.address = this.editAddress
+      userToUpdate.address = this.editAddress;
       this.userService.updateUser(this.user.id, userToUpdate).subscribe({
         next: (updatedUser) => {
           this.user = updatedUser;
@@ -124,5 +119,4 @@ export class AccountComponent implements OnInit {
       },
     });
   }
-
 }

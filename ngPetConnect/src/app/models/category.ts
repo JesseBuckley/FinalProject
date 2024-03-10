@@ -6,6 +6,7 @@ export class Category {
   type: string;
   resources: Resource[];
   posts: Post[];
+name: any;
 
   constructor() {
     this.id = 0;

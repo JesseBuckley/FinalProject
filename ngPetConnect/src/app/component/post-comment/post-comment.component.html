@@ -1,0 +1,79 @@
+
+<div class="container bootstrap snippets bootdeys">
+  <div class="row">
+    <!-- Filter & Search Section -->
+    <div class="col-12 mb-4">
+      <div class="d-flex justify-content-between flex-wrap">
+        <div class="input-group mb-3">
+          <input #keywordInput type="text" class="form-control" placeholder="Keyword...">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" (click)="searchByKeyword(keywordInput.value)">Search</button>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input #locationInput type="text" class="form-control" placeholder="City/State/Zip...">
+          <div class="input-group-append">
+            <button class="btn btn-outline-warning" type="button" (click)="filterByLocation(locationInput.value)">Filter by Location</button>
+          </div>
+          </div>
+              </div>
+      <div class="input-group mb-3">
+        <select #categorySelect class="custom-select">
+          <option selected>Choose Category...</option>
+          <option *ngFor="let category of categories" [value]="category.id">{{category.type}}</option>
+        </select>
+        </div>
+    </div>
+
+    <!-- Content Column -->
+    <div class="col-lg-9 col-md-9 col-sm-8">
+      <!-- New Post Form -->
+      <div class="panel rounded shadow">
+        <form (submit)="createPost(postContent.value)">
+          <textarea #postContent class="form-control input-lg no-border" rows="2" placeholder="What are you doing?..."></textarea>
+          <div class="panel-footer">
+            <button type="submit" class="btn btn-success pull-right mt-5">POST</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Display Posts and Comments -->
+      <div *ngFor="let post of posts; let i = index" class="panel panel-success rounded shadow">
+        <div class="panel-heading no-border">
+          <div class="pull-left half">
+            <div class="media">
+              <div class="media-object pull-left">
+                <img [src]="post.user.profilePictureUrl" alt="User Avatar" class="img-circle img-post">
+              </div>
+              <div class="media-body">
+                <a href="#" class="media-heading block mb-0 h4">{{ post.user.username }}</a>
+                <span>Content: {{ post.content }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+        <div class="panel-body no-padding">
+          <div *ngFor="let comment of post.comments" class="media inner-all no-margin">
+            <div class="pull-left">
+              <img [src]="comment.user.profilePictureUrl" alt="Comment User Avatar" class="img-post2">
+            </div>
+            <div class="media-body">
+              <a href="#" class="h5">{{ comment.user.username }}</a>
+              <div class="text-muted">{{ comment.content }}</div>
+              <em class="text-xs">Posted on <span>{{ comment.updatedAt ? comment.updatedAt : comment.createdAt }}</span></em>
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer">
+          <form class="form-horizontal" (submit)="addComment(post.id, commentContent.value)">
+            <div class="form-group has-feedback no-margin">
+              <input #commentContent class="form-control" type="text" placeholder="Your comment here...">
+              <button type="submit" class="btn btn-theme fa fa-search form-control-feedback"></button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

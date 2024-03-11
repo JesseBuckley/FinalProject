@@ -7,6 +7,8 @@ import { NavigationComponent } from './component/navigation/navigation.component
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { LogoutComponent } from './component/logout/logout.component';
+import { ngbCarouselTransitionIn } from '@ng-bootstrap/ng-bootstrap/carousel/carousel-transition';
+import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +21,8 @@ import { LogoutComponent } from './component/logout/logout.component';
     NavigationComponent,
     RouterModule,
     RouterLink,
-    LogoutComponent
+    LogoutComponent,
+    NgbModule
   ],
 })
 export class AppComponent {}

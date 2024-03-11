@@ -6,10 +6,12 @@ import { AccountComponent } from './component/account/account.component';
 import { LoginComponent } from './component/login/login.component';
 import { LogoutComponent } from './component/logout/logout.component';
 import { NotfoundComponent } from './component/notfound/notfound.component';
+import { LandingComponent } from './component/landing/landing.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
+  { path: 'landing', component: LandingComponent },
   { path: 'mypets', component: MypetsComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'account', component: AccountComponent },

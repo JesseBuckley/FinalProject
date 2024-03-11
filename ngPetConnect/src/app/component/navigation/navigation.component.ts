@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterLink, RouterModule } from '@angular/router';
+import { Router, RouterLink, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { LoginComponent } from '../login/login.component';
 import { LogoutComponent } from '../logout/logout.component';
@@ -21,9 +21,16 @@ import { LogoutComponent } from '../logout/logout.component';
 export class NavigationComponent {
   showHome: boolean = true;
 
-  constructor(private auth: AuthService) {}
+  constructor(private auth: AuthService, private router: Router) {}
 
   loggedIn(): boolean {
     return this.auth.checkLogin();
   }
+
+  logout(): void {
+    console.log('logging out');
+    this.auth.logout();
+    this.router.navigateByUrl('/landing');
+  }
+
 }

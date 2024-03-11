@@ -15,6 +15,6 @@ export class LogoutComponent {
   logout(): void {
     console.log('logging out');
     this.auth.logout();
-    this.router.navigateByUrl('/home');
+    this.router.navigateByUrl('/landing');
   }
 }

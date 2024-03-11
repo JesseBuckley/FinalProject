@@ -1,3 +1,4 @@
+import { SpeciesService } from './../../services/species.service';
 import { AuthService } from './../../services/auth.service';
 import { PetService } from './../../services/pet.service';
 import { Component, OnInit } from '@angular/core';
@@ -5,6 +6,7 @@ import { HomeComponent } from '../home/home.component';
 import { FormsModule, NgModel } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Pet } from '../../models/pet';
+import { Species } from '../../models/species';
 
 
 
@@ -18,17 +20,40 @@ import { Pet } from '../../models/pet';
 export class MypetsComponent implements OnInit {
 
   isEditing: boolean = false;
-  newPet: Pet = new Pet();
+  newPet: any = new Pet();
   selected: Pet | null = null;
   editPet: Pet | null = null;
   pet: Pet[] = [];
   addPetClicked: boolean = false;
+  speciesList: any[] = [];
+  selectedSpeciesId: number | undefined;
 
-  constructor(private petService: PetService, private authService: AuthService) {}
+  constructor(private petService: PetService, private authService: AuthService, private speciesService: SpeciesService) {}
+
+cancelAdd() {
+this.addPetClicked = false;
+}
+
+cancelEdit() {
+this.isEditing = false;
+this.editPet = null;
+}
+
+fetchSpecies() {
+  this.speciesService.getAllSpecies().subscribe(
+    (data: any[]) => {
+      this.speciesList = data;
+    },
+    (error) => {
+      console.error('error fetching species:', error);
+    }
+    );
+}
 
 
   ngOnInit(): void {
     this.loadPets();
+    this.fetchSpecies();
   }
 
   loadPets() {
@@ -102,11 +127,9 @@ displayTable(): void {
 
 setEditPets(pet: Pet) {
   this.isEditing = true;
-  // this.editPet = Object.assign({}, this.selected);
-  this.editPet = { ...pet};
+  this.editPet = Object.assign({}, this.selected);
 }
   toggleAddPet() {
     this.addPetClicked = !this.addPetClicked;
   }
-
 }

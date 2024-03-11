@@ -9,7 +9,7 @@ import { NotfoundComponent } from './component/notfound/notfound.component';
 import { LandingComponent } from './component/landing/landing.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '', redirectTo: '/landing', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
   { path: 'landing', component: LandingComponent },
   { path: 'mypets', component: MypetsComponent },

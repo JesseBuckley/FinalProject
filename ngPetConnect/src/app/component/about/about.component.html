@@ -1,0 +1,44 @@
+<div class="container bootstrap snippets bootdeys">
+  <div class="row justify-content-center">
+      <div class="col-lg-3 col-md-3 col-sm-4">
+          <div class="panel rounded shadow">
+              <div class="panel-body">
+                  <div class="inner-all">
+                      <ul class="list-unstyled">
+                          <li class="text-center">
+                            <br>
+                              <img data-no-retina="" class="img-circle img-responsive img-bordered-primary custom-profile-pic" src="{{ user.profilePicture }}" alt="User Profile">
+                          </li>
+                          <li class="text-center">
+                              <h4 class="text-capitalize">{{ user.username }}</h4>
+                          </li>
+                          <li><br></li>
+
+
+
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- <form (ngSubmit)="updateUser(editUser)">
+                <div class="row px-3 mb-4">
+                  <label for="biography" class="form-label"><h6 class="mb-0 text-sm">Update Bio</h6></label>
+                  <textarea id="biography" [(ngModel)]="editUser.biography" name="biography" class="form-control resizable-textarea" placeholder="Update Bio"></textarea>
+                </div>
+                <div class="row px-3 mb-4">
+                  <button type="submit" class="btn btn-blue btn-block btn-success">Update</button>
+                </div>
+              </form> -->
+<div class="container mt-5">
+  <div class="card p-4">
+
+    <h2>About Me!</h2>
+    <ul class="list-unstyled">
+      <li>
+        <h4 class="text-capitalize">{{ user.biography }}</h4>
+      </li>
+    </ul>
+  </div>
+</div>

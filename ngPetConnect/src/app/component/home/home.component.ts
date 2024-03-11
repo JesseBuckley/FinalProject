@@ -14,10 +14,11 @@ import { AuthService } from '../../services/auth.service';
   standalone: true,
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
-  imports: [MypetsComponent, FormsModule, CommonModule, PostCommentComponent],
+  imports: [MypetsComponent, FormsModule, CommonModule, PostCommentComponent, RouterLink, RouterModule],
 })
 export class HomeComponent implements OnInit {
   user: User = new User();
+  users: any[] | undefined;
 
 constructor(private userService: UserService, private authService: AuthService) {}
 
@@ -30,6 +31,6 @@ constructor(private userService: UserService, private authService: AuthService) 
       (error) => {
         console.error('Error fetching user:', error);
       }
-    )
+    );
   }
   }

@@ -225,4 +225,12 @@ body, html {
 .input-group .custom-select:focus::after {
   border-top-color: #0056b3; /* Darker arrow color on focus */
 }
+.edit-delete-buttons {
+  visibility: hidden; /* Hide buttons initially */
+}
+
+.media:hover .edit-delete-buttons,
+.panel-heading:hover .edit-delete-buttons {
+  visibility: visible; /* Only show buttons on hover */
+}
 

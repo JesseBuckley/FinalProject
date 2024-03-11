@@ -24,21 +24,30 @@
         </select>
         </div>
     </div>
-
     <!-- Content Column -->
     <div class="col-lg-9 col-md-9 col-sm-8">
       <!-- New Post Form -->
       <div class="panel rounded shadow">
-        <form (submit)="createPost(postContent.value)">
-          <textarea #postContent class="form-control input-lg no-border" rows="2" placeholder="What are you doing?..."></textarea>
+        <form (submit)="createPost(postContent.value, imageUrl.value, selectedCategory.value, postContent, imageUrl, selectedCategory)">
+          <div class="form-group">
+            <textarea #postContent class="form-control input-lg no-border" rows="2" placeholder="What are you doing?..."></textarea>
+          </div>
+          <div class="form-group">
+            <input #imageUrl type="text" class="form-control" placeholder="Image URL">
+          </div>
+          <div class="form-group">
+            <select #selectedCategory class="form-control">
+              <option *ngFor="let category of categories" [value]="category.id">{{ category.type }}</option>
+            </select>
+          </div>
           <div class="panel-footer">
             <button type="submit" class="btn btn-success pull-right mt-5">POST</button>
           </div>
         </form>
       </div>
-
-      <!-- Display Posts and Comments -->
+       <!-- Iterate Over Posts Once -->
       <div *ngFor="let post of posts; let i = index" class="panel panel-success rounded shadow">
+        <!-- Post Header -->
         <div class="panel-heading no-border">
           <div class="pull-left half">
             <div class="media">
@@ -47,33 +56,48 @@
               </div>
               <div class="media-body">
                 <a href="#" class="media-heading block mb-0 h4">{{ post.user.username }}</a>
-                <span>Content: {{ post.content }}</span>
-              </div>
+                <!-- Inline Editing for Post -->
+                <div *ngIf="!editingPost[post.id]">{{ post.content }}
+                  <img *ngIf="post.imageUrl" [src]="post.imageUrl" alt="Post Image" style="max-width: 100%; height: auto;">
+                </div>
+                <input *ngIf="editingPost[post.id]" [(ngModel)]="post.content" class="form-control" type="text">
+                <!-- Edit and Delete Post Buttons -->
+                <div *ngIf="isUserPost(post)" class="edit-delete-buttons">
+                  <button class="btn btn-primary btn-sm" *ngIf="!editingPost[post.id]" (click)="startEditPost(post.id)">Edit</button>
+                  <button class="btn btn-success btn-sm" *ngIf="editingPost[post.id]" (click)="finishEditPost(post.id, post.content)">Save</button>
+                  <button class="btn btn-danger btn-sm" (click)="deletePost(post.id)">Delete</button>
+                </div>
             </div>
           </div>
           <div class="clearfix"></div>
         </div>
-        <div class="panel-body no-padding">
-          <div *ngFor="let comment of post.comments" class="media inner-all no-margin">
-            <div class="pull-left">
-              <img [src]="comment.user.profilePictureUrl" alt="Comment User Avatar" class="img-post2">
-            </div>
-            <div class="media-body">
-              <a href="#" class="h5">{{ comment.user.username }}</a>
-              <div class="text-muted">{{ comment.content }}</div>
-              <em class="text-xs">Posted on <span>{{ comment.updatedAt ? comment.updatedAt : comment.createdAt }}</span></em>
-            </div>
-          </div>
-        </div>
-        <div class="panel-footer">
-          <form class="form-horizontal" (submit)="addComment(post.id, commentContent.value)">
-            <div class="form-group has-feedback no-margin">
-              <input #commentContent class="form-control" type="text" placeholder="Your comment here...">
-              <button type="submit" class="btn btn-theme fa fa-search form-control-feedback"></button>
-            </div>
-          </form>
-        </div>
+  <!-- Post Body (Comments Section) -->
+  <div class="panel-body no-padding">
+    <div *ngFor="let comment of post.comments" class="media inner-all no-margin">
+      <div class="pull-left">
+        <img [src]="comment.user.profilePictureUrl" alt="Comment User Avatar" class="img-post2">
       </div>
+      <div class="media-body">
+        <a href="#" class="h5">{{ comment.user.username }}</a>
+        <!-- Inline Editing for Comment -->
+        <div *ngIf="!editingComment[comment.id]" class="text-muted">{{ comment.content }}</div>
+        <input *ngIf="editingComment[comment.id]" [(ngModel)]="comment.content" class="form-control" type="text">
+        <em class="text-xs">Posted on <span>{{ comment.updatedAt ? comment.updatedAt : comment.createdAt }}</span></em>
+        <!-- Toggle Edit Mode for Comments -->
+        <div *ngIf="isUserComment(comment)" class="edit-delete-buttons">
+          <button class="btn btn-primary btn-sm" *ngIf="!editingComment[comment.id]" (click)="startEditComment(post.id, comment.id)">Edit</button>
+          <button class="btn btn-success btn-sm" *ngIf="editingComment[comment.id]" (click)="finishEditComment(post.id, comment.id, comment.content)">Save</button>
+          <button class="btn btn-danger btn-sm" (click)="deleteComment(post.id, comment.id)">Delete</button>
+        </div>
     </div>
+  </div>
+  <!-- Post Footer -->
+  <div class="panel-footer">
+    <form class="form-horizontal" (submit)="addComment(post.id, commentContent.value, commentContent)">
+      <div class="form-group has-feedback no-margin">
+        <input #commentContent class="form-control" type="text" placeholder="Your comment here...">
+        <button type="submit" class="btn btn-theme fa fa-search form-control-feedback">Comment</button>
+      </div>
+    </form>
   </div>
 </div>

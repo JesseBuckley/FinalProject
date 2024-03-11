@@ -9,17 +9,12 @@
                   <div class="inner-all">
                       <ul class="list-unstyled">
                           <li class="text-center">
-                              <img data-no-retina="" class="img-circle img-responsive img-bordered-primary" src="{{ user.profilePicture }}" alt="User Profile">
+                              <img data-no-retina="" class="img-circle img-responsive img-bordered-primary custom-profile-pic" src="{{ user.profilePicture }}" alt="User Profile">
                           </li>
                           <li class="text-center">
                               <h4 class="text-capitalize">{{ user.username }}</h4>
                           </li>
                           <li><br></li>
-                          <li>
-                              <div class="btn-group-vertical btn-block">
-                                  <a href="" class="btn btn-default"><i class="fa fa-cog pull-right"></i>Edit Account</a>
-                              </div>
-                          </li>
                       </ul>
                   </div>
               </div>
@@ -43,7 +38,7 @@
                       </ul>
                   </div>
                   <!-- COVER PHOTO GOES IN HEREEEEE -->
-                  <img  src="https://bootdey.com/img/Content/flores-amarillas-wallpaper.jpeg" class="img-responsive full-width" alt="cover" style="max-height:200px;">
+                  <img  src="{{ user.backgroundPicture }}" class="img-responsive full-width" alt="cover" style="max-height:200px;">
               </div>
 
               <ul class="list-unstyled no-padding hidden-sm hidden-xs cover-menu">

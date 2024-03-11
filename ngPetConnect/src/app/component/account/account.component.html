@@ -28,15 +28,24 @@
             <input id="lastName" [(ngModel)]="editUser.lastName" name="lastName" type="text" class="form-control" placeholder="Enter your last name">
           </div>
           <!-- Profile Picture Upload -->
-          <div class="row px-3 mb-4">
+          <!-- <div class="row px-3 mb-4">
             <label for="profilePictureFile" class="form-label"><h6 class="mb-0 text-sm">Profile Picture</h6></label>
             <input id="profilePictureFile" type="file" (change)="handleImageUpload($event, 'profilePicture')" class="form-control">
+          </div> -->
+          <div class="row px-3 mb-4">
+            <label for="profilePicture" class="form-label"><h6 class="mb-0 text-sm">Profile Picture</h6></label>
+            <input id="profilePicture" [(ngModel)]="editUser.profilePicture" name="profilePicture" type="text" class="form-control">
           </div>
           <!-- Background Picture Upload -->
-          <div class="row px-3 mb-4">
+          <!-- <div class="row px-3 mb-4">
             <label for="backgroundPictureFile" class="form-label"><h6 class="mb-0 text-sm">Background Picture</h6></label>
             <input id="backgroundPictureFile" type="file" (change)="handleImageUpload($event, 'backgroundPicture')" class="form-control">
+          </div> -->
+          <div class="row px-3 mb-4">
+            <label for="backgroundPicture" class="form-label"><h6 class="mb-0 text-sm">Background Picture</h6></label>
+            <input id="backgroundPicture" [(ngModel)]="editUser.backgroundPicture" name="backgroundPicture" type="text" class="form-control">
           </div>
+
            <!-- Address fields -->
            <div class="row px-3 mb-4">
             <label for="street"><h6 class="mb-0 text-sm">Street</h6></label>

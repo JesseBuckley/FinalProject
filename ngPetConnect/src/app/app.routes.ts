@@ -8,6 +8,7 @@ import { LogoutComponent } from './component/logout/logout.component';
 import { NotfoundComponent } from './component/notfound/notfound.component';
 import { LandingComponent } from './component/landing/landing.component';
 import { FollowersComponent } from './component/followers/followers.component';
+import { AboutComponent } from './component/about/about.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/landing', pathMatch: 'full' },
@@ -19,5 +20,6 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'logout', component: LogoutComponent },
   { path: 'followers', component: FollowersComponent },
+  { path: 'about', component: AboutComponent },
   { path: '**', component: NotfoundComponent },
 ];

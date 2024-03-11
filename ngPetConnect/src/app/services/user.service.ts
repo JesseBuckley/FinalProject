@@ -11,7 +11,7 @@ import { User } from '../models/user';
 })
 export class UserService {
   private url = environment.baseUrl + 'api/users';
-
+  user: User = new User();
   constructor(
     private http: HttpClient,
     private auth: AuthService
@@ -79,5 +79,9 @@ export class UserService {
         return throwError(() => new Error('UserService.disableUserAccount(): error disabling user account: ' + err));
       })
     );
+  }
+
+  getUser(userId: number): Observable<User> {
+    return this.http.get<User>(`${this.url}/${userId}`, this.getHttpOptions());
   }
 }

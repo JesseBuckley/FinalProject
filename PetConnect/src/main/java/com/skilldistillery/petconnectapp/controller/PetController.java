@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.skilldistillery.petconnectapp.entities.Pet;
+import com.skilldistillery.petconnectapp.entities.Species;
 import com.skilldistillery.petconnectapp.services.PetService;
+import com.skilldistillery.petconnectapp.services.SpeciesService;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -26,6 +28,9 @@ public class PetController {
 
 	@Autowired
 	private PetService petService;
+	
+	@Autowired
+	private SpeciesService speciesService;
 
 	 @GetMapping("pets")
 	 public List<Pet> findAllPetsOwnedByUser(Principal principal) {
@@ -99,7 +104,9 @@ public class PetController {
 		return deleted;
 	}
 	
-	
-	
+	@GetMapping("species")
+	public List<Species> findAllSpecies() {
+		return speciesService.findAllSpecies();
+	}
 
 }

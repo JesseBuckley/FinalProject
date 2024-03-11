@@ -8,19 +8,15 @@
           <div class="col-lg-15 col-md-15 col-sm-15">
             <div class="row">
               <div class="col-md-12">
-                <div class="panel panel-success rounded shadow">
+                <div class="panel panel-success rounded shadow" [ngClass]="{ 'selected': selected === details }">
                   <div class="panel-heading no-border">
                     <footer><br /></footer>
                   </div>
-                  <!-- Image with circular container -->
+
                   <div class="media">
                     <div class="media-object pull-left circular-container">
-                      <img
-                        src="{{ details.profilePicture }}"
-                        alt="..."
-                        class="Picture of Pet"
-                      />
-                    </div>
+                      <img src="{{ details.profilePicture }}" alt="Default profile picture" onerror="this.onerror=null; this.src='https://media.istockphoto.com/id/1092723256/vector/dog-labrador-retriever-breed-silhouette.jpg?s=612x612&w=0&k=20&c=KfGi1Dg0_givmUsE45yNjbgNQTVzoGkB7UfMg2XNhXA=';" class="Pet Picture"/>
+                      </div>
                   </div>
                   <div class="pet-details">
                     <p><strong>Name: </strong>{{ details.name }}</p>
@@ -29,7 +25,7 @@
                     <p><strong>DOB: </strong>{{ details.dateOfBirth }}</p>
                   </div>
                   <!-- Edit and delete buttons -->
-                    <div class="edit-delete-buttons pull-right">
+                    <div class="edit-delete-buttons pull-right" *ngIf="selected === details">
                       <button class="btn btn-primary btn" (click)="setEditPets(details)">Update</button>
                       <button class="btn btn-danger btn" (click)="deletePet(details.id)">Delete</button>
                   </div>
@@ -44,62 +40,124 @@
           <div></div>
         </header>
       </div>
+      <!-- pet form for editing -->
+        <div *ngIf="isEditing && selected === details">
+          <div class="panel panel-primary rounded shadow">
+          <div class="panel-heading">
+          <h3 class="panel-title">Editing {{selected.name}}</h3>
+          </div>
+          <div class="panel-body">
+            <div id="editPetsForm" *ngIf="selected">
+              <div class="row px-3 mb-4">
+
+
+                <div class="row px-3 mb-4">
+                  <label for="species" class="form-label">Species</label>
+                  <select id="species" [(ngModel)]="editPet!.species.id" name="speciesId" class="form-control" required>
+                  <option value=" " disabled selected>Select species</option>
+                  <option *ngFor="let specie of speciesList" [value]="specie.id">{{ specie.species }}</option>
+                  </select>
+                  </div>
+
+                <div class="edit-group">
+                  <label for="name">Name</label>
+                  <input id="name" [(ngModel)]="editPet!.name" name="name" type="text" class="form-control">
+                  </div>
+
+                  <div class="div-group">
+                    <label for="description">Description</label>
+                    <input id="description" [(ngModel)]="editPet!.description" name="description" type="text" class="form-control">
+                    </div>
+
+                  <div class="form-group">
+                    <label for="breed">Breed</label>
+                    <input id="breed" [(ngModel)]="editPet!.breed" name="breed" type="text" class="form-control">
+                    </div>
+
+                    <div class="div-group">
+                    <label for="profilePicture">Profile Picture URL</label>
+                    <input id="profilePicture" [(ngModel)]="editPet!.profilePicture" name="profilePicture" type="text" class="form-control">
+                    </div>
+
+                <div class="div-group">
+                  <label for="dateOfBirth">Date of Birth</label>
+                  <input id="dateOfBirth" [(ngModel)]="editPet!.dateOfBirth" name="dateOfBirth" type="date" class="form-control">
+                  </div>
+
+                <div>
+                  <button *ngIf="isEditing" class="btn btn-primary" (click)="updatePets()">Save</button>
+                  <button *ngIf="isEditing" class="btn btn-warning" (click)="cancelEdit()">Cancel</button>
+                </div>
+              </div>
+          </div>
+          </div>
+          </div>
     </div>
 
 
-                      <!-- pet form for editing -->
-    <div *ngIf="isEditing">
-      <div class="panel panel-primary rounded shadow">
-      <div class="panel-heading">
-      <h3 class="panel-title">Edit Pet</h3>
-      </div>
-      <div class="panel-body">
-        <div id="editPetsForm" *ngIf="selected">
-          <h2>Pet Details</h2>
-          <p>ID: {{ selected.id }}</p>
-          <p>Name: <span *ngIf="!isEditing">{{ selected.name }}</span><input *ngIf="isEditing" type="text" [(ngModel)]="editPet!.name"></p>
-          <p>Description: <span *ngIf="!isEditing">{{ selected.description }}</span><input *ngIf="isEditing" type="number" [(ngModel)]="editPet!.description"></p>
-          <p>Breed: <span *ngIf="!isEditing">{{ selected.breed }}</span><input *ngIf="isEditing" type="number" [(ngModel)]="editPet!.breed"></p>
-          <p>Date of Birth: <span *ngIf="!isEditing">{{ selected.dateOfBirth }}</span><input *ngIf="isEditing" type="text" [(ngModel)]="editPet!.dateOfBirth"></p>
 
-          <button *ngIf="!isEditing" class="btn btn-primary" (click)="setEditPets(newPet)">Edit</button>
-          <button *ngIf="isEditing" class="btn btn-success" (click)="updatePets()">Save</button>
-          </div>
-      </div>
-      </div>
-      </div>
-    <!-- Display pet form when add Pet is clicked-->
-    <div *ngIf="addPetClicked">
-      <div class="row">
-        <header>
-          <div class="col-lg-15 col-md-15 col-sm-15">
-            <div class="panel panel-primary rounded shadow">
-              <div class="panel-heading">
-                <h3 class="panel-title">Add Pet</h3>
-              </div>
-              <div class="panel-body">
-                <!-- my pet form -->
-                <form id="addPetsForm" (ngSubmit)="addPets()">
-                  <input type="text" id="name" name="name" placeholder="Pet name" [(ngModel)]="newPet.name" required/>
-                  <input type="date" id="dateOfBirth" name="dateOfBirth" placeholder="Date of Birth" [(ngModel)]="newPet.dateOfBirth"/>
-                  <input type="text" id="breed" name="Breed" placeholder="Breed" step="0.01" [(ngModel)]="newPet.breed"/>
-                  <input type="text" id="profilePicture" name="profilePicture" placeholder="Profile picture URL" [(ngModel)]="newPet.profilePicture"/>
-                  <input type="text" id="description" name="description" placeholder="Description" [(ngModel)]="newPet.description"/>
-                  <input type="number" id="species" name="species" placeholder="Species" [(ngModel)]="newPet.species.id" required/>
-
-
-                  <button type="submit" class="btn btn-primary">Add Pet</button>
-                </form>
-              </div>
-            </div>
-          </div>
-        </header>
-      </div>
+  </div>
+  <div *ngIf="addPetClicked">
+    <div class="row">
+  <header>
+    <div class="col-lg-15 col-md-15 col-sm-15">
+    <div class="panel panel-primary rounded shadow">
+    <div class="panel-heading">
+    <h3 class="panel-title">Add Pet</h3>
     </div>
+    <div class="panel-body">
+    <!-- add pet form -->
+
+
+  </div>
+  <div id="addPetsDiv">
+  <div class="row px-3 mb-4">
+  <label for="species" class="form-label">Species</label>
+  <select id="species" [(ngModel)]="newPet.species.id" name="speciesId" class="form-control" required>
+  <option value=" " disabled selected>Select species</option>
+  <option *ngFor="let specie of speciesList" [value]="specie.id">{{ specie.species }}</option>
+  </select>
+
+
+  <div class="div-group">
+  <label for="name">Name</label>
+  <input id="name" [(ngModel)]="newPet.name" name="name" type="text" class="form-control" placeholder="Enter pet name" required>
   </div>
 
-  <!-- Add Pet Button -->
-  <div class="add-pet-button">
-    <button class="btn btn-primary" (click)="toggleAddPet()">Add Pet</button>
+  <div class="div-group">
+  <label for="description">Description</label>
+  <input id="description" [(ngModel)]="newPet.description" name="description" type="text" class="form-control" placeholder="Enter pet's description">
   </div>
+
+  <div class="div-group">
+  <label for="dateOfBirth">Date of Birth</label>
+  <input id="dateOfBirth" [(ngModel)]="newPet.dateOfBirth" name="dateOfBirth" type="date" class="form-control" placeholder="Enter pet's DOB">
+  </div>
+
+  <div class="form-group">
+  <label for="breed">Breed</label>
+  <input id="breed" [(ngModel)]="newPet.breed" name="breed" type="text" class="form-control" placeholder="Enter pet breed">
+  </div>
+
+  <div class="div-group">
+  <label for="profilePicture">Profile Picture URL</label>
+  <input id="profilePicture" [(ngModel)]="newPet.profilePicture" name="profilePicture" type="text" class="form-control" placeholder="Enter an image URL">
+  </div>
+
+  <div class="div-group">
+  <button type="submit" class="btn btn-primary" (click)="addPets()">Add Pet</button>
+  <button *ngIf="addPetClicked" class="btn btn-warning" (click)="cancelAdd()">Cancel</button>
+  </div>
+</div>
+</div>
+</div>
+</div>
+</header>
+    </div>
+
+
+      </div>
+      <div class="add-pet-button" *ngIf="!addPetClicked">
+        <button class="btn btn-primary" (click)="toggleAddPet()">Add Pet</button>
+      </div>
 </div>

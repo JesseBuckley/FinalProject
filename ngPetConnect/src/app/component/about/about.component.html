@@ -1,4 +1,9 @@
 <div class="container bootstrap snippets bootdeys">
+  <div class="container mt-5">
+    <div  id="about" class="text-center">
+      <h2>About Me!</h2>
+    </div>
+    <br>
   <div class="row justify-content-center">
       <div class="col-lg-3 col-md-3 col-sm-4">
           <div class="panel rounded shadow">
@@ -22,23 +27,26 @@
                   </div>
                 </div>
               </div>
-              <!-- <form (ngSubmit)="updateUser(editUser)">
-                <div class="row px-3 mb-4">
-                  <label for="biography" class="form-label"><h6 class="mb-0 text-sm">Update Bio</h6></label>
-                  <textarea id="biography" [(ngModel)]="editUser.biography" name="biography" class="form-control resizable-textarea" placeholder="Update Bio"></textarea>
+                <br>
+                <div class="card p-4">
+                    <div class="text-left">
+                    <ul class="list-unstyled">
+                      <li>
+                        <h4 class="text-capitalize">{{ user.biography }}</h4>
+                      </li>
+                    </ul>
+                    </div>
+                  <div class="text-center">
+                    <button class="btn btn-sm btn-warning" (click)="editBiography()">Edit Biography</button>
+                    <form *ngIf="editUser" (ngSubmit)="saveChanges()" class="mt-3">
+                      <label for="newBiography">New Biography:</label>
+                      <br>
+                      <textarea id="newBiography" name="newBiography" [(ngModel)]="editedBiography" class="form-control"></textarea>
+                      <br>
+                      <button class="btn btn-sm btn-success" type="submit">Save Changes</button>
+                    </form>
+                  </div>
                 </div>
-                <div class="row px-3 mb-4">
-                  <button type="submit" class="btn btn-blue btn-block btn-success">Update</button>
-                </div>
-              </form> -->
-<div class="container mt-5">
-  <div class="card p-4">
-
-    <h2>About Me!</h2>
-    <ul class="list-unstyled">
-      <li>
-        <h4 class="text-capitalize">{{ user.biography }}</h4>
-      </li>
-    </ul>
-  </div>
-</div>
+              </div>
+<br>
+<br>

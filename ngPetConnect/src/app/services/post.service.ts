@@ -54,6 +54,7 @@ export class PostService {
       })
     );
   }
+
   createPostWithFormData(formData: FormData): Observable<Post> {
     return this.http.post<Post>(this.url, formData, this.getHttpOptions()).pipe(
       catchError((err: any) => {

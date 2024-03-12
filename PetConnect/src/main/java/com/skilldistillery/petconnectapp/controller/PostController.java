@@ -50,16 +50,12 @@ public class PostController {
 	public Post createPost(@RequestBody Post post, HttpServletResponse resp, Principal principal) {
 		try {
 			Post createdPost = postService.create(post, principal.getName());
-			if (createdPost != null) {
-				resp.setStatus(201); 
-				return createdPost;
-			} else {
-				resp.setStatus(400); 
-				return null;
-			}
+			resp.setStatus(201);
+			return createdPost;
 		} catch (Exception e) {
-			resp.setStatus(503); 
-			return null; 
+			e.printStackTrace();
+			resp.setStatus(503);
+			return null;
 		}
 	}
 

@@ -6,12 +6,12 @@ export class Category {
   type: string;
   resources: Resource[];
   posts: Post[];
-name: any;
 
-  constructor() {
-    this.id = 0;
-    this.type = '';
-    this.resources = [];
-    this.posts = [];
+
+  constructor(id: number = 0, type: string = '', resources: Resource[] = [], posts: Post[] = []) {
+    this.id = id;
+    this.type = type;
+    this.resources = resources;
+    this.posts = posts;
   }
 }

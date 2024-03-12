@@ -1,8 +1,8 @@
+import { Post } from './../../models/post';
 import { User } from './../../models/user';
 import { Component, OnInit } from '@angular/core';
 import { PostService } from '../../services/post.service';
 import { CommentService } from '../../services/comment.service';
-import { Post } from '../../models/post';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Comment } from '../../models/comment';
@@ -25,7 +25,8 @@ export class PostCommentComponent implements OnInit {
   editingPost: { [key: number]: boolean } = {};
   editingComment: { [key: number]: boolean } = {};
   currentUser: any;
-  categoryId: any;
+  selectedCategoryIds: number[] = [];
+  newPost: Post = new Post();
 
   constructor(
     private postService: PostService,
@@ -58,67 +59,69 @@ export class PostCommentComponent implements OnInit {
   loadAllPosts(): void {
     this.postService.findAllPosts().subscribe({
       next: (posts) => {
-        this.posts = posts.sort(
+        const activePosts = posts.filter((post) => post.enabled);
+
+        this.posts = activePosts.sort(
           (a, b) =>
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
+
         this.posts.forEach((post) => {
-          post.comments = post.comments.sort(
-            (a, b) =>
-              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-          );
+          this.loadCommentsForPost(post);
         });
       },
       error: (err) => {
+        console.error('Error loading posts:', err);
         this.errorMessage = `Error loading posts: ${err}`;
       },
     });
   }
 
-  loadCommentsForPosts(): void {
-    this.posts.forEach((post) => {
-      this.comService.getAllCommentsForPost(post.id).subscribe({
-        next: (comments) => (post.comments = comments),
-        error: (err) =>
-          console.error(`Error loading comments for post ${post.id}:`, err),
-      });
+  loadCommentsForPost(post: Post): void {
+    this.comService.getAllCommentsForPost(post.id).subscribe({
+      next: (comments) => {
+        // Filter to include only enabled comments
+        const activeComments = comments.filter((comment) => comment.enabled);
+        post.comments = activeComments.sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      },
+      error: (err) =>
+        console.error(`Error loading comments for post ${post.id}:`, err),
     });
   }
   setPostsAndLoadComments(posts: Post[]): void {
     this.posts = posts;
-    this.loadCommentsForPosts();
+    this.posts.forEach((post) => {
+      this.loadCommentsForPost(post);
+    });
   }
-  //****************************************** Post CRUD ******************************************
-  createPost(
-    content: string,
-    imageUrl: string,
-    categoryId: string,
-    postTextarea: HTMLTextAreaElement,
-    imageUrlInput: HTMLInputElement,
-    categorySelect: HTMLSelectElement
-  ): void {
-    if (!content.trim()) return;
-    const newPost = new Post();
-    newPost.content = content;
-    newPost.imageUrl = imageUrl;
-    // Convert categoryId to a number if necessary
-    newPost.categories = this.categoryId;
 
-    this.postService.createPost(newPost).subscribe(
-      (post) => {
-        this.posts.unshift(post); // Add the new post at the beginning of the list
-        postTextarea.value = ''; // Clear the post content textarea
-        imageUrlInput.value = ''; // Clear the image URL input
-        categorySelect.value = ''; // Reset the category select to its default state
+  //****************************************** Post CRUD ******************************************
+  createPost(post: Post, selectedCategoryIds: number[]): void {
+    if (!post.content.trim()) return;
+
+    selectedCategoryIds.forEach((catId) => {
+      post.categories.push(new Category(catId));
+    });
+
+    this.postService.createPost(post).subscribe({
+      next: (post) => {
+        this.posts.unshift(post);
+        this.newPost = new Post();
+        this.selectedCategoryIds = [];
       },
-      (error) => console.error('Error creating post:', error)
-    );
+      error: (error) => {
+        console.error('Error creating post:', error);
+      },
+    });
   }
 
   startEditPost(postId: number): void {
     this.editingPost[postId] = !this.editingPost[postId];
   }
-  updatePost(postId: number, updatedPost: Post): void {
+  updatePost(postId: number, updatedPost: Post, updatedCategoryIds: number[]): void {
     this.postService.updatePost(postId, updatedPost).subscribe({
       next: (post) => {
         const index = this.posts.findIndex((p) => p.id === postId);
@@ -158,10 +161,15 @@ export class PostCommentComponent implements OnInit {
   //****************************************** Comment CRUD ******************************************
   addComment(postId: number, content: string, input: HTMLInputElement): void {
     let newComment = new Comment();
+    newComment.enabled = true;
     newComment.content = content;
+
     this.comService.addComment(postId, newComment).subscribe(
       (comment) => {
-        this.loadCommentsForPosts();
+        const post = this.posts.find((p) => p.id === postId);
+        if (post) {
+          this.loadCommentsForPost(post);
+        }
         input.value = '';
       },
       (error) => console.error('Error adding comment:', error)
@@ -171,6 +179,7 @@ export class PostCommentComponent implements OnInit {
   addReply(postId: number, parentCommentId: number, content: string): void {
     const replyComment = new Comment();
     replyComment.content = content;
+    replyComment.enabled = true;
     this.comService.addReply(postId, parentCommentId, replyComment).subscribe(
       (comment) => {
         const post = this.posts.find((p) => p.id === postId);
@@ -206,7 +215,10 @@ export class PostCommentComponent implements OnInit {
     this.comService.updateComment(postId, commentId, updatedComment).subscribe({
       next: (response) => {
         console.log('Comment updated successfully');
-        this.loadCommentsForPosts();
+        const post = this.posts.find((p) => p.id === postId);
+        if (post) {
+          this.loadCommentsForPost(post);
+        }
       },
       error: (error) => console.error('Error updating comment:', error),
     });
@@ -243,11 +255,21 @@ export class PostCommentComponent implements OnInit {
   searchByKeyword(keyword: string): void {
     this.postService.searchByKeyword(keyword).subscribe({
       next: (posts) => {
-        this.posts = posts;
-        this.loadCommentsForPosts();
+        const activePosts = posts.filter((post) => post.enabled);
+
+        this.posts = activePosts.sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+
+        this.posts.forEach((post) => {
+          this.loadCommentsForPost(post);
+        });
       },
-      error: (err) =>
-        (this.errorMessage = `Error searching posts by keyword: ${err}`),
+      error: (err) => {
+        console.error('Error searching posts by keyword:', err);
+        this.errorMessage = `Error searching posts by keyword: ${err}`;
+      },
     });
   }
 
@@ -314,35 +336,40 @@ export class PostCommentComponent implements OnInit {
   }
 
   findPostsByCategory(catId: string): void {
-    const categoryId = Number(catId);
-    if (!isNaN(categoryId)) {
-      this.postService.findPostsByCategory(categoryId).subscribe({
-        next: (posts) => {
-          this.posts = posts;
-          this.posts.forEach((post) => {
-            this.comService.getAllCommentsForPost(post.id).subscribe({
-              next: (comments) => (post.comments = comments),
-              error: (err) =>
-                console.error(
-                  `Error loading comments for post ${post.id}:`,
-                  err
-                ),
-            });
-          });
-        },
-        error: (err) => {
-          console.error(
-            `Error retrieving posts by category ${categoryId}:`,
-            err
-          );
-          this.errorMessage = `Error retrieving posts by category: ${err}`;
-        },
-      });
+    if (catId === 'all') {
+      this.loadAllPosts();
     } else {
-      console.error('Invalid category ID:', catId);
-      this.errorMessage = 'Invalid category ID.';
+      const categoryId = Number(catId);
+      if (!isNaN(categoryId)) {
+        this.postService.findPostsByCategory(categoryId).subscribe({
+          next: (posts) => {
+            this.posts = posts;
+            this.posts.forEach((post) => {
+              this.comService.getAllCommentsForPost(post.id).subscribe({
+                next: (comments) => (post.comments = comments),
+                error: (err) =>
+                  console.error(
+                    `Error loading comments for post ${post.id}:`,
+                    err
+                  ),
+              });
+            });
+          },
+          error: (err) => {
+            console.error(
+              `Error retrieving posts by category ${categoryId}:`,
+              err
+            );
+            this.errorMessage = `Error retrieving posts by category: ${err}`;
+          },
+        });
+      } else {
+        console.error('Invalid category ID:', catId);
+        this.errorMessage = 'Invalid category ID.';
+      }
     }
   }
+
   //****************************************** Helpers ******************************************
   isUserPost(post: Post): boolean {
     return this.currentUser && post.user.id === this.currentUser.id;

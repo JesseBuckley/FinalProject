@@ -128,7 +128,7 @@ public class Category {
 
 	@Override
 	public String toString() {
-		return "Category [id=" + id + ", type=" + type + ", resources=" + resources.size() + ", posts=" + posts.size() + "]";
+		return "Category [id=" + id + ", type=" + type  + "]";
 	}
 
 }

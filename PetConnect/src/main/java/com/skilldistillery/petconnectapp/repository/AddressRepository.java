@@ -7,5 +7,8 @@ import com.skilldistillery.petconnectapp.entities.Address;
 public interface AddressRepository extends JpaRepository<Address, Integer> {
 
 	Address searchById(int id);
+	
+	Address findByStreetAndCityAndStateAndZip(String street, String city, String state, String zip);
+
 
 }

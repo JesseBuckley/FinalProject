@@ -49,9 +49,8 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public List<Post> keywordSearch(String keyword) {
-		keyword = "%" + keyword + "%";
 
-		return postRepo.findByTitleContainingOrContentContaining(keyword, keyword);
+		return postRepo.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(keyword, keyword);
 	}
 
 	@Override

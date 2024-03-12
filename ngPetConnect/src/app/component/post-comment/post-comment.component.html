@@ -62,9 +62,9 @@
 
           <!-- Find Posts by Category -->
           <form class="d-flex">
-            <select #categorySelect class="form-select me-2" (change)="findPostsByCategory(categorySelect.value)">
-              <option value="all">All Categories</option> <!-- Option to select all categories -->
-              <option *ngFor="let category of categories" [value]="category.id">{{ category.type }}</option>
+            <select #categorySelect class="form-select" (change)="findPostsByCategory(categorySelect.value)">
+              <option value="all">All Categories</option> Option to select all categories
+             <option *ngFor="let category of categories" [value]="category.id">{{ category.type }}</option>
             </select>
           </form>
         </div>

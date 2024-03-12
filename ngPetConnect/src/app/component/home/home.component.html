@@ -28,25 +28,10 @@
       <div class="profile-cover">
           <div class="cover rounded shadow no-overflow">
               <div class="inner-cover">
-                  <!-- Start offcanvas btn group menu: This menu will take position at the top of profile cover (mobile only). -->
-                  <div class="btn-group cover-menu-mobile hidden-lg hidden-md">
-                      <!-- <button type="button" class="btn btn-theme btn-sm dropdown-toggle" data-toggle="dropdown">
-                          <i class="fa fa-bars"></i>
-                      </button> -->
-                      <ul class="dropdown-menu pull-right no-border" role="menu">
-                          <li class="active"><a href="#"><i class="fa fa-fw fa-clock-o"></i> <span>Timeline</span></a></li>
-                          <li><a href="#"><i class="fa fa-fw fa-user"></i> <span>About</span></a></li>
-                          <li><a href="#"><i class="fa fa-fw fa-photo"></i> <span>Photos</span> <small>(98)</small></a></li>
-                          <li><a href="followers"><i class="fa fa-fw fa-users"></i><span>Followers</span><small>(23)</small></a></li>
-                          <li><a href="#"><i class="fa fa-fw fa-envelope"></i> <span>Messages</span> <small>(7 new)</small></a></li>
-                      </ul>
-                  </div>
                   <!-- COVER PHOTO GOES IN HEREEEEE -->
                   <img  src="{{ user.backgroundPicture || 'https://inflact.com/uploads/content/cover_best_hashtags_for_dog_accounts.jpeg'}}" class="img-responsive full-width" alt="cover" style="max-height:200px;">
               </div>
-
               <ul class="list-unstyled no-padding hidden-sm hidden-xs cover-menu">
-                  <li class="active"><a href="#"><i class="fa fa-fw fa-clock-o"></i> <span>Timeline</span></a></li>
                   <li><a routerLink="/about"><i class="fa fa-fw fa-user"></i> <span>About</span></a></li>
                   <li><a href="#"><i class="fa fa-fw fa-photo"></i> <span>Photos</span> <small></small></a></li>
                   <li><a routerLink="/followers" routerLinkActive="active"><i class="fa fa-fw fa-user"></i> <span>Followers</span></a></li>
@@ -54,23 +39,6 @@
           </div><!-- /.cover -->
       </div><!-- /.profile-cover -->
       <div class="divider"></div>
-
-      <div class="panel rounded shadow">
-          <form action="...">
-              <textarea class="form-control input-lg no-border" rows="2" placeholder="What are you doing?..."></textarea>
-          </form>
-          <div class="panel-footer">
-              <button class="btn btn-success pull-right mt-5">POST</button>
-              <ul class="nav nav-pills">
-                  <li><a href="#"><i class="fa fa-user"></i></a></li>
-                  <li><a href="#"><i class="fa fa-map-marker"></i></a></li>
-                  <li><a href="#"><i class="fa fa-camera"></i></a></li>
-                  <li><a href="#"><i class="fa fa-smile-o"></i></a></li>
-              </ul><!-- /.nav nav-pills -->
-          </div><!-- /.panel-footer -->
-      </div><!-- /.panel -->
-      <br>
-      <br>
       <div class="row">
           <div class="col-md-12">
               <div class="panel panel-success rounded shadow">

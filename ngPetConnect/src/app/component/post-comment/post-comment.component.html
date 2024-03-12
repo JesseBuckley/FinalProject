@@ -1,28 +1,29 @@
-<div class="container mt-4">
+<div id="back" class="container mt-4">
   <div class="row">
     <!-- Search and Filter Section -->
     <div class="col-12 mb-4">
+      <br>
       <div class="d-flex justify-content-between flex-wrap">
         <!-- Search by Keyword -->
-        <div class="input-group mb-3">
+        <!-- <div class="input-group mb-3">
           <input #keywordInput type="text" class="form-control" placeholder="Keyword...">
           <button class="btn btn-outline-secondary" type="button" (click)="searchByKeyword(keywordInput.value)">Search</button>
-        </div>
+        </div> -->
         <!-- Filter by Location -->
-        <div class="input-group mb-3">
+        <!-- <div class="input-group mb-3">
           <input #locationInput type="text" class="form-control" placeholder="City/State/Zip...">
           <button class="btn btn-outline-warning" type="button" (click)="filterByLocation(locationInput.value)">Filter by Location</button>
-        </div>
+        </div> -->
         <!-- Find Posts by Category -->
-<div class="input-group mb-3">
-  <select #categorySelect class="form-select" (change)="findPostsByCategory(categorySelect.value)">
-    <option value="all">All Categories</option> <!-- Option to select all categories -->
-    <option *ngFor="let category of categories" [value]="category.id">{{ category.type }}</option>
+<!-- <div class="input-group mb-3">
+  <select #categorySelect class="form-select" (change)="findPostsByCategory(categorySelect.value)"> -->
+    <!-- <option value="all">All Categories</option> Option to select all categories -->
+    <!-- <option *ngFor="let category of categories" [value]="category.id">{{ category.type }}</option>
   </select>
-</div>
+</div> -->
     <!-- New Post Form -->
-    <div class="col-lg-8 mx-auto">
-      <div class="card shadow-sm mb-4">
+    <div  class="col-lg-12 mx-auto">
+      <div id="back2" class="card shadow-sm mb-4">
         <div class="card-body">
           <h5 class="card-title">Create New Post</h5>
           <form (ngSubmit)="createPost(newPost, selectedCategoryIds)">
@@ -42,10 +43,37 @@
           </form>
         </div>
       </div>
+
+      <nav class="navbar navbar-expand-lg navbar-light custom-navbar-color">
+        <div class="container-fluid">
+          <h5 class="navbar-brand"><span>Feed:</span></h5>
+
+          <!-- Search by Keyword -->
+          <form class="d-flex">
+            <input #keywordInput type="text" class="form-control me-2" placeholder="Keyword...">
+            <button class="btn btn-outline-secondary" type="button" (click)="searchByKeyword(keywordInput.value)">Search</button>
+          </form>
+
+          <!-- Filter by Location -->
+          <form class="d-flex">
+            <input #locationInput type="text" class="form-control me-2" placeholder="City/State/Zip...">
+            <button class="btn btn-outline-warning" type="button" (click)="filterByLocation(locationInput.value)">Filter by Location</button>
+          </form>
+
+          <!-- Find Posts by Category -->
+          <form class="d-flex">
+            <select #categorySelect class="form-select me-2" (change)="findPostsByCategory(categorySelect.value)">
+              <option value="all">All Categories</option> <!-- Option to select all categories -->
+              <option *ngFor="let category of categories" [value]="category.id">{{ category.type }}</option>
+            </select>
+          </form>
+        </div>
+      </nav>
+    <br>
     </div>
     <!-- Iterate Over Posts -->
-    <div *ngFor="let post of posts; let i = index" class="col-lg-8 mx-auto">
-      <div class="card shadow-sm mb-4">
+    <div *ngFor="let post of posts; let i = index" class="col-lg-12 mx-auto">
+      <div id="back2" class="card shadow-sm mb-4">
         <div class="card-body">
           <h5 class="card-title">{{ post.user.username }}</h5>
           <div *ngIf="!editingPost[post.id]; else editPostForm">
@@ -67,30 +95,48 @@
             <button class="btn btn-danger btn-sm" (click)="deletePost(post.id)">Delete</button>
           </div>
         </div>
-        <div class="card-footer">
-          <!-- Comments Section -->
-          <div *ngFor="let comment of post.comments" class="mb-2">
-            <strong>{{ comment.user.username }}:</strong>
-            <p *ngIf="!editingComment[comment.id]; else editCommentForm">{{ comment.content }}</p>
-            <ng-template #editCommentForm>
-              <input [(ngModel)]="comment.content" class="form-control mb-2" type="text">
-              <em class="text-xs">Posted on <span>{{ comment.updatedAt ? comment.updatedAt : comment.createdAt }}</span></em>
-            </ng-template>
-            <!-- Toggle Edit Mode for Comments -->
-            <div *ngIf="isUserComment(comment)" class="text-end">
-              <button class="btn btn-primary btn-sm" *ngIf="!editingComment[comment.id]" (click)="startEditComment(post.id, comment.id)">Edit</button>
-              <button class="btn btn-success btn-sm" *ngIf="editingComment[comment.id]" (click)="finishEditComment(post.id, comment.id, comment.content)">Save</button>
-              <button class="btn btn-danger btn-sm" (click)="deleteComment(post.id, comment.id)">Delete</button>
+
+        <div ngbAccordion>
+          <div ngbAccordionItem [collapsed]="false">
+            <h2 ngbAccordionHeader>
+              <button ngbAccordionButton>Comments</button>
+
+            </h2>
+            <div ngbAccordionCollapse>
+              <div ngbAccordionBody>
+                <ng-template>
+
+                  <div *ngFor="let comment of post.comments" class="mb-2">
+                    <strong>{{ comment.user.username }}:</strong>
+                    <p *ngIf="!editingComment[comment.id]; else editCommentForm">{{ comment.content }}</p>
+                    <ng-template #editCommentForm>
+                      <input [(ngModel)]="comment.content" class="form-control mb-2" type="text">
+                      <em class="text-xs">Posted on <span>{{ comment.updatedAt ? comment.updatedAt : comment.createdAt }}</span></em>
+                    </ng-template>
+                    <!-- Toggle Edit Mode for Comments -->
+                    <div *ngIf="isUserComment(comment)" class="text-end">
+                      <button class="btn btn-primary btn-sm" *ngIf="!editingComment[comment.id]" (click)="startEditComment(post.id, comment.id)">Edit</button>
+                      <button class="btn btn-success btn-sm" *ngIf="editingComment[comment.id]" (click)="finishEditComment(post.id, comment.id, comment.content)">Save</button>
+                      <button class="btn btn-danger btn-sm" (click)="deleteComment(post.id, comment.id)">Delete</button>
+                    </div>
+                  </div>
+                  <form (submit)="addComment(post.id, commentContent.value, commentContent)">
+                    <div class="form-group has-feedback no-margin">
+                      <input #commentContent type="text" class="form-control" placeholder="Your comment here...">
+                      <br>
+                      <button type="submit" class="btn btn-primary">Comment</button>
+                    </div>
+                  </form>
+
+                </ng-template>
+              </div>
             </div>
           </div>
-          <form (submit)="addComment(post.id, commentContent.value, commentContent)">
-            <div class="form-group has-feedback no-margin">
-              <input #commentContent type="text" class="form-control" placeholder="Your comment here...">
-              <button type="submit" class="btn btn-primary">Comment</button>
-            </div>
-          </form>
         </div>
-      </div>
+        <!-- COMMENTS USED TO BE HERE BEFORE, ALL YOU'D HAVE TO DO IS DRAG THE NGFOR DOWN HERE-->
+        <!-- <div class="card-footer">
+
+      </div> -->
     </div>
   </div>
 </div>

@@ -120,3 +120,7 @@ section {
   width: 100%;
   height: 100%;
 }
+.cover-menu {
+  display: flex;
+  justify-content: flex-end;
+}

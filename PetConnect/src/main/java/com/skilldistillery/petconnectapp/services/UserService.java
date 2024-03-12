@@ -27,4 +27,8 @@ public interface UserService {
 	User enableUserAccount(String username, int userId);
 
 	User disableUserAccount(String username, int userId);
+
+	User findById(int userIdToFollow);
+
+	User findByUsername(String name);
 }

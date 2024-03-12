@@ -234,3 +234,10 @@ body, html {
   visibility: visible; /* Only show buttons on hover */
 }
 
+#back2{
+  background-color: rgb(247, 235, 217) ;
+}
+
+.custom-navbar-color {
+  /* background-color: rgb(84, 105, 111); */
+}

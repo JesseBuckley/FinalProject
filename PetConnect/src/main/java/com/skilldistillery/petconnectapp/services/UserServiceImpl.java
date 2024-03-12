@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.skilldistillery.petconnectapp.entities.Address;
 import com.skilldistillery.petconnectapp.entities.User;
 import com.skilldistillery.petconnectapp.exceptions.UsernameExistsException;
 import com.skilldistillery.petconnectapp.repository.AddressRepository;
@@ -68,22 +69,26 @@ public class UserServiceImpl implements UserService {
 
 			if (!user.getUsername().equals(username) && userRepo.existsByUsername(user.getUsername())) {
 				throw new UsernameExistsException("Username already exists");
-
 			} else {
-
 				managedUser.setUsername(user.getUsername());
 			}
+
 			managedUser.setProfilePicture(user.getProfilePicture());
 			managedUser.setBiography(user.getBiography());
 			managedUser.setBackgroundPicture(user.getBackgroundPicture());
 			managedUser.setFirstName(user.getFirstName());
 			managedUser.setLastName(user.getLastName());
 			managedUser.setUpdatedAt(LocalDateTime.now());
-			managedUser.getAddress().setStreet(user.getAddress().getStreet());
-			managedUser.getAddress().setCity(user.getAddress().getCity());
-			managedUser.getAddress().setState(user.getAddress().getState());
-			managedUser.getAddress().setZip(user.getAddress().getZip());
-			addressRepo.saveAndFlush(managedUser.getAddress());
+
+			Address existingAddress = addressRepo.findByStreetAndCityAndStateAndZip(user.getAddress().getStreet(),
+					user.getAddress().getCity(), user.getAddress().getState(), user.getAddress().getZip());
+
+			if (existingAddress != null) {
+				managedUser.setAddress(existingAddress);
+			} else {
+				addressRepo.saveAndFlush(user.getAddress());
+			}
+
 			return userRepo.save(managedUser);
 		}
 

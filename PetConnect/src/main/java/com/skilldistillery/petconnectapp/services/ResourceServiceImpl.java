@@ -47,50 +47,69 @@ public class ResourceServiceImpl implements ResourceService {
 
 	@Override
 	public List<Resource> getByKeywordSearch(String keyword) {
-		keyword = "%" + keyword + "%";
 		return resourceRepo.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(keyword, keyword);
 	}
 
 	@Override
 	public Resource create(Resource resource, String username) {
-		User user = userRepo.findByUsername(username);
-		if (user == null) {
-			throw new ResourceNotFoundException("User not found");
-		}
-		Category category = catRepo.findById(resource.getCategory().getId())
-				.orElseThrow(() -> new ResourceNotFoundException("Category not found"));
-		resource.setCategory(category);
-		catRepo.saveAndFlush(resource.getCategory());
-		addressRepo.saveAndFlush(resource.getAddress());
-		return resourceRepo.saveAndFlush(resource);
+	    User user = userRepo.findByUsername(username);
+	    if (user == null) {
+	        throw new ResourceNotFoundException("User not found");
+	    }
+	    Category category = catRepo.findById(resource.getCategory().getId())
+	            .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+	    resource.setCategory(category);
+
+	    Address existingAddress = addressRepo.findByStreetAndCityAndStateAndZip(
+	        resource.getAddress().getStreet(),
+	        resource.getAddress().getCity(),
+	        resource.getAddress().getState(),
+	        resource.getAddress().getZip());
+
+	    if (existingAddress != null) {
+	        resource.setAddress(existingAddress);
+	    } else {
+	        addressRepo.saveAndFlush(resource.getAddress());
+	    }
+
+	    return resourceRepo.saveAndFlush(resource);
 	}
 
 	@Override
 	public Resource update(int resourceId, Resource resource, String username) {
-		Optional<Resource> optionalResource = resourceRepo.findById(resourceId);
-		if (!optionalResource.isPresent()) {
-			throw new ResourceNotFoundException("Resource with id " + resourceId + " not found.");
-		}
+	    Optional<Resource> optionalResource = resourceRepo.findById(resourceId);
+	    if (!optionalResource.isPresent()) {
+	        throw new ResourceNotFoundException("Resource with id " + resourceId + " not found.");
+	    }
 
-		Resource managedResource = optionalResource.get();
-		User user = userRepo.findByUsername(username);
-		if (!user.getUsername().equals(username)) {
-			throw new CustomSecurityException("Not authorized to update this resource.");
-		}
+	    Resource managedResource = optionalResource.get();
+	    User user = userRepo.findByUsername(username);
+	    if (!user.getUsername().equals(username)) {
+	        throw new CustomSecurityException("Not authorized to update this resource.");
+	    }
 
-		managedResource.setName(resource.getName());
-		managedResource.setDescription(resource.getDescription());
-		managedResource.setImageUrl(resource.getImageUrl());
-		managedResource.setCategory(resource.getCategory());
-		managedResource.getAddress().setStreet(resource.getAddress().getStreet());
-		managedResource.getAddress().setCity(resource.getAddress().getCity());
-		managedResource.getAddress().setState(resource.getAddress().getState());
-		managedResource.getAddress().setZip(resource.getAddress().getZip());
-		addressRepo.saveAndFlush(resource.getAddress());
-		catRepo.saveAndFlush(managedResource.getCategory());
+	    managedResource.setName(resource.getName());
+	    managedResource.setDescription(resource.getDescription());
+	    managedResource.setImageUrl(resource.getImageUrl());
+	    managedResource.setCategory(resource.getCategory());
 
-		return resourceRepo.saveAndFlush(managedResource);
+	    Address existingAddress = addressRepo.findByStreetAndCityAndStateAndZip(
+	        resource.getAddress().getStreet(),
+	        resource.getAddress().getCity(),
+	        resource.getAddress().getState(),
+	        resource.getAddress().getZip());
+
+	    if (existingAddress != null) {
+	        managedResource.setAddress(existingAddress);
+	    } else {
+	        addressRepo.saveAndFlush(resource.getAddress());
+	    }
+
+	    catRepo.saveAndFlush(managedResource.getCategory());
+
+	    return resourceRepo.saveAndFlush(managedResource);
 	}
+
 
 	@Override
 	@Transactional

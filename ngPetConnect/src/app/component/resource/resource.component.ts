@@ -1,151 +1,221 @@
 import { Component, OnInit } from '@angular/core';
-import { ResourceService } from '../../services/resource.service';
 import { AuthService } from '../../services/auth.service';
-import { Resource } from '../../models/resource';
+import { ResourceService } from '../../services/resource.service';
 import { CategoryService } from '../../services/category.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { Resource } from '../../models/resource';
 import { Category } from '../../models/category';
-import { DomSanitizer } from '@angular/platform-browser';
-import { Address } from '../../models/address';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
+import { GoogleMapsModule } from '@angular/google-maps';
+import { Address } from '../../models/address';
 
 @Component({
   selector: 'app-resource',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, NgbAccordionModule, GoogleMapsModule],
   templateUrl: './resource.component.html',
   styleUrls: ['./resource.component.css'],
 })
 export class ResourceComponent implements OnInit {
+  allResources: Resource[] = [];
   resources: Resource[] = [];
+  resource: Resource | any;
+  categories: Category[] = [];
+  selectedResource: Resource = new Resource();
+  showForm: boolean = false;
+  keyword: string = '';
+  location: string = '';
   errorMessage: string | undefined;
   currentUser: any;
-  categories: Category[] = [];
-
+  currentKeyword: string = '';
+  currentLocation: string = '';
+  currentCategoryId: string | null = 'all';
 
   constructor(
     private resourceService: ResourceService,
-    private authService: AuthService, private categoryService: CategoryService, private sanitizer: DomSanitizer
+    private authService: AuthService,
+    private catService: CategoryService,
+    private sanitizer: DomSanitizer
   ) {}
-
+  // ****************************** Loading... ******************************
   ngOnInit(): void {
     this.loadAllResources();
+    this.loadCategories();
     this.getLoggedInUser();
   }
-
-  getGoogleMapsSrc(address: Address): any {
-    const addressQuery = `${address.street}, ${address.city}, ${address.state}, ${address.zip}`.replace(/\s/g, '+');
-    const mapsUrl = `https://www.google.com/maps/embed/v1/search?q=${addressQuery}&key=AIzaSyAkNp0JjCHBEY4IBL4-GizEZeeX_XTtvwo`;
+  getGoogleMapsSrc(address: Address): SafeResourceUrl {
+    const addressString =
+      `${address.street}, ${address.city}, ${address.zip}`.replace(/\s/g, '+');
+    const mapsUrl = `https://www.google.com/maps/embed/v1/search?q=${addressString}&key=AIzaSyAkNp0JjCHBEY4IBL4-GizEZeeX_XTtvwo`;
     return this.sanitizer.bypassSecurityTrustResourceUrl(mapsUrl);
   }
-
-  getLoggedInUser() {
+  getLoggedInUser(): void {
     this.authService.getLoggedInUser().subscribe({
-      next: (currentUser) => {
-        this.currentUser = currentUser;
-      },
-      error: (err) => {
-        console.error('Error loading the current user', err);
-        this.errorMessage = `Error loading the current user: ${err}`;
-      },
+      next: (user) => (this.currentUser = user),
+      error: (err) =>
+        this.handleError(`Error loading the current user: ${err}`),
     });
   }
 
   loadAllResources(): void {
     this.resourceService.getAllResources().subscribe({
       next: (resources) => {
-        this.resources = resources;
+        this.allResources = resources;
+        this.applyAllFilters(); // Apply filters immediately after fetching
       },
       error: (err) => {
         console.error('Error loading resources', err);
-        this.errorMessage = `Error loading resources: ${err}`;
-      },
-    });
-  }
-  loadCategories(): void {
-    this.categoryService.getAllCategories().subscribe({
-      next: (categories) => (this.categories = categories),
-      error: (err) => (this.errorMessage = `Error loading categories: ${err}`),
-    });
-  }
-  createResource(newResource: Resource): void {
-    this.resourceService.createResource(newResource).subscribe({
-      next: (resource) => {
-        this.resources.push(resource);
-      },
-      error: (err) => {
-        console.error('Error creating resource', err);
-        this.errorMessage = `Error creating resource: ${err}`;
+        // Handle error
       },
     });
   }
 
-  updateResource(resourceId: number, updatedResource: Resource): void {
-    this.resourceService.updateResource(resourceId, updatedResource).subscribe({
-      next: (resource) => {
-        const index = this.resources.findIndex(r => r.id === resourceId);
-        if (index !== -1) {
-          this.resources[index] = resource;
-        }
-      },
-      error: (err) => {
-        console.error('Error updating resource', err);
-        this.errorMessage = `Error updating resource: ${err}`;
-      },
+  loadCategories(): void {
+    this.catService.getAllCategories().subscribe({
+      next: (categories) => (this.categories = categories),
+      error: (err) => this.handleError(`Error loading categories: ${err}`),
     });
+  }
+
+  // ****************************** Resource CRUD ******************************
+  createOrUpdateResource(): void {
+    if (this.selectedResource?.id) {
+      this.resourceService
+        .updateResource(this.selectedResource.id, this.selectedResource)
+        .subscribe({
+          next: () => this.onSaveSuccess(),
+          error: (err) => this.handleError(`Error updating resource: ${err}`),
+        });
+    } else {
+      this.resourceService.createResource(this.selectedResource!).subscribe({
+        next: () => this.onSaveSuccess(),
+        error: (err) => this.handleError(`Error creating resource: ${err}`),
+      });
+    }
   }
 
   deleteResource(resourceId: number): void {
     this.resourceService.deleteResource(resourceId).subscribe({
       next: () => {
-        this.resources = this.resources.filter(resource => resource.id !== resourceId);
+        this.resources = this.resources.filter(
+          (resource) => resource.id !== resourceId
+        );
       },
-      error: (err) => {
-        console.error('Error deleting resource', err);
-        this.errorMessage = `Error deleting resource: ${err}`;
-      },
+      error: (err) => this.handleError(`Error deleting resource: ${err}`),
     });
   }
+  // ****************************** Filters ******************************
 
+  filterByLocation(location: string): void {
+    this.currentLocation = location;
+    this.applyAllFilters();
+  }
 
-  getResourcesByCategory(categoryId: number): void {
-    this.resourceService.getResourcesByCategory(categoryId).subscribe({
-      next: (resources) => console.log(resources),
-      error: (err) => this.handleError(err)
-    });
+  findResourcesByCategory(categoryId: string): void {
+    this.currentCategoryId = categoryId;
+    this.applyAllFilters();
   }
 
   searchResourcesByKeyword(keyword: string): void {
-    this.resourceService.searchResourcesByKeyword(keyword).subscribe({
-      next: (resources) => console.log(resources),
-      error: (err) => this.handleError(err)
-    });
+    this.currentKeyword = keyword;
+    this.applyAllFilters();
   }
 
-  findResourcesByCity(city: string): void {
-    this.resourceService.findResourcesByCity(city).subscribe({
-      next: (resources) => console.log(resources),
-      error: (err) => this.handleError(err)
-    });
+  applyAllFilters(): void {
+    let filteredResources = [...this.allResources];
+    if (this.currentKeyword) {
+      filteredResources = filteredResources.filter(
+        (resource) =>
+          resource.name
+            .toLowerCase()
+            .includes(this.currentKeyword.toLowerCase()) ||
+          resource.description
+            .toLowerCase()
+            .includes(this.currentKeyword.toLowerCase())
+      );
+    }
+
+    if (this.currentLocation) {
+      filteredResources = filteredResources.filter(
+        (resource) =>
+          resource.address.city
+            .toLowerCase()
+            .includes(this.currentLocation.toLowerCase()) ||
+          resource.address.state
+            .toLowerCase()
+            .includes(this.currentLocation.toLowerCase()) ||
+          resource.address.zip.includes(this.currentLocation)
+      );
+    }
+
+    if (this.currentCategoryId && this.currentCategoryId !== 'all') {
+      const categoryIdNumber = Number(this.currentCategoryId);
+      filteredResources = filteredResources.filter(
+        (resource) => resource.category.id === categoryIdNumber
+      );
+    }
+
+    this.resources = filteredResources;
+  }
+  // ****************************** Helpers ******************************
+  editResource(resource: Resource): void {
+    this.selectResource(resource);
+  }
+  handleError(errorMessage: string): void {
+    console.error(errorMessage);
+    this.errorMessage = errorMessage;
   }
 
-  findResourcesByState(state: string): void {
-    this.resourceService.findResourcesByState(state).subscribe({
-      next: (resources) => console.log(resources),
-      error: (err) => this.handleError(err)
-    });
+  onResourceUpdated(): void {
+    this.loadAllResources();
+    this.resetForm();
   }
 
-  findResourcesByZip(zip: string): void {
-    this.resourceService.findResourcesByZip(zip).subscribe({
-      next: (resources) => console.log(resources),
-      error: (err) => this.handleError(err)
-    });
+  onResourceCreated(): void {
+    this.loadAllResources();
+    this.resetForm();
   }
 
-  private handleError(error: any): void {
-    console.error('Service Error:', error);
-    this.errorMessage = error;
+  resetForm(): void {
+    this.selectedResource = new Resource();
+    this.showForm = false;
+  }
+  onSaveSuccess(): void {
+    this.loadAllResources();
+    this.resetFormAndHide();
+  }
+
+  resetFormAndHide(): void {
+    this.selectedResource = this.getNewResource();
+    this.showForm = false;
+  }
+
+  toggleFormVisibility(): void {
+    if (this.showForm) {
+      this.resetFormAndHide();
+    } else {
+      this.showForm = true;
+      this.selectedResource = this.getNewResource();
+    }
+  }
+  getNewResource(): Resource {
+    return new Resource();
+  }
+
+  selectResource(resource: Resource): void {
+    this.selectedResource = { ...resource };
+    this.showForm = true;
+  }
+  resetFilters(): void {
+    this.currentKeyword = '';
+    this.currentLocation = '';
+    this.currentCategoryId = 'all';
+
+    this.keyword = '';
+    this.location = '';
+
+    this.applyAllFilters();
   }
 }
-

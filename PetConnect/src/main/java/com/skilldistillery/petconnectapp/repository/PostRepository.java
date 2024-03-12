@@ -11,7 +11,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
 	List<Post> findByCategories_Id(int catId);
 
-	List<Post> findByTitleContainingOrContentContaining(String titleKeyword, String contentKeyword);
+	List<Post> findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(String titleKeyword, String contentKeyword);
 
 	Post findByIdAndUser_Username(int postId, String username);
 

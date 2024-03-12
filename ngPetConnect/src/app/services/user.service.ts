@@ -84,4 +84,18 @@ export class UserService {
   getUser(userId: number): Observable<User> {
     return this.http.get<User>(`${this.url}/${userId}`, this.getHttpOptions());
   }
+
+  getAllUsers(): Observable<User[]> {
+    return this.http.get<User[]>(this.url, this.getHttpOptions());
+  }
+
+  followUser(userId: number): Observable<any> {
+    const url = `${this.url}/${userId}/follow`;
+    return this.http.post(url, null, this.getHttpOptions());
+  }
+
+  unfollowUser(userId: number): Observable<any> {
+    const url = `${this.url}/${userId}/unfollow`;
+    return this.http.delete(url, this.getHttpOptions());
+  }
 }

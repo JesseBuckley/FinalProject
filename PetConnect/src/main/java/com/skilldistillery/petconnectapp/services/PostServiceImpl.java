@@ -1,5 +1,6 @@
 package com.skilldistillery.petconnectapp.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -7,6 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.skilldistillery.petconnectapp.entities.Category;
 import com.skilldistillery.petconnectapp.entities.Comment;
 import com.skilldistillery.petconnectapp.entities.Post;
 import com.skilldistillery.petconnectapp.entities.User;
@@ -58,46 +60,66 @@ public class PostServiceImpl implements PostService {
 		if (user == null) {
 			throw new ResourceNotFoundException("User not found");
 		}
-		post.setUser(user);
 
-		return postRepo.save(post);
+		post.setUser(user);
+		post.setEnabled(true);
+
+		List<Category> categoryList = post.getCategories();
+		post.setCategories(new ArrayList<>());
+
+		for (Category category : categoryList) {
+			Category c = catRepo.searchById(category.getId());
+			if (c != null) {
+				post.addCategory(c);
+			}
+		}
+
+		return postRepo.saveAndFlush(post);
 	}
 
 	@Override
 	public Post update(int postId, Post post, String username) {
 		Optional<Post> optionalPost = postRepo.findById(postId);
-		if (optionalPost.isPresent()) {
-			Post existingPost = optionalPost.get();
-
-			if (existingPost.getUser().getUsername().equals(username)) {
-				existingPost.setContent(post.getContent());
-				existingPost.setImageUrl(post.getImageUrl());
-				existingPost.setEnabled(post.isEnabled());
-				existingPost.setTitle(post.getTitle());
-				existingPost.setPinned(post.isPinned());
-
-				return postRepo.save(existingPost);
-			} else {
-				throw new CustomSecurityException("Not authorized to update this post.");
-			}
-		} else {
+		if (!optionalPost.isPresent()) {
 			throw new ResourceNotFoundException("Post with id " + postId + " not found.");
 		}
+
+		Post existingPost = optionalPost.get();
+		if (!existingPost.getUser().getUsername().equals(username)) {
+			throw new CustomSecurityException("Not authorized to update this post.");
+		}
+
+		existingPost.setContent(post.getContent());
+		existingPost.setImageUrl(post.getImageUrl());
+		existingPost.setTitle(post.getTitle());
+		existingPost.setPinned(post.isPinned());
+
+		existingPost.setEnabled(post.isEnabled());
+
+		List<Category> categoryList = existingPost.getCategories();
+		existingPost.setCategories(new ArrayList<>());
+
+		for (Category category : categoryList) {
+			Category c = catRepo.searchById(category.getId());
+			if (c != null) {
+				existingPost.addCategory(c);
+			}
+		}
+
+		return postRepo.saveAndFlush(existingPost);
 	}
 
 	@Override
 	@Transactional
 	public boolean softDeletePost(int postId, String username) {
 		return postRepo.findById(postId).filter(post -> post.getUser().getUsername().equals(username)).map(post -> {
-			// Set the post as disabled
 			post.setEnabled(false);
-			// Iterate over each comment and disable them
 			if (post.getComments() != null) {
 				post.getComments().forEach(comment -> {
 					disableCommentAndSubComments(comment);
 				});
 			}
-			postRepo.save(post); // Save changes to the post
+			postRepo.save(post); 
 			return true;
 		}).orElse(false);
 	}

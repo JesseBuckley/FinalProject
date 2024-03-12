@@ -43,6 +43,7 @@ public class CommentServiceImpl implements CommentService {
 
 		comment.setPost(post);
 		comment.setUser(user);
+		comment.setEnabled(true);
 
 		return comRepo.save(comment);
 	}
@@ -62,6 +63,7 @@ public class CommentServiceImpl implements CommentService {
 		replyComment.setUser(user);
 		replyComment.setPost(post);
 		replyComment.setReplyTo(parentComment);
+		replyComment.setEnabled(true);
 
 		return comRepo.save(replyComment);
 	}
@@ -75,7 +77,7 @@ public class CommentServiceImpl implements CommentService {
 
 		return comRepo.findById(comId).filter(comment -> comment.getUser().getId() == user.getId()).map(comment -> {
 			comment.setContent(updatedComment.getContent());
-
+			comment.setEnabled(true);
 			return comRepo.save(comment);
 		}).orElse(null);
 	}

@@ -1,0 +1,49 @@
+<div class="container bootstrap snippets bootdeys">
+  <div class="container mt-5">
+    <div  id="about" class="text-center">
+      <h2>About Me!</h2>
+    </div>
+    <br>
+  <div class="row justify-content-center">
+      <div class="col-lg-3 col-md-3 col-sm-4">
+          <div class="panel rounded shadow">
+              <div class="panel-body">
+                  <div class="inner-all">
+                      <ul class="list-unstyled">
+                          <li class="text-center">
+
+                            <img data-no-retina="" class="img-circle img-responsive img-bordered-primary custom-profile-pic" src="{{ user.profilePicture }}" alt="User Profile">
+                          </li>
+                          <li class="text-center">
+                              <h4 class="text-capitalize">{{ user.username }}</h4>
+                          </li>
+                          <li><br></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+                <br>
+                <div class="card p-4">
+                    <div class="text-left">
+                    <ul class="list-unstyled">
+                      <li>
+                        <h4 class="text-capitalize">{{ user.biography }}</h4>
+                      </li>
+                    </ul>
+                    </div>
+                  <div class="text-center">
+                    <button class="btn btn-sm btn-warning" (click)="editBiography()">Edit Biography</button>
+                    <form *ngIf="editUser" (ngSubmit)="saveChanges()" class="mt-3">
+                      <label for="newBiography">New Biography:</label>
+                      <br>
+                      <textarea id="newBiography" name="newBiography" [(ngModel)]="editedBiography" class="form-control"></textarea>
+                      <br>
+                      <button class="btn btn-sm btn-success" type="submit">Save Changes</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+<br>
+<br>

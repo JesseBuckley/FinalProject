@@ -1,3 +1,5 @@
 export const environment = {
-  baseUrl: '/PetConnect/'
+  production: true,
+  baseUrl: '/PetConnect/',
+  googleMapsApiKey: 'AIzaSyAkNp0JjCHBEY4IBL4-GizEZeeX_XTtvwo'
 };

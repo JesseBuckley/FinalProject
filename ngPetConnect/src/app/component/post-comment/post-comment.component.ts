@@ -9,11 +9,12 @@ import { Comment } from '../../models/comment';
 import { CategoryService } from '../../services/category.service';
 import { Category } from '../../models/category';
 import { AuthService } from '../../services/auth.service';
+import { NgbAccordionConfig, NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-post-comment',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, NgbAccordionModule],
   templateUrl: './post-comment.component.html',
   styleUrl: './post-comment.component.css',
 })

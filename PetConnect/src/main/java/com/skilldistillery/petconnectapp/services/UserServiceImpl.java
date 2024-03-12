@@ -2,6 +2,7 @@ package com.skilldistillery.petconnectapp.services;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<User> index(String username) {
 		User user = userRepo.findByUsername(username);
-		if (user != null && user.getRole().equalsIgnoreCase("ADMIN")) {
+		if (user != null) {
 			return userRepo.findAll();
 		}
 		return List.of();
@@ -126,6 +127,17 @@ public class UserServiceImpl implements UserService {
 			return userRepo.save(enabledUser);
 		}
 		return null;
+	}
+
+	@Override
+	public User findById(int userIdToFollow) {
+		Optional<User> optUser = userRepo.findById(userIdToFollow);
+		return optUser.orElse(null);
+	}
+
+	@Override
+	public User findByUsername(String username) {
+		return userRepo.findByUsername(username);
 	}
 
 }

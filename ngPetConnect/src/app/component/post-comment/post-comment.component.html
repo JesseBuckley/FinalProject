@@ -90,7 +90,7 @@
           </ng-template>
           <!-- Edit and Delete Post Buttons -->
           <div *ngIf="isUserPost(post)" class="text-end">
-            <button class="btn btn-primary btn-sm" *ngIf="!editingPost[post.id]" (click)="startEditPost(post.id)">Edit</button>
+            <button style="margin-right: 5px;" class="btn btn-primary btn-sm" *ngIf="!editingPost[post.id]" (click)="startEditPost(post.id)">Edit</button>
             <button class="btn btn-success btn-sm" *ngIf="editingPost[post.id]" (click)="finishEditPost(post.id, post.content)">Save</button>
             <button class="btn btn-danger btn-sm" (click)="deletePost(post.id)">Delete</button>
           </div>
@@ -115,7 +115,7 @@
                     </ng-template>
                     <!-- Toggle Edit Mode for Comments -->
                     <div *ngIf="isUserComment(comment)" class="text-end">
-                      <button class="btn btn-primary btn-sm" *ngIf="!editingComment[comment.id]" (click)="startEditComment(post.id, comment.id)">Edit</button>
+                      <button style="margin-right: 5px;" class="btn btn-primary btn-sm" *ngIf="!editingComment[comment.id]" (click)="startEditComment(post.id, comment.id)">Edit</button>
                       <button class="btn btn-success btn-sm" *ngIf="editingComment[comment.id]" (click)="finishEditComment(post.id, comment.id, comment.content)">Save</button>
                       <button class="btn btn-danger btn-sm" (click)="deleteComment(post.id, comment.id)">Delete</button>
                     </div>

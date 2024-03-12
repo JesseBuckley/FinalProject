@@ -99,5 +99,37 @@ public class UserController {
 
 		return disabledUser;
 	}
+	
+	@PostMapping("users/{userId}/follow")
+	public User followUser(@PathVariable("userId") int userIdToFollow, Principal principal, HttpServletResponse rsp) {
+	    User currentUser = userService.findByUsername(principal.getName());
+	    User userToFollow = userService.findById(userIdToFollow);
+
+	    if (currentUser == null || userToFollow == null) {
+	        rsp.setStatus(404);
+	        return null;
+	    }
+
+	    currentUser.getFollowedUsers().add(userToFollow);
+	    userService.update(currentUser.getId(), currentUser, principal.getName());
+	    rsp.setStatus(200);
+	    return currentUser;
+	}
+
+	@DeleteMapping("users/{userId}/unfollow")
+	public User unfollowUser(@PathVariable("userId") int userIdToUnfollow, Principal principal, HttpServletResponse rsp) {
+	    User currentUser = userService.findByUsername(principal.getName());
+	    User userToUnfollow = userService.findById(userIdToUnfollow);
+
+	    if (currentUser == null || userToUnfollow == null) {
+	        rsp.setStatus(404);
+	        return null;
+	    }
+
+	    currentUser.getFollowedUsers().remove(userToUnfollow);
+	    userService.update(currentUser.getId(), currentUser, principal.getName());
+	    rsp.setStatus(200);
+	    return currentUser;
+	}
 
 }

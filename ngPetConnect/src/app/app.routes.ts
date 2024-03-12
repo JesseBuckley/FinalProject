@@ -9,6 +9,7 @@ import { NotfoundComponent } from './component/notfound/notfound.component';
 import { LandingComponent } from './component/landing/landing.component';
 import { FollowersComponent } from './component/followers/followers.component';
 import { AboutComponent } from './component/about/about.component';
+import { ResourceComponent } from './component/resource/resource.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/landing', pathMatch: 'full' },
@@ -16,6 +17,7 @@ export const routes: Routes = [
   { path: 'landing', component: LandingComponent },
   { path: 'mypets', component: MypetsComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'resource', component: ResourceComponent },
   { path: 'account', component: AccountComponent },
   { path: 'login', component: LoginComponent },
   { path: 'logout', component: LogoutComponent },

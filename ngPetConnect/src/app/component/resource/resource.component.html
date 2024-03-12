@@ -1,1 +1,12 @@
-<p>resource works!</p>
+<div *ngFor="let resource of resources">
+  <h4>{{ resource.name }}</h4>
+  <!-- Replace spaces with '+' in the address string -->
+  <iframe
+    width="600"
+    height="450"
+    style="border:0"
+    loading="lazy"
+    allowfullscreen
+    [src]="getGoogleMapsSrc(resource.address)">
+  </iframe>
+</div>

@@ -4,9 +4,15 @@ import { AuthService } from '../../services/auth.service';
 import { Resource } from '../../models/resource';
 import { CategoryService } from '../../services/category.service';
 import { Category } from '../../models/category';
+import { DomSanitizer } from '@angular/platform-browser';
+import { Address } from '../../models/address';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-resource',
+  standalone: true,
+  imports: [FormsModule, CommonModule],
   templateUrl: './resource.component.html',
   styleUrls: ['./resource.component.css'],
 })
@@ -19,12 +25,18 @@ export class ResourceComponent implements OnInit {
 
   constructor(
     private resourceService: ResourceService,
-    private authService: AuthService, private categoryService: CategoryService
+    private authService: AuthService, private categoryService: CategoryService, private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
     this.loadAllResources();
     this.getLoggedInUser();
+  }
+
+  getGoogleMapsSrc(address: Address): any {
+    const addressQuery = `${address.street}, ${address.city}, ${address.state}, ${address.zip}`.replace(/\s/g, '+');
+    const mapsUrl = `https://www.google.com/maps/embed/v1/search?q=${addressQuery}&key=AIzaSyAkNp0JjCHBEY4IBL4-GizEZeeX_XTtvwo`;
+    return this.sanitizer.bypassSecurityTrustResourceUrl(mapsUrl);
   }
 
   getLoggedInUser() {

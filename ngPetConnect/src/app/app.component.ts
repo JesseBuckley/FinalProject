@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { AuthService } from './services/auth.service';
 import { HomeComponent } from './component/home/home.component';
 import { MypetsComponent } from './component/mypets/mypets.component';
 import { RouterLink, RouterModule } from '@angular/router';
@@ -9,6 +8,8 @@ import { FormsModule } from '@angular/forms';
 import { LogoutComponent } from './component/logout/logout.component';
 import { ngbCarouselTransitionIn } from '@ng-bootstrap/ng-bootstrap/carousel/carousel-transition';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { GoogleMapsModule } from '@angular/google-maps';
+
 
 @Component({
   selector: 'app-root',
@@ -22,7 +23,10 @@ import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
     RouterModule,
     RouterLink,
     LogoutComponent,
-    NgbModule
+    NgbModule,
+    CommonModule,
+    FormsModule,
+    GoogleMapsModule
   ],
 })
 export class AppComponent {}

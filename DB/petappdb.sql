@@ -320,8 +320,12 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `petappdb`;
-INSERT INTO `address` (`id`, `street`, `city`, `state`, `zip`) VALUES (1, 'test street 123', 'fakecity', 'fakestate', '12345');
-INSERT INTO `address` (`id`, `street`, `city`, `state`, `zip`) VALUES (2, 'test street 321', 'citybefake', 'statefake', '54321');
+INSERT INTO `address` (`id`, `street`, `city`, `state`, `zip`) VALUES (1, '738 Oxford Germantown Rd.', 'Camden', 'Ohio', '45311');
+INSERT INTO `address` (`id`, `street`, `city`, `state`, `zip`) VALUES (2, '5265 E S Street', 'Alliance', 'Ohio', '44601');
+INSERT INTO `address` (`id`, `street`, `city`, `state`, `zip`) VALUES (3, '7505 E 35th Ave Bldg 3 Ste 3', 'Denver', 'Colorado', '80238');
+INSERT INTO `address` (`id`, `street`, `city`, `state`, `zip`) VALUES (4, '6701 Washington St', 'Denver', 'Colorado', '80229');
+INSERT INTO `address` (`id`, `street`, `city`, `state`, `zip`) VALUES (5, '530 Broadway', 'Denver', 'Colorado', '80203');
+INSERT INTO `address` (`id`, `street`, `city`, `state`, `zip`) VALUES (6, 'Yosemite Way & E 4th Pl', 'Denver', 'Colorado', '80230');
 
 COMMIT;
 
@@ -331,8 +335,11 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `petappdb`;
-INSERT INTO `user` (`id`, `username`, `password`, `enabled`, `role`, `profile_picture`, `biography`, `background_picture`, `first_name`, `last_name`, `created_at`, `updated_at`, `address_id`) VALUES (1, 'admin', '$2a$10$nShOi5/f0bKNvHB8x0u3qOpeivazbuN0NE4TO0LGvQiTMafaBxLJS', 1, 'admin', 'https://healthprofessions.ucf.edu/wp-content/uploads/sites/2/2018/06/Matt-Stock.jpg', NULL, NULL, NULL, NULL, NULL, NULL, 1);
-INSERT INTO `user` (`id`, `username`, `password`, `enabled`, `role`, `profile_picture`, `biography`, `background_picture`, `first_name`, `last_name`, `created_at`, `updated_at`, `address_id`) VALUES (2, 'userone', '$2a$10$nShOi5/f0bKNvHB8x0u3qOpeivazbuN0NE4TO0LGvQiTMafaBxLJS', 1, 'standard', 'https://as1.ftcdn.net/v2/jpg/03/02/09/52/1000_F_302095207_iuCeDS2jIkIptfE29Wb0ldDs248FAzoi.jpg', NULL, NULL, NULL, NULL, NULL, NULL, 2);
+INSERT INTO `user` (`id`, `username`, `password`, `enabled`, `role`, `profile_picture`, `biography`, `background_picture`, `first_name`, `last_name`, `created_at`, `updated_at`, `address_id`) VALUES (1, 'Admin', '$2a$10$nShOi5/f0bKNvHB8x0u3qOpeivazbuN0NE4TO0LGvQiTMafaBxLJS', 1, 'admin', 'https://t3.ftcdn.net/jpg/00/66/74/90/360_F_66749097_nCsOYh69ix0o7h1DDXztTADd4N3q0Kze.jpg', 'Animals should be cared for always!', NULL, NULL, NULL, NULL, NULL, 1);
+INSERT INTO `user` (`id`, `username`, `password`, `enabled`, `role`, `profile_picture`, `biography`, `background_picture`, `first_name`, `last_name`, `created_at`, `updated_at`, `address_id`) VALUES (2, 'CatLady6', '$2a$10$nShOi5/f0bKNvHB8x0u3qOpeivazbuN0NE4TO0LGvQiTMafaBxLJS', 1, 'standard', 'https://i.guim.co.uk/img/media/e4ae055cd7e0b946e216e2a43a97fcf085c364e6/463_41_2032_1219/master/2032.jpg?width=1200&height=900&quality=85&auto=format&fit=crop&s=6a19aa0e164cc51f2a2770b8bff5776d', 'I have more cats then friends.', NULL, NULL, NULL, NULL, NULL, 2);
+INSERT INTO `user` (`id`, `username`, `password`, `enabled`, `role`, `profile_picture`, `biography`, `background_picture`, `first_name`, `last_name`, `created_at`, `updated_at`, `address_id`) VALUES (3, 'Abrahamster', '$2a$10$nShOi5/f0bKNvHB8x0u3qOpeivazbuN0NE4TO0LGvQiTMafaBxLJS', 1, 'standard', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjiLQlqjQ1Kzy8GtZWCWMHfBr5ptGILhXcag&usqp=CAU', 'I could watch my hamster run on his wheel all day!', NULL, NULL, NULL, NULL, NULL, 2);
+INSERT INTO `user` (`id`, `username`, `password`, `enabled`, `role`, `profile_picture`, `biography`, `background_picture`, `first_name`, `last_name`, `created_at`, `updated_at`, `address_id`) VALUES (4, 'Kitty Purry', '$2a$10$nShOi5/f0bKNvHB8x0u3qOpeivazbuN0NE4TO0LGvQiTMafaBxLJS', 1, 'standard', 'https://static.wikia.nocookie.net/katyperry/images/c/ca/Katy_perry_and_kitty_purry.jpg/revision/latest?cb=20180822044707', 'Cats!!', NULL, NULL, NULL, NULL, NULL, 2);
+INSERT INTO `user` (`id`, `username`, `password`, `enabled`, `role`, `profile_picture`, `biography`, `background_picture`, `first_name`, `last_name`, `created_at`, `updated_at`, `address_id`) VALUES (5, 'Fuzz Aldrin', '$2a$10$nShOi5/f0bKNvHB8x0u3qOpeivazbuN0NE4TO0LGvQiTMafaBxLJS', 1, 'standard', 'https://i.redd.it/v7znalsgkvea1.jpg', 'I like to dress my cats up in space suits.', NULL, NULL, NULL, NULL, NULL, 2);
 
 COMMIT;
 
@@ -361,8 +368,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `petappdb`;
-INSERT INTO `pet` (`id`, `name`, `date_of_birth`, `breed`, `profile_picture`, `description`, `user_id`, `enabled`, `species_id`) VALUES (1, 'Butterball', '2011-01-01', 'Golden Retriever', 'https://t3.ftcdn.net/jpg/00/66/74/90/360_F_66749097_nCsOYh69ix0o7h1DDXztTADd4N3q0Kze.jpg', 'This dog is literally mans best friend', 1, 1, 1);
-INSERT INTO `pet` (`id`, `name`, `date_of_birth`, `breed`, `profile_picture`, `description`, `user_id`, `enabled`, `species_id`) VALUES (2, 'Biggins', '1945-01-01', 'Sphynx', 'https://media.istockphoto.com/id/471421871/photo/portrait-of-sphynx-cat-6-months-old-sitting.jpg?s=612x612&w=0&k=20&c=dRiOcm4muMWGUD64pPCY9VorbnFAT2RtuNHJDkCPiSE=', 'The most precious angel', 1, 1, 1);
+INSERT INTO `pet` (`id`, `name`, `date_of_birth`, `breed`, `profile_picture`, `description`, `user_id`, `enabled`, `species_id`) VALUES (1, 'Admin Jr.', '2023-10-10', 'Admin', 'https://healthprofessions.ucf.edu/wp-content/uploads/sites/2/2018/06/Matt-Stock.jpg', 'I love my Admin!', 1, 1, 1);
 
 COMMIT;
 
@@ -389,7 +395,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `petappdb`;
-INSERT INTO `post` (`id`, `content`, `image_url`, `created_at`, `updated_at`, `user_id`, `enabled`, `title`, `pinned`) VALUES (1, 'this is a post', NULL, NULL, NULL, 1, 1, 'newtitle', 0);
+INSERT INTO `post` (`id`, `content`, `image_url`, `created_at`, `updated_at`, `user_id`, `enabled`, `title`, `pinned`) VALUES (1, 'Admin update post #2', 'https://t4.ftcdn.net/jpg/04/75/00/99/360_F_475009987_zwsk4c77x3cTpcI3W1C1LU4pOSyPKaqi.jpg', NULL, NULL, 1, 1, 'Admin Notes', 0);
 
 COMMIT;
 
@@ -399,7 +405,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `petappdb`;
-INSERT INTO `comment` (`id`, `content`, `post_id`, `user_id`, `reply_to_id`, `enabled`, `created_at`, `updated_at`) VALUES (1, 'this is a comment', 1, 1, NULL, 1, NULL, NULL);
+INSERT INTO `comment` (`id`, `content`, `post_id`, `user_id`, `reply_to_id`, `enabled`, `created_at`, `updated_at`) VALUES (1, 'I as your fearless admin, would like to say welcome and have fun with PetConnect!', 1, 1, NULL, 1, NULL, NULL);
 
 COMMIT;
 
@@ -419,7 +425,7 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `petappdb`;
-INSERT INTO `pet_picture` (`id`, `image_url`, `caption`, `date_posted`, `pet_id`) VALUES (1, 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.fox6now.com%2Fnews%2Fspecial-needs-dog-named-butterball-struggling-to-find-forever-home&psig=AOvVaw1lJ1ZSEeCMlovS4qdZmKa2&ust=1709833030356000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCLD-78WW4IQDFQAAAAAdAAAAABAD', 'i have a dog', NULL, 1);
+INSERT INTO `pet_picture` (`id`, `image_url`, `caption`, `date_posted`, `pet_id`) VALUES (1, 'https://healthprofessions.ucf.edu/wp-content/uploads/sites/2/2018/06/Matt-Stock.jpg', 'I love my admin!', NULL, 1);
 
 COMMIT;
 
@@ -449,7 +455,10 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `petappdb`;
-INSERT INTO `resource` (`id`, `name`, `description`, `image_url`, `address_id`, `category_id`) VALUES (1, 'dog clinic', NULL, NULL, 1, 1);
+INSERT INTO `resource` (`id`, `name`, `description`, `image_url`, `address_id`, `category_id`) VALUES (1, 'Pet Supplies', NULL, NULL, 3, 2);
+INSERT INTO `resource` (`id`, `name`, `description`, `image_url`, `address_id`, `category_id`) VALUES (2, 'Pet Health', NULL, NULL, 4, 1);
+INSERT INTO `resource` (`id`, `name`, `description`, `image_url`, `address_id`, `category_id`) VALUES (3, 'Pet Food', NULL, NULL, 5, 3);
+INSERT INTO `resource` (`id`, `name`, `description`, `image_url`, `address_id`, `category_id`) VALUES (4, 'Pet Recreation', NULL, NULL, 6, 8);
 
 COMMIT;
 

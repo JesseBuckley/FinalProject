@@ -2,14 +2,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError, tap } from 'rxjs';
 import { User } from '../models/user';
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 import { environment } from '../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
   private url = environment.baseUrl;
 
   constructor(private http: HttpClient) {}
@@ -37,13 +36,14 @@ export class AuthService {
     return this.http.get<User>(this.url + 'authenticate', httpOptions).pipe(
       tap((user) => {
         localStorage.setItem('credentials', credentials);
-        localStorage.setItem('user', JSON.stringify(user)); // Save entire user object
-        // OR if you want to just save the role
-        // localStorage.setItem('role', user.role);
+        localStorage.setItem('user', JSON.stringify(user));
+
       }),
       catchError((err: any) => {
         console.log(err);
-        return throwError(() => new Error('AuthService.login(): error logging in user.'));
+        return throwError(
+          () => new Error('AuthService.login(): error logging in user.')
+        );
       })
     );
   }
@@ -53,13 +53,10 @@ export class AuthService {
     return user.role || 'standard';
   }
 
-
-
   logout(): void {
     localStorage.removeItem('credentials');
-    localStorage.removeItem('role');
+    localStorage.removeItem('user');
   }
-
 
   getLoggedInUser(): Observable<User> {
     if (!this.checkLogin()) {
@@ -73,16 +70,17 @@ export class AuthService {
         'X-Requested-with': 'XMLHttpRequest',
       },
     };
-    return this.http
-      .get<User>(this.url + 'authenticate', httpOptions)
-      .pipe(
-        catchError((err: any) => {
-          console.log(err);
-          return throwError(
-            () => new Error( 'AuthService.getUserById(): error retrieving user: ' + err )
-          );
-        })
-      );
+    return this.http.get<User>(this.url + 'authenticate', httpOptions).pipe(
+      catchError((err: any) => {
+        console.log(err);
+        return throwError(
+          () =>
+            new Error(
+              'AuthService.getUserById(): error retrieving user: ' + err
+            )
+        );
+      })
+    );
   }
 
   checkLogin(): boolean {
@@ -99,5 +97,4 @@ export class AuthService {
   getCredentials(): string | null {
     return localStorage.getItem('credentials');
   }
-
 }

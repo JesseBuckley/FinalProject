@@ -25,45 +25,59 @@ public class PetPictureController {
 
 	@Autowired
 	private PetPictureService petPictureService;
-	
-	
-	 @GetMapping("pet-pictures")
-	 public List<PetPicture> findAllPetPicsOwnedByUser(Principal principal) {
-	     return petPictureService.findAllPetPics(principal.getName());
-	    }
-	
-		@PostMapping("pet-pictures/{petId}")
-		public PetPicture create(@RequestBody PetPicture petPicture, Principal principal, HttpServletResponse res,
-				@PathVariable("petId") int petId) {
-			PetPicture created = petPictureService.create(petPicture, principal.getName(), petId);
-			
-			if (created != null) {
-				res.setStatus(201);
-				return created;
-			} else {
-				res.setStatus(400);
-				return null;
-			}
-		}
-		
-	
-		
-		@DeleteMapping("pet-pictures/{id}/delete")
-		public boolean delete(@PathVariable("id") Integer id, HttpServletResponse res, Principal principal) {
-		    boolean deleted;
-		    try {
-		        deleted = petPictureService.deleteById(id);
 
-		        if (deleted) {
-		            res.setStatus(204);
-		        } else {
-		            res.setStatus(404); 
-		        }
-		    } catch (Exception e) {
-		        res.setStatus(500); 
-		        deleted = false;
-		    }
-		    return deleted;
+	@GetMapping("pet-pictures")
+	public List<PetPicture> findAllPetPicsOwnedByUser(Principal principal) {
+		return petPictureService.findAllPetPics(principal.getName());
+	}
+
+	@PostMapping("pet-pictures/{petId}")
+	public PetPicture create(@RequestBody PetPicture petPicture, Principal principal, HttpServletResponse res,
+			@PathVariable("petId") int petId) {
+		PetPicture created = petPictureService.create(petPicture, principal.getName(), petId);
+
+		if (created != null) {
+			res.setStatus(201);
+			return created;
+		} else {
+			res.setStatus(400);
+			return null;
 		}
+	}
+
+	@GetMapping("myPet-pictures")
+	public List<PetPicture> getMyPetPictures(Principal principal, HttpServletResponse res) {
+		if (principal == null) {
+			res.setStatus(401);
+			return null;
+		}
+
+		List<PetPicture> petPictures = petPictureService.findPetPicturesByUsername(principal.getName());
+
+		if (petPictures == null || petPictures.isEmpty()) {
+			res.setStatus(404);
+			return null;
+		}
+
+		return petPictures;
+	}
+
+	@DeleteMapping("pet-pictures/{id}/delete")
+	public boolean delete(@PathVariable("id") Integer id, HttpServletResponse res, Principal principal) {
+		boolean deleted;
+		try {
+			deleted = petPictureService.deleteById(id);
+
+			if (deleted) {
+				res.setStatus(204);
+			} else {
+				res.setStatus(404);
+			}
+		} catch (Exception e) {
+			res.setStatus(500);
+			deleted = false;
+		}
+		return deleted;
+	}
 //		
 }

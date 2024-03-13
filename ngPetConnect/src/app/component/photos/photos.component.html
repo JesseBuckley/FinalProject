@@ -1,7 +1,14 @@
 <div class="container bootstrap snippets bootdeys bg-light">
   <h2 class="text-center">Pet Pictures Album</h2>
 
+  <button *ngIf="currentUser && currentUser.role === 'admin'" (click)="toggleViewMode()">
+    {{ isAdminMode ? 'Switch to User View' : 'Switch to Admin View' }}
+  </button>
+  <div id="petPicturesPanelDisplay" class="row">
+
+
   <div id="petPicturesPanelDisplay" class="row center-images">
+
     <div class="col-md-4" *ngFor="let petPicture of petPictures">
       <div class="card mb-4 shadow-sm">
         <h5 class="text-center">{{ getPetName(petPicture.pet.id) }}</h5>
@@ -17,6 +24,24 @@
       </div>
     </div>
   </div>
+
+  <!-- Add Picture Section -->
+  <div class="row mt-4">
+    <div class="col-lg-12">
+      <div class="card mb-4 shadow-sm">
+        <div class="card-body text-center">
+          <div class="row align-items-center">
+            <div class="col-md-4">
+              <div class="form-group">
+                <!-- Adjust the width of the select pet dropdown box -->
+                <label for="selectPet">Select Pet:</label>
+                <input type="text" class="form-control" value="Select Pet" readonly style="color: #6c757d; cursor: default;">
+                <select id="selectPet" name="selectPet" [(ngModel)]="newPetPicture.pet.id" class="form-select" style="margin-top: -38px;">
+                  <option value=""></option> <!-- Hidden option to ensure placeholder is displayed by default -->
+                  <option *ngFor="let pet of myPets" [value]="pet.id">{{pet.name}}</option>
+                </select>
+              </div>
+
 <!-- Add Picture Section -->
 <div class="row mt-4">
   <div class="col-lg-12">
@@ -32,28 +57,32 @@
                 <option value=""></option> <!-- Hidden option to ensure placeholder is displayed by default -->
                 <option *ngFor="let pet of myPets" [value]="pet.id">{{pet.name}}</option>
               </select>
+
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <!-- Adjust the width of the image URL container -->
+                <label for="imageUrl">Image URL:</label>
+                <input [(ngModel)]="newPetPicture.imageUrl" id="imageUrl" type="text" class="form-control" placeholder="Image URL">
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <!-- Adjust the width of the caption container -->
+                <label for="caption">Caption:</label>
+                <input [(ngModel)]="newPetPicture.caption" id="caption" type="text" class="form-control" placeholder="Caption">
+              </div>
             </div>
           </div>
-          <div class="col-md-4">
-            <div class="form-group">
-              <!-- Adjust the width of the image URL container -->
-              <label for="imageUrl">Image URL:</label>
-              <input [(ngModel)]="newPetPicture.imageUrl" id="imageUrl" type="text" class="form-control" placeholder="Image URL">
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="form-group">
-              <!-- Adjust the width of the caption container -->
-              <label for="caption">Caption:</label>
-              <input [(ngModel)]="newPetPicture.caption" id="caption" type="text" class="form-control" placeholder="Caption">
-            </div>
+          <div class="text-center mt-2"> <!-- Adjusted margin top -->
+            <button class="btn btn-primary btn-sm" (click)="addPetPicture(newPetPicture)">Add Picture</button>
           </div>
         </div>
-        <div class="text-center mt-3">
-          <button class="btn btn-primary btn-sm" (click)="addPetPicture(newPetPicture)">Add Picture</button>
-        </div>
-        <!-- Carousel Section -->
-  <div class="custom-carousel">
+      </div>
+    </div>
+  </div>
+  <!-- Carousel Section -->
+  <div class="custom-carousel mt-4"> <!-- Add margin top -->
     <div class="col-lg-12">
       <div class="card mb-4 shadow-sm">
         <div class="card-body">

@@ -29,6 +29,8 @@ export class PhotosComponent implements OnInit {
   errorMessage: string | undefined;
   newPost: Post = new Post();
   posts: Post[] = [];
+  isAdminMode: boolean = false;
+
   images: string[] = [
     'https://images2.alphacoders.com/687/687623.jpg',
     'https://w0.peakpx.com/wallpaper/25/190/HD-wallpaper-camera-funny-animals-squirrels.jpg',
@@ -37,7 +39,6 @@ export class PhotosComponent implements OnInit {
     'https://c.wallhere.com/photos/c2/5d/pictures_camera_wallpaper_dog_pet_pets_colour_dogs-849056.jpg!d',
     'https://wallpapers.com/images/high/baby-tortoise-hitching-a-ride-on-its-mom-s-head-06uzms83eu4ph2h6.webp'
   ]
-
 
   constructor(
     private authService: AuthService,
@@ -54,12 +55,18 @@ export class PhotosComponent implements OnInit {
 
   getLoggedInUser() {
     this.authService.getLoggedInUser().subscribe({
-      next: (currentUser) => (this.currentUser = currentUser),
+      next: (currentUser) => {
+        this.currentUser = currentUser;
+        this.isAdminMode = currentUser && currentUser.role === 'admin';
+      },
       error: (err) =>
         (this.errorMessage = `Error loading current user: ${err}`),
     });
   }
-
+  toggleViewMode(): void {
+    this.isAdminMode = !this.isAdminMode;
+    this.loadPetPictures();
+  }
   loadPets() {
     if (this.authService.checkLogin()) {
       this.petService.index().subscribe({
@@ -76,14 +83,27 @@ export class PhotosComponent implements OnInit {
 
   loadPetPictures(): void {
     if (this.authService.checkLogin()) {
-      this.petPictureService.index().subscribe({
-        next: (petPictures) => {
-          this.petPictures = petPictures;
-        },
-        error: (err) => {
-          console.error('Error loading pet pictures:', err);
-        },
-      });
+      if (this.isAdminMode) {
+        this.petPictureService.index().subscribe({
+          next: (petPictures) => {
+            this.petPictures = petPictures;
+          },
+          error: (err) => {
+            console.error('Error loading pet pictures:', err);
+          },
+        });
+      } else {
+        this.petPictureService.index().subscribe({
+          next: (petPictures) => {
+            this.petPictures = petPictures.filter(petPicture =>
+              petPicture.pet && petPicture.pet.user && petPicture.pet.user.id === this.currentUser.id
+            );
+          },
+          error: (err) => {
+            console.error('Error loading pet pictures:', err);
+          },
+        });
+      }
     }
   }
 

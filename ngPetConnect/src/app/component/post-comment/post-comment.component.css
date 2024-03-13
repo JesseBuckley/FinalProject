@@ -161,3 +161,19 @@ html {
       width: 100%; /* Full width on smaller screens, if necessary */
   }
 }
+/* Adjust spacing for the search input and button */
+.form-control.me-2,
+.btn-outline-secondary {
+  margin-right: 10px; /* Adjust as needed */
+}
+
+/* Adjust spacing for the filter by location input and button */
+.btn-outline-warning {
+  margin-left: 10px; /* Adjust as needed */
+}
+
+/* Adjust spacing for the category select */
+.form-select {
+  margin-left: 10px; /* Adjust as needed */
+}
+

@@ -30,3 +30,15 @@
   .follow-unfollow-buttons button {
     width: 20%;
   }
+
+  .container.bootstrap.snippets.bootdeys {
+    text-align: center;
+  }
+
+  #userPanelDisplay {
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    text-align: center;
+    margin-left: 370px;
+  }

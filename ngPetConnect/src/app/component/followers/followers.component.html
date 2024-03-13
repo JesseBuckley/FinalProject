@@ -1,13 +1,11 @@
-<!-- HTML template -->
 <div class="container bootstrap snippets bootdeys">
   <div id="searchDiv">
     <form (submit)="searchUsers()">
       <input type="text" placeholder="Search by username" [(ngModel)]="searchKeyword" name="searchKeyword">
-      <button class="btn btn-primary btn" type="submit">Search</button>
+      <button class="btn btn-primary btn" type="submit">Show Searched User(s)</button><button class="btn btn-primary btn" (click)="toggleUsers()">Show All User(s)</button>
+      <br>
+      <hr>
     </form>
-
-  <div id="show-all-button">
-    <button class="btn btn-primary btn" (click)="toggleUsers()">Show All Users</button>
   </div>
 
   <div *ngIf="showUsers">
@@ -43,6 +41,4 @@
         </div>
       </div>
     </div>
-      </div>
-    </div>
-    </div>
+  </div>

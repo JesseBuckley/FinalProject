@@ -58,19 +58,21 @@ export class FollowersComponent implements OnInit {
     }
   }
 
-  searchUsers(): void {
-    if (this.authService.checkLogin()) {
-      this.userService.searchUsersByUsername(this.searchKeyword).subscribe(
-        (data: User[]) => {
-          this.followers = data;
-          console.log('Search results:', this.followers);
-        },
-        (error: any) => {
-          console.error('Error searching users:', error);
-        }
-      );
-    }
-  }
+searchUsers(): void {
+    if (this.authService.checkLogin()) {
+      this.userService.searchUsersByUsername(this.searchKeyword).subscribe(
+        (data: User[]) => {
+          this.users = data;
+          this.followedUserIds = this.users.map(user => user.id);
+          console.log('Search results:', this.users);
+          this.showUsers = true;
+        },
+        (error: any) => {
+          console.error('Error searching users:', error);
+        }
+      );
+    }
+  }
 
   followUser(userId: number): void {
   if (this.authService.checkLogin()) {

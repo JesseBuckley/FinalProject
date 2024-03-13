@@ -37,6 +37,16 @@ export class PostService {
     );
   }
 
+  getPostsFromFollowed(): Observable<Post[]> {
+    return this.http.get<Post[]>(`${this.url}api/posts/followed`, this.getHttpOptions()).pipe(
+      catchError((err: any) => {
+        console.error('Error retrieving posts', err);
+        return throwError(() => new Error('PostService.getPostsFromFollowed(): error retrieving posts: ' + err));
+      })
+    );
+  }
+
+
   findPostById(postId: number): Observable<Post> {
     return this.http.get<Post>(`${this.url}api/posts/${postId}`, this.getHttpOptions()).pipe(
       catchError((err: any) => {

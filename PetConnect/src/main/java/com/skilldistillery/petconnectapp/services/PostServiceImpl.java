@@ -54,6 +54,12 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
+	public List<Post> findPostsFromFollowedUsers(String username) {
+
+		return postRepo.findPostsFromFollowedUsers(username);
+	}
+
+	@Override
 	public Post create(Post post, String username) {
 		User user = userRepo.findByUsername(username);
 		if (user == null) {

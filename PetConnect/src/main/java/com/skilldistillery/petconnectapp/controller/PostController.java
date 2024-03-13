@@ -45,6 +45,17 @@ public class PostController {
 		}
 		return post;
 	}
+	
+	@GetMapping("posts/followed")
+    public List<Post> getPostsFromFollowedUsers(Principal principal, HttpServletResponse response) {
+        String username = principal.getName();
+        List<Post> posts = postService.findPostsFromFollowedUsers(username);
+        if (posts.isEmpty()) {
+            response.setStatus(204); 
+            return null; 
+        }
+        return posts;
+    }
 
 	@PostMapping("posts")
 	public Post createPost(@RequestBody Post post, HttpServletResponse resp, Principal principal) {

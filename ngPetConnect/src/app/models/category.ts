@@ -6,12 +6,14 @@ export class Category {
   type: string;
   resources: Resource[];
   posts: Post[];
+  selected: boolean;
 
 
-  constructor(id: number = 0, type: string = '', resources: Resource[] = [], posts: Post[] = []) {
+  constructor(id: number = 0, type: string = '', resources: Resource[] = [], posts: Post[] = [], selected: boolean = false) {
     this.id = id;
     this.type = type;
     this.resources = resources;
     this.posts = posts;
+    this.selected = selected;
   }
 }

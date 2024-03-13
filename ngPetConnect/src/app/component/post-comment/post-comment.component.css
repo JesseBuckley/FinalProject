@@ -1,243 +1,122 @@
-/* Global settings */
-body, html {
-  font-family: Arial, sans-serif;
-  background-color: #e9ebee; /* Lighter background for contrast */
-  color: #333333; /* Default text color */
+body,
+html {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f2f5;
+  color: #333;
 }
 
-/* Container for content */
 .container {
-  max-width: 200%; /* Larger container size */
-  margin: auto; /* Center the container with more vertical margin */
-  background-color: #ffffff; /* White background */
-  border-radius: 5px; /* Rounded corners */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Panel styling */
-.panel {
-  margin-bottom: 20px; /* Space between panels */
-  background-color: #ffffff; /* White background */
-  border: 1px solid #dddddd; /* Light border */
-  border-radius: 5px; /* Rounded corners */
+.card {
+  margin-bottom: 20px;
+  background-color: rgb(241, 235, 227);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.panel-heading, .panel-footer {
-  background-color: #f5f5f5; /* Light gray background */
-  padding: 10px 15px; /* Padding */
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* Text styles */
-.media-heading, .media-body a {
-  color: #4b4f56; /* Dark gray for visibility */
-  font-weight: bold; /* Bold for emphasis */
+.card-body,
+.card-title,
+.card-text {
+  padding: 20px;
+  color: #333;
 }
 
-.text-muted {
-  color: #90949c; /* Muted text for metadata */
+.btn-primary,
+.btn-success,
+.btn-secondary,
+.btn-outline-secondary,
+.btn-outline-warning {
+  border-radius: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-weight: 600;
+  transition: all 0.3s ease;
 }
 
-/* Post and comment content */
-.panel-body span, .media-body .comment-content {
-  font-size: 20px; /* Larger font size for content */
-  color: #4b4f56; /* Dark gray for readability */
+.btn-primary,
+.btn-success,
+.btn-secondary {
+  background: linear-gradient(145deg, #007bff, #0056b3);
+  border: none;
 }
 
-/* Adjustments for smaller elements like metadata */
-.media-heading a, .text-muted, .text-xs {
-  font-size: 14px; /* Smaller font size for metadata */
-}
-
-/* Avatar and image styling */
-.img-circle, .img-post, .img-post2 {
-  border-radius: 50%; /* Circular images */
-}
-
-/* Button and input styles */
-.btn-success, .btn-theme, .form-control {
-  border-radius: 4px; /* Rounded edges */
-}
-
-.btn-success {
-  background-color: #28a745; /* Green button */
-  color: #ffffff; /* White text */
-}
-
-.btn-theme {
-  background-color: #007bff; /* Blue button */
-  color: #ffffff; /* White text */
-}
-
-/* Ensure text is not white and is clearly visible */
-.media-heading a, .panel-body span, .media-body .comment-content, .text-white {
-  color: #333333 !important; /* Dark text for all content and links */
-}
-
-/* Container and content adjustments */
-@media (max-width: 768px) {
-  .container {
-    max-width: 95%; /* More width for smaller screens */
-  }
-
-  .panel-body span, .media-body .comment-content {
-    font-size: 24px; /* Slightly smaller font on small devices */
-  }
-
-  .media-heading a, .text-muted, .text-xs {
-  font-size: 10px; /* Reduce font size for metadata on smaller screens */
-  }
-}
-
-/* Correcting alignment and visibility */
-.container, .panel, .panel-heading, .panel-footer, .media, .media-body {
-  text-align: flex; /* Ensure text alignment is consistent */
-}
-/* Filter & Search Section Styling */
-.filter-search-section {
-  margin-bottom: 2rem; /* Adds space below the filter section */
-}
-
-.filter-search-section .input-group {
-  margin-bottom: 1rem; /* Space between each filter input group */
-}
-
-.filter-search-section .form-control, .filter-search-section .custom-select {
-  height: calc(2.25rem + 2px); /* Standard height for input fields and select */
-  font-size: 1rem; /* Readable font size */
-  border-radius: 0.25rem; /* Slightly rounded corners */
-  border: 1px solid #ced4da; /* Consistent border color */
-}
-
-/* Button Styling */
-.filter-search-section .btn {
-  font-size: 1rem; /* Uniform font size */
-  border-radius: 0.25rem; /* Matched border radius */
-  padding: 0.5rem 1rem; /* Comfortable padding */
-  transition: all 0.2s; /* Smooth transition for interactions */
-}
-
-/* Specific button styles for visual feedback */
 .btn-outline-secondary {
-  color: #495057; /* Primary color */
-  border-color: #adb5bd; /* Matching border */
-}
-
-.btn-outline-secondary:hover, .btn-outline-warning:hover {
-  color: #fff; /* White text on hover */
-  background-color: #6c757d; /* Darker background for contrast */
+  background-color: #007bff;
+  border: none;
 }
 
 .btn-outline-warning {
-  color: #856404; /* Warm color text */
-  border-color: #ffc107; /* Matching border */
+  background-color: #ffc107;
+  color: #212529;
 }
 
-/* Enhancements for the select dropdown */
-.filter-search-section .custom-select {
-  cursor: pointer; /* Indicates interactivity */
+.input-group .form-control,
+.form-select {
+  border-radius: 20px;
+  border: 1px solid #ced4da;
 }
 
-.filter-search-section .custom-select:focus {
-  box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25); /* Focus outline to match bootstrap's style */
-  border-color: #80bdff; /* Highlighted border color */
+.card-body .btn-danger {
+  background-color: #dc3545 !important;
+  border: none !important;
+  color: #ffffff !important;
+  border-radius: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-weight: 600;
+  transition: all 0.3s ease;
 }
 
-/* Responsive adjustments for better layout on smaller screens */
-@media (max-width: 768px) {
-  .filter-search-section .d-flex {
-    flex-direction: column; /* Stack filter inputs vertically on smaller screens */
-  }
-
-  .filter-search-section .input-group {
-    margin-bottom: 0.5rem; /* Reduced margin for a tighter layout */
-  }
-
-  .filter-search-section .input-group-append .btn {
-    width: 100%; /* Full-width buttons for better touch targets */
-  }
+.card-body .btn-danger:hover {
+  background-color: #c82333 !important;
+  border: none !important;
 }
 
-/* Enhanced Styles for Category Selection */
-.input-group .custom-select {
-  display: block;
-  width: 100%; /* Ensures the select fills the container */
-  font-size: 1rem;
-  line-height: 1.5;
-  color: #495057; /* Text color */
-  background-color: #fff; /* Background color */
-  background-clip: padding-box;
-  border: 1px solid #ced4da; /* Border color */
-  border-radius: 0.25rem; /* Rounded corners for the dropdown */
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; /* Smooth transition for focus */
-  appearance: none; /* Remove default styles */
-  padding-right: 2.25rem; /* Make space for custom arrow */
-  cursor: pointer; /* Indicates it's clickable */
+@media (max-width: 768px) {}
+
+.navbar .d-flex .btn-outline-secondary {
+  background-color: #28a745;
+  color: #ffffff;
+  border-color: #28a745;
 }
 
-/* Custom arrow styling using a background image */
-.input-group .custom-select {
-  background-position: right 1rem center, right 0.75rem center, right calc(0.375em + 0.1875rem) center;
-  background-size: 0.65em auto, 0.65em auto, 1px 1.5em;
-  background-repeat: no-repeat;
+.navbar .d-flex .btn-outline-secondary:hover {
+  background-color: #218838;
+  border-color: #1e7e34;
 }
 
-.input-group .custom-select:focus {
-  border-color: #80bdff; /* Focused border color */
-  outline: 0;
-  box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25); /* Bootstrap-like focus shadow */
+/* Simplified container for each category checkbox */
+.category-checkbox {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  user-select: none;
 }
 
-/* Style adjustments for options for better readability */
-.input-group .custom-select option {
-  padding: 0.5rem; /* Padding inside options */
+/* Style the label text next to the checkbox for better visibility */
+.category-checkbox label {
+  margin-left: 8px; /* Space between checkbox and label text */
 }
 
-/* Hover and focus states for options */
-.input-group .custom-select option:hover, .input-group .custom-select option:focus {
-  background-color: #f8f9fa; /* Slightly different background for hover */
+/* Improve focus state of the checkboxes for better accessibility */
+.category-checkbox input[type="checkbox"]:focus + label {
+  outline: 1px dotted #212529;
+  outline-offset: -4px;
 }
 
-/* Ensure the select box aligns well with adjacent elements */
-.input-group .custom-select {
-  height: calc(2.25rem + 2px); /* Adjust height to align with inputs and buttons */
-  padding-left: 0.75rem; /* Internal padding for text */
-  padding-right: calc(2.25rem + 2px); /* Adjust right padding to accommodate custom arrow */
-}
-
-/* This additional wrapper helps in positioning the custom arrow accurately */
-.input-group-select-wrapper {
-  position: relative;
-}
-
-/* Custom arrow positioned absolutely within the wrapper */
-.input-group-select-wrapper::after {
-  content: '';
-  position: absolute;
-  right: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 5px solid #495057; /* Arrow color */
-}
-
-/* Adjust select box when focusing to highlight */
-.input-group .custom-select:focus::after {
-  border-top-color: #0056b3; /* Darker arrow color on focus */
-}
-.edit-delete-buttons {
-  visibility: hidden; /* Hide buttons initially */
-}
-
-.media:hover .edit-delete-buttons,
-.panel-heading:hover .edit-delete-buttons {
-  visibility: visible; /* Only show buttons on hover */
-}
-
-#back2{
-  background-color: rgb(247, 235, 217) ;
-}
-
-.custom-navbar-color {
-  /* background-color: rgb(84, 105, 111); */
+/* Enhance the hover state for interactive feedback */
+.category-checkbox label:hover {
+  color: #007bff; /* Change label color on hover for visual feedback */
 }

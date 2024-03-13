@@ -55,58 +55,62 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public Post create(Post post, String username) {
-		User user = userRepo.findByUsername(username);
-		if (user == null) {
-			throw new ResourceNotFoundException("User not found");
-		}
+	    User user = userRepo.findByUsername(username);
+	    if (user == null) {
+	        throw new ResourceNotFoundException("User not found");
+	    }
 
-		post.setUser(user);
-		post.setEnabled(true);
+	    post.setUser(user);
+	    post.setEnabled(true);
 
-		List<Category> categoryList = post.getCategories();
-		post.setCategories(new ArrayList<>());
+	    List<Category> categoryList = post.getCategories();
+	    post.setCategories(new ArrayList<>());
 
-		for (Category category : categoryList) {
-			Category c = catRepo.searchById(category.getId());
-			if (c != null) {
-				post.addCategory(c);
-			}
-		}
+	    for (Category category : categoryList) {
+	        Category c = catRepo.searchById(category.getId());
+	        if (c != null) {
+	            post.addCategory(c);
+	            if (c.getId() <= 0) {
+	                c = catRepo.saveAndFlush(c);
+	            }
+	        }
+	    }
 
-		return postRepo.saveAndFlush(post);
+	    return postRepo.saveAndFlush(post);
 	}
+
 
 	@Override
 	public Post update(int postId, Post post, String username) {
-		Optional<Post> optionalPost = postRepo.findById(postId);
-		if (!optionalPost.isPresent()) {
-			throw new ResourceNotFoundException("Post with id " + postId + " not found.");
-		}
+	    Optional<Post> optionalPost = postRepo.findById(postId);
+	    if (!optionalPost.isPresent()) {
+	        throw new ResourceNotFoundException("Post with id " + postId + " not found.");
+	    }
 
-		Post existingPost = optionalPost.get();
-		if (!existingPost.getUser().getUsername().equals(username)) {
-			throw new CustomSecurityException("Not authorized to update this post.");
-		}
+	    Post existingPost = optionalPost.get();
+	    if (!existingPost.getUser().getUsername().equals(username)) {
+	        throw new CustomSecurityException("Not authorized to update this post.");
+	    }
 
-		existingPost.setContent(post.getContent());
-		existingPost.setImageUrl(post.getImageUrl());
-		existingPost.setTitle(post.getTitle());
-		existingPost.setPinned(post.isPinned());
+	    existingPost.setContent(post.getContent());
+	    existingPost.setImageUrl(post.getImageUrl());
+	    existingPost.setTitle(post.getTitle());
+	    existingPost.setPinned(post.isPinned());
+	    existingPost.setEnabled(post.isEnabled());
 
-		existingPost.setEnabled(post.isEnabled());
+	    existingPost.getCategories().clear();
 
-		List<Category> categoryList = existingPost.getCategories();
-		existingPost.setCategories(new ArrayList<>());
+	    List<Category> categoryList = post.getCategories();
+	    for (Category category : categoryList) {
+	        Category c = catRepo.searchById(category.getId());
+	        if (c != null) {
+	            existingPost.addCategory(c);
+	        }
+	    }
 
-		for (Category category : categoryList) {
-			Category c = catRepo.searchById(category.getId());
-			if (c != null) {
-				existingPost.addCategory(c);
-			}
-		}
-
-		return postRepo.saveAndFlush(existingPost);
+	    return postRepo.saveAndFlush(existingPost);
 	}
+
 
 	@Override
 	@Transactional

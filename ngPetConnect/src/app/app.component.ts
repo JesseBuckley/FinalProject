@@ -7,8 +7,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { LogoutComponent } from './component/logout/logout.component';
 import { ngbCarouselTransitionIn } from '@ng-bootstrap/ng-bootstrap/carousel/carousel-transition';
-import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbAccordionModule, NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { PostCommentComponent } from './component/post-comment/post-comment.component';
 
 
 @Component({
@@ -26,6 +27,8 @@ import { GoogleMapsModule } from '@angular/google-maps';
     NgbModule,
     CommonModule,
     FormsModule,
+    PostCommentComponent,
+    NgbAccordionModule,
     GoogleMapsModule
   ],
 })

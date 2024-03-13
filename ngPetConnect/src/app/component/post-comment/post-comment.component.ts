@@ -9,12 +9,12 @@ import { Comment } from '../../models/comment';
 import { CategoryService } from '../../services/category.service';
 import { Category } from '../../models/category';
 import { AuthService } from '../../services/auth.service';
-import { NgbAccordionConfig, NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
+import {NgbAccordionModule, NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-post-comment',
   standalone: true,
-  imports: [FormsModule, CommonModule, NgbAccordionModule],
+  imports: [FormsModule, CommonModule, NgbAccordionModule, NgbCollapseModule],
   templateUrl: './post-comment.component.html',
   styleUrl: './post-comment.component.css',
 })
@@ -28,6 +28,7 @@ export class PostCommentComponent implements OnInit {
   currentUser: any;
   selectedCategoryIds: number[] = [];
   newPost: Post = new Post();
+  isCollapsed = true;
 
   constructor(
     private postService: PostService,
@@ -81,7 +82,6 @@ export class PostCommentComponent implements OnInit {
   loadCommentsForPost(post: Post): void {
     this.comService.getAllCommentsForPost(post.id).subscribe({
       next: (comments) => {
-        // Filter to include only enabled comments
         const activeComments = comments.filter((comment) => comment.enabled);
         post.comments = activeComments.sort(
           (a, b) =>
@@ -112,6 +112,8 @@ export class PostCommentComponent implements OnInit {
         this.posts.unshift(post);
         this.newPost = new Post();
         this.selectedCategoryIds = [];
+        console.log(post);
+        console.log(post.categories);
       },
       error: (error) => {
         console.error('Error creating post:', error);

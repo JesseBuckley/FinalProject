@@ -26,7 +26,7 @@
                   </div>
                   <!-- Edit and delete buttons -->
                     <div class="edit-delete-buttons pull-right" *ngIf="selected === details">
-                      <button class="btn btn-primary btn" (click)="setEditPets(details)">Update</button>
+                      <button style="margin: 5px;" class="btn btn-primary btn" (click)="setEditPets(details)">Update</button>
                       <button class="btn btn-danger btn" (click)="deletePet(details.id)">Delete</button>
                   </div>
 
@@ -145,7 +145,7 @@
   </div>
 
   <div class="div-group">
-  <button type="submit" class="btn btn-primary" (click)="addPets()">Add Pet</button>
+  <button style="margin: 5px;" type="submit" class="btn btn-primary" (click)="addPets()">Add Pet</button>
   <button *ngIf="addPetClicked" class="btn btn-warning" (click)="cancelAdd()">Cancel</button>
   </div>
 </div>

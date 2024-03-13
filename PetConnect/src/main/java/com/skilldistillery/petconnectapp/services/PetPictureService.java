@@ -7,9 +7,11 @@ import com.skilldistillery.petconnectapp.entities.PetPicture;
 
 public interface PetPictureService {
 	
-	PetPicture create(PetPicture petPicture, String name);
+
 	boolean deleteById(int petPicId);
 	List<PetPicture> findAllPetPics(String authenticatedUsername);
+	PetPicture create(PetPicture petPicture, String name, int petId);
+	
 	
 
 }

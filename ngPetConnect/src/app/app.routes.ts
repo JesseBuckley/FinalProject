@@ -12,6 +12,7 @@ import { AboutComponent } from './component/about/about.component';
 import { ResourceComponent } from './component/resource/resource.component';
 import { PhotosComponent } from './component/photos/photos.component';
 
+
 export const routes: Routes = [
   { path: '', redirectTo: '/landing', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
@@ -25,5 +26,6 @@ export const routes: Routes = [
   { path: 'followers', component: FollowersComponent },
   { path: 'about', component: AboutComponent },
   { path: 'photos', component: PhotosComponent },
+  // { path: 'dm', component: DirectMessageComponent },
   { path: '**', component: NotfoundComponent },
 ];

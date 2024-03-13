@@ -34,6 +34,14 @@ export class PetPictureService {
     );
   }
 
+  getMyPetPictures(): Observable<PetPicture[]> {
+    return this.http.get<PetPicture[]>(`${environment.baseUrl}api/myPet-pictures`, this.getHttpOptions()).pipe(
+      catchError((err: any) => {
+        console.error('PetPictureService.getMyPetPictures(): error retrieving user\'s pet pictures:', err);
+        return throwError(() => new Error('PetPictureService.getMyPetPictures(): error retrieving user\'s pet pictures'));
+      })
+    );
+  }
   create(petPicture: PetPicture, petId: number): Observable<PetPicture> {
     return this.http.post<PetPicture>(`${this.url}/${petId}`, petPicture, this.getHttpOptions()).pipe(
       catchError((err: any) => {

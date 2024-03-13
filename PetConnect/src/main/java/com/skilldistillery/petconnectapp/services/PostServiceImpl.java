@@ -70,13 +70,16 @@ public class PostServiceImpl implements PostService {
 		post.setEnabled(true);
 
 		List<Category> categoryList = post.getCategories();
-		post.setCategories(new ArrayList<>());
-
-		for (Category category : categoryList) {
-			Category c = catRepo.searchById(category.getId());
-			if (c != null) {
-				post.addCategory(c);
+		if (categoryList != null) {
+			post.setCategories(new ArrayList<>());
+			for (Category category : categoryList) {
+				Category c = catRepo.searchById(category.getId());
+				if (c != null) {
+					post.addCategory(c);
+				}
 			}
+		} else {
+			post.setCategories(new ArrayList<>());
 		}
 
 		return postRepo.saveAndFlush(post);

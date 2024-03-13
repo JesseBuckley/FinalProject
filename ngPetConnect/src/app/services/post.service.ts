@@ -64,7 +64,14 @@ export class PostService {
       })
     );
   }
-
+  createPicturePost(postData: Partial<Post>): Observable<Post> {
+    return this.http.post<Post>(`${this.url}api/posts`, postData, this.getHttpOptions()).pipe(
+      catchError((err: any) => {
+        console.error('Error creating picture post', err);
+        return throwError(() => new Error('PostService.createPost(): error creating picture post: ' + err));
+      })
+    );
+  }
   createPostWithFormData(formData: FormData): Observable<Post> {
     return this.http.post<Post>(this.url, formData, this.getHttpOptions()).pipe(
       catchError((err: any) => {

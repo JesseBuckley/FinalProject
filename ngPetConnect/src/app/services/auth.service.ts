@@ -15,7 +15,6 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   register(user: User): Observable<User> {
-    // Create POST request to register a new account
     return this.http.post<User>(this.url + 'register', user).pipe(
       catchError((err: any) => {
         console.log(err);
@@ -27,9 +26,7 @@ export class AuthService {
   }
 
   login(username: string, password: string): Observable<User> {
-    // Make credentials
     const credentials = this.generateBasicAuthCredentials(username, password);
-    // Send credentials as Authorization header specifying Basic HTTP authentication
     const httpOptions = {
       headers: new HttpHeaders({
         Authorization: `Basic ${credentials}`,
@@ -37,26 +34,32 @@ export class AuthService {
       }),
     };
 
-    // Create GET request to authenticate credentials
     return this.http.get<User>(this.url + 'authenticate', httpOptions).pipe(
-      tap((newUser) => {
-        // While credentials are stored in browser localStorage, we consider
-        // ourselves logged in.
+      tap((user) => {
         localStorage.setItem('credentials', credentials);
-        return newUser;
+        localStorage.setItem('user', JSON.stringify(user)); // Save entire user object
+        // OR if you want to just save the role
+        // localStorage.setItem('role', user.role);
       }),
       catchError((err: any) => {
         console.log(err);
-        return throwError(
-          () => new Error('AuthService.login(): error logging in user.')
-        );
+        return throwError(() => new Error('AuthService.login(): error logging in user.'));
       })
     );
   }
 
+  getCurrentUserRole(): string {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    return user.role || 'standard';
+  }
+
+
+
   logout(): void {
     localStorage.removeItem('credentials');
+    localStorage.removeItem('role');
   }
+
 
   getLoggedInUser(): Observable<User> {
     if (!this.checkLogin()) {

@@ -1,6 +1,6 @@
 import { Post } from './../../models/post';
 import { User } from './../../models/user';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { PostService } from '../../services/post.service';
 import { CommentService } from '../../services/comment.service';
 import { CommonModule } from '@angular/common';
@@ -9,7 +9,10 @@ import { Comment } from '../../models/comment';
 import { CategoryService } from '../../services/category.service';
 import { Category } from '../../models/category';
 import { AuthService } from '../../services/auth.service';
-import {NgbAccordionModule, NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbAccordionModule,
+  NgbCollapseModule,
+} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-post-comment',
@@ -29,25 +32,49 @@ export class PostCommentComponent implements OnInit {
   selectedCategoryIds: number[] = [];
   newPost: Post = new Post();
   isCollapsed = true;
+  isAdminMode: boolean = false;
+
 
   constructor(
     private postService: PostService,
     private comService: CommentService,
     private categoryService: CategoryService,
-    private auth: AuthService
+    public auth: AuthService, private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    this.loadAllPosts();
+    this.checkUserRoleAndLoadPosts();
     this.loadCategories();
     this.getLoggedInUser();
+
   }
   //****************************************** Loading ..... ******************************************
   getLoggedInUser() {
     this.auth.getLoggedInUser().subscribe({
       next: (currentUser) => (this.currentUser = currentUser),
-      error: (err) => (this.errorMessage = `Error loading current user: ${err}`),
+      error: (err) =>
+        (this.errorMessage = `Error loading current user: ${err}`),
     });
+  }
+
+  checkUserRoleAndLoadPosts(): void {
+    if (this.auth.getCurrentUserRole() === 'admin') {
+      this.isAdminMode = true;
+      this.toggleViewMode();
+    } else {
+      this.isAdminMode = false;
+      this.loadFollowedPosts();
+    }
+  }
+
+  toggleViewMode(): void {
+    this.isAdminMode = !this.isAdminMode;
+    if (this.isAdminMode) {
+      this.loadAllPosts();
+    } else {
+      this.loadFollowedPosts();
+    }
+    this.cdr.detectChanges();
   }
 
   loadCategories(): void {
@@ -58,7 +85,28 @@ export class PostCommentComponent implements OnInit {
   }
 
   loadAllPosts(): void {
-    this.postService.findAllPosts().subscribe({
+    if (this.auth.getCurrentUserRole() === 'admin') {
+      this.postService.findAllPosts().subscribe({
+        next: (posts) => {
+          const activePosts = posts.filter((post) => post.enabled);
+          this.posts = activePosts.sort(
+            (a, b) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+          this.posts.forEach((post) => this.loadCommentsForPost(post));
+        },
+        error: (err) => {
+          console.error('Error loading posts:', err);
+          this.errorMessage = `Error loading posts: ${err}`;
+        },
+      });
+    } else {
+      console.log('Only admins can view all posts.');
+    }
+  }
+
+  loadFollowedPosts(): void {
+    this.postService.getPostsFromFollowed().subscribe({
       next: (posts) => {
         const activePosts = posts.filter((post) => post.enabled);
 
@@ -72,23 +120,25 @@ export class PostCommentComponent implements OnInit {
         });
       },
       error: (err) => {
-        console.error('Error loading posts:', err);
-        this.errorMessage = `Error loading posts: ${err}`;
+        console.error('Error fetching followed posts:', err);
+        this.errorMessage = `Error fetching followed posts: ${err}`;
       },
     });
   }
 
-loadCommentsForPost(post: Post): void {
-  this.comService.getAllCommentsForPost(post.id).subscribe({
-    next: (comments) => {
-      const activeComments = comments.filter(comment => comment.enabled);
-      post.comments = activeComments.sort(
-        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-      );
-    },
-    error: (err) => console.error(`Error loading comments for post ${post.id}:`, err),
-  });
-}
+  loadCommentsForPost(post: Post): void {
+    this.comService.getAllCommentsForPost(post.id).subscribe({
+      next: (comments) => {
+        const activeComments = comments.filter((comment) => comment.enabled);
+        post.comments = activeComments.sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      },
+      error: (err) =>
+        console.error(`Error loading comments for post ${post.id}:`, err),
+    });
+  }
 
   setPostsAndLoadComments(posts: Post[]): void {
     this.posts = posts;
@@ -101,10 +151,12 @@ loadCommentsForPost(post: Post): void {
   createPost(post: Post): void {
     if (!post.content.trim()) return;
 
-    const selectedCategoryIds = this.categories.filter(cat => cat.selected).map(cat => cat.id);
+    const selectedCategoryIds = this.categories
+      .filter((cat) => cat.selected)
+      .map((cat) => cat.id);
 
     post.categories = [];
-    selectedCategoryIds.forEach(catId => {
+    selectedCategoryIds.forEach((catId) => {
       post.categories.push(new Category(catId));
     });
 
@@ -112,7 +164,7 @@ loadCommentsForPost(post: Post): void {
       next: (newPost) => {
         this.posts.unshift(newPost);
         this.newPost = new Post();
-        this.categories.forEach(cat => cat.selected = false);
+        this.categories.forEach((cat) => (cat.selected = false));
         console.log(newPost);
         console.log(newPost.categories);
       },
@@ -210,7 +262,11 @@ loadCommentsForPost(post: Post): void {
     this.editingComment[commentId] = !this.editingComment[commentId];
   }
 
-  updateComment(postId: number, commentId: number, updatedContent: string): void {
+  updateComment(
+    postId: number,
+    commentId: number,
+    updatedContent: string
+  ): void {
     let updatedComment = new Comment();
     updatedComment.content = updatedContent;
 

@@ -1,17 +1,16 @@
 <div id="back" class="container mt-4">
   <div class="row">
     <div class="col-12 mb-4">
-      <div class="text-center">
-        <button
-          type="button"
-          class="btn btn-outline-primary"
-          (click)="isCollapsed = !isCollapsed"
-          [attr.aria-expanded]="!isCollapsed"
-          aria-controls="newPostCollapse"
-        >
-          Create New Post
-        </button>
-      </div>
+      <div class="text-center buttons-container">
+        <button type="button" class="btn btn-outline-primary" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="newPostCollapse">Create New Post</button>
+        <div *ngIf="auth.getCurrentUserRole() === 'admin'">
+            <button [class]="isAdminMode ? 'toggle-view-on' : 'toggle-view-off'" (click)="toggleViewMode()">
+                {{ isAdminMode ? 'Admin View ON' : 'Admin View OFF' }}
+            </button>
+        </div>
+    </div>
+<!-- The rest of your component's HTML -->
+              </div>
       <div id="newPostCollapse" [ngbCollapse]="isCollapsed">
         <div class="card shadow-sm mb-4">
           <div class="card-body">

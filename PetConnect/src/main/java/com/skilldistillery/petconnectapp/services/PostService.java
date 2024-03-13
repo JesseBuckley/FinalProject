@@ -27,5 +27,8 @@ public interface PostService {
 	List<Post> findPostsByUsername(String username);
 
 	List<Post> showAllPosts();
+	
+    List<Post> findPostsFromFollowedUsers(String username);
+
 
 }

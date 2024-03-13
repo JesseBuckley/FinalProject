@@ -1,12 +1,12 @@
 <div class="container bootstrap snippets bootdeys bg-light">
   <h2 class="text-center">Pet Pictures Album</h2>
 
-  <div id="petPicturesPanelDisplay" class="row">
+  <div id="petPicturesPanelDisplay" class="row center-images">
     <div class="col-md-4" *ngFor="let petPicture of petPictures">
       <div class="card mb-4 shadow-sm">
         <h5 class="text-center">{{ getPetName(petPicture.pet.id) }}</h5>
         <div class="media">
-          <div  class="media-object pull-left circular-container" style="margin-left: 70px;">
+          <div  class="media-object pull-left circular-container">
             <img [src]="petPicture.imageUrl" alt="Pet Picture" class="Pet Picture" >
           </div>
         </div>
@@ -27,7 +27,7 @@
             <div class="form-group">
               <!-- Adjust the width of the select pet dropdown box -->
               <label for="selectPet">Select Pet:</label>
-              <input type="text" class="form-control" value="Select Pet" readonly style="color: #6c757d; cursor: default;">
+              <input type="text" class="form-control" readonly style="color: #6c757d; cursor: default;">
               <select id="selectPet" name="selectPet" [(ngModel)]="newPetPicture.pet.id" class="form-select" style="margin-top: -38px;">
                 <option value=""></option> <!-- Hidden option to ensure placeholder is displayed by default -->
                 <option *ngFor="let pet of myPets" [value]="pet.id">{{pet.name}}</option>

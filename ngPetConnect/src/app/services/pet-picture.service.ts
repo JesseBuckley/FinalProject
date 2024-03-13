@@ -34,8 +34,8 @@ export class PetPictureService {
     );
   }
 
-  create(petPicture: PetPicture): Observable<PetPicture> {
-    return this.http.post<PetPicture>(this.url, petPicture, this.getHttpOptions()).pipe(
+  create(petPicture: PetPicture, petId: number): Observable<PetPicture> {
+    return this.http.post<PetPicture>(`${this.url}/${petId}`, petPicture, this.getHttpOptions()).pipe(
       catchError((err: any) => {
         console.error('PetPictureService.create(): error creating pet picture:', err);
         return throwError(() => new Error('PetPictureService.create(): error creating pet picture'));
@@ -44,7 +44,8 @@ export class PetPictureService {
   }
 
   delete(id: number): Observable<any> {
-    const deleteUrl = `${this.url}/${id}`;
+    const deleteUrl = `${this.url}/${id}/delete`;
+
     return this.http.delete(deleteUrl, this.getHttpOptions()).pipe(
       catchError((err: any) => {
         console.error('PetPictureService.delete(): error deleting pet picture:', err);

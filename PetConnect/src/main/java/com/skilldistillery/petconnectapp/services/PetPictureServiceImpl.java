@@ -5,9 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.skilldistillery.petconnectapp.entities.Pet;
 import com.skilldistillery.petconnectapp.entities.PetPicture;
 import com.skilldistillery.petconnectapp.entities.User;
 import com.skilldistillery.petconnectapp.repository.PetPictureRepository;
+import com.skilldistillery.petconnectapp.repository.PetRepository;
 import com.skilldistillery.petconnectapp.repository.UserRepository;
 
 @Service
@@ -17,16 +19,38 @@ public class PetPictureServiceImpl implements PetPictureService {
 
 	@Autowired
 	private UserRepository userRepo;
+	
 
+	@Autowired
+	private PetRepository petRepo;
+	
 	@Override
-	public PetPicture create(PetPicture petPicture, String name) {
+	public PetPicture create(PetPicture petPicture, String name, int petId) {
+		User user = userRepo.findByUsername(name);
+		Pet pet = petRepo.findById(petId);
+		if(user == null || pet == null) {
+			return null;
+		}
 		
-		return null;
+		petPicture.setPet(pet);
+		
+	
+	    return petPictureRepo.saveAndFlush(petPicture);
 	}
+
 
 	@Override
 	public boolean deleteById(int petPicId) {
-		return false;
+	    boolean deleted = false;
+	    try {
+	        if (petPictureRepo.existsById(petPicId)) {
+	            petPictureRepo.deleteById(petPicId);
+	            deleted = true;
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return deleted;
 	}
 
 	@Override
@@ -40,5 +64,7 @@ public class PetPictureServiceImpl implements PetPictureService {
             return null;
         }
 	}
+
+
 
 }

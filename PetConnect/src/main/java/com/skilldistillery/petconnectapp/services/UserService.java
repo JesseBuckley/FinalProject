@@ -31,4 +31,8 @@ public interface UserService {
 	User findById(int userIdToFollow);
 
 	User findByUsername(String name);
+
+	List<User> findAllFollowers(String name);
+
+	List<User> findAllFollowedUsers(String name);
 }

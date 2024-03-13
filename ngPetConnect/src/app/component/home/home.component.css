@@ -154,5 +154,8 @@ section {
   color: #fff; /* Change text color for active button */
   border-color: #007bff; /* Change border color for active button */
 }
+.bg-light {
+  background-color: #f8f9fa; /* Subtle background color */
+}
 
 

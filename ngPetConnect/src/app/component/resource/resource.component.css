@@ -85,4 +85,6 @@ iframe {
   margin-bottom: 20px;
 }
 
-/* Enhancements for visual appeal and modern standards */
+.bg-light {
+  background-color: #f8f9fa; /* Subtle background color */
+}

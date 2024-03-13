@@ -10,11 +10,12 @@ import { PetService } from './../../services/pet.service';
 import { HomeComponent } from './../home/home.component';
 import { PostService } from '../../services/post.service';
 import { Post } from '../../models/post';
+import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-photos',
   standalone: true,
-  imports: [HomeComponent, CommonModule, FormsModule, MypetsComponent],
+  imports: [HomeComponent, CommonModule, FormsModule, MypetsComponent, NgbCarouselModule],
   templateUrl: './photos.component.html',
   styleUrl: './photos.component.css',
 })
@@ -28,6 +29,15 @@ export class PhotosComponent implements OnInit {
   errorMessage: string | undefined;
   newPost: Post = new Post();
   posts: Post[] = [];
+  images: string[] = [
+    'https://c4.wallpaperflare.com/wallpaper/273/638/406/cats-also-use-the-camera-wallpaper-preview.jpg',
+    'https://w0.peakpx.com/wallpaper/25/190/HD-wallpaper-camera-funny-animals-squirrels.jpg',
+    'https://s1.1zoom.me/big0/846/322242-alexfas01.jpg',
+    'https://img.freepik.com/free-photo/animal-lizard-nature-multi-colored-close-up-generative-ai_188544-9072.jpg?w=1060&t=st=1710318674~exp=1710319274~hmac=27ebfeb8f8cb0af57cc224d81d020c3b7a2bffd3bf80829e4e82f420ed23c082',
+    'https://c.wallhere.com/photos/c2/5d/pictures_camera_wallpaper_dog_pet_pets_colour_dogs-849056.jpg!d',
+    'https://wallpapers.com/images/high/baby-tortoise-hitching-a-ride-on-its-mom-s-head-06uzms83eu4ph2h6.webp'
+  ]
+
 
   constructor(
     private authService: AuthService,

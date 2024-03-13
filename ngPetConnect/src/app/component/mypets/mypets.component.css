@@ -64,6 +64,9 @@ align-items: center;
   position: relative;
 }
 
+.bg-light {
+  background-color: #f8f9fa; /* Subtle background color */
+}
 
 
 

@@ -124,3 +124,7 @@ section {
 #about{
   margin-top: 0%;
 }
+
+.bg-light {
+  background-color: #f8f9fa; /* Subtle background color */
+}

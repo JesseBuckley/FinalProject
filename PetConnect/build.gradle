@@ -4,7 +4,12 @@ plugins {
 	id 'org.springframework.boot' version '3.2.3'
 	id 'io.spring.dependency-management' version '1.1.4'
 }
-
+apply plugin: 'war'
+war {
+  enabled = true
+  archiveFileName = "${archivesBaseName}.war"
+  destinationDirectory = file("../")          // Project workspace directory
+}
 group = 'com.skilldistillery'
 version = '0.0.1-SNAPSHOT'
 

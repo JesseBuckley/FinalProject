@@ -124,5 +124,35 @@ section {
   display: flex;
   justify-content: flex-end;
 }
+.profile-menu .btn {
+  margin-right: 10px; /* Add some spacing between buttons */
+  border-radius: 8px; /* Make buttons slightly rounded */
+  padding: 8px 16px; /* Increase padding for better clickability */
+  font-size: 17px; /* Adjust font size */
+  background-color: #f8f9fa; /* Default background color */
+  color: #333; /* Default text color */
+  border: 1px solid #ccc; /* Add a subtle border */
+  transition: all 0.3s ease; /* Add smooth transition */
+  width: 80%; /* Let the buttons expand to fit the content */
+  text-align: center; /* Center text */
+}
+
+.profile-menu .btn i {
+  margin-right: 5px; /* Add spacing between icon and text */
+}
+
+.profile-menu .btn:hover {
+  background-color: #c4d7e9; /* Lighter background color on hover */
+}
+
+.profile-menu .btn:focus {
+  outline: none; /* Remove default focus outline */
+}
+
+.profile-menu .active {
+  background-color: #007bff; /* Change background color for active button */
+  color: #fff; /* Change text color for active button */
+  border-color: #007bff; /* Change border color for active button */
+}
 
 

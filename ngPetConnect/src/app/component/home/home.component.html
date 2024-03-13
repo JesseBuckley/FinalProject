@@ -16,6 +16,11 @@
                         </li>
                         <li class="text-center">
                           <h4 class="text-capitalize">{{ user.username }}</h4>
+                          <ul class="list-inline profile-menu">
+                            <li><a routerLink="/about" class="btn btn-default"><i class="fa fa-fw fa-user"></i> <span>About</span></a></li>
+                            <li><a routerLink="/photos" class="btn btn-default"><i class="fa fa-fw fa-camera"></i> <span>Photos</span></a></li>
+                            <li><a routerLink="/followers" routerLinkActive="active" class="btn btn-default"><i class="fa fa-fw fa-users"></i> <span>Followers</span></a></li>
+                          </ul>
                         </li>
                         <li><br></li>
                       </ul>
@@ -31,12 +36,7 @@
                   <!-- COVER PHOTO GOES IN HEREEEEE -->
                   <img  src="{{ user.backgroundPicture || 'https://inflact.com/uploads/content/cover_best_hashtags_for_dog_accounts.jpeg'}}" class="img-responsive full-width" alt="cover" style="max-height:200px;">
               </div>
-              <ul class="list-unstyled no-padding hidden-sm hidden-xs cover-menu">
-                  <li><a routerLink="/about"><i class="fa fa-fw fa-user"></i> <span>About</span></a></li>
-                  <li><a routerLink="/photos"><i class="fa fa-fw fa-user"></i> <span>Photos</span></a></li>
-                  <li><a routerLink="/followers" routerLinkActive="active"><i class="fa fa-fw fa-user"></i> <span>Followers</span></a></li>
-              </ul>
-          </div><!-- /.cover -->
+              </div><!-- /.cover -->
       </div><!-- /.profile-cover -->
       <div class="divider"></div>
       <div class="row">

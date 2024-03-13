@@ -1,5 +1,5 @@
 import { Address } from "./address";
-import { DirectMessage } from "./directmessage";
+// import { DirectMessage } from "./directmessage";
 import { Pet } from "./pet";
 import { Post } from "./post";
 
@@ -18,8 +18,8 @@ export class User {
   followedUsers: User[];
   posts: Post[];
   comments: Comment[];
-  messagesSent: DirectMessage[];
-  receivedMessages: DirectMessage[];
+  // messagesSent: DirectMessage[];
+  // receivedMessages: DirectMessage[];
   pets: Pet[];
   address: Address;
   profilePictureUrl: any;
@@ -40,8 +40,8 @@ export class User {
     followedUsers: User[] = [],
     posts: Post[] = [],
     comments: Comment[] = [],
-    messagesSent: DirectMessage[] = [],
-    receivedMessages: DirectMessage[] = [],
+    // messagesSent: DirectMessage[] = [],
+    // receivedMessages: DirectMessage[] = [],
     pets: Pet[] = [],
     address: Address = new Address()
   ) {
@@ -59,8 +59,8 @@ export class User {
     this.followedUsers = followedUsers;
     this.posts = posts;
     this.comments = comments;
-    this.messagesSent = messagesSent;
-    this.receivedMessages = receivedMessages;
+    // this.messagesSent = messagesSent;
+    // this.receivedMessages = receivedMessages;
     this.pets = pets;
     this.address = address;
   }

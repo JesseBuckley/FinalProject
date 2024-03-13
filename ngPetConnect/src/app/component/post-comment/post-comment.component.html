@@ -12,11 +12,10 @@
           Create New Post
         </button>
       </div>
-
       <div id="newPostCollapse" [ngbCollapse]="isCollapsed">
         <div class="card shadow-sm mb-4">
           <div class="card-body">
-            <form (ngSubmit)="createPost(newPost, selectedCategoryIds)">
+            <form (ngSubmit)="createPost(newPost)">
               <div class="mb-3">
                 <textarea [(ngModel)]="newPost.content" name="content" class="form-control" rows="3" placeholder="What's on your mind?" required></textarea>
               </div>
@@ -24,12 +23,12 @@
                 <input [(ngModel)]="newPost.imageUrl" name="imageUrl" type="text" class="form-control" placeholder="Image URL (optional)">
               </div>
 <!-- Category Select for New Post -->
-            <div class="mb-3">
-              <label class="form-label">Select Categories:</label>
-              <div *ngFor="let category of categories" class="category-checkbox">
-                <input type="checkbox" [(ngModel)]="category.selected" id="category{{category.id}}" name="category{{category.id}}">
-                <label for="category{{category.id}}">{{ category.type }}</label>
-              </div>
+              <div class="mb-3">
+                <label class="form-label">Select Categories:</label>
+                <div *ngFor="let category of categories" class="category-checkbox">
+                  <input type="checkbox" [(ngModel)]="category.selected" [id]="'category' + category.id" [name]="'category' + category.id">
+                  <label [for]="'category' + category.id">{{ category.type }}</label>
+                </div>
               </div>
               <button type="submit" class="btn btn-primary">Post</button>
             </form>
@@ -37,7 +36,6 @@
         </div>
       </div>
     </div>
-
     <div class="col-12">
       <nav class="navbar navbar-expand-lg navbar-light custom-navbar-color">
         <div class="container-fluid">
@@ -78,8 +76,8 @@
           <div *ngIf="isUserPost(post)" class="mb-3">
             <label class="form-label">Edit Categories:</label>
             <div *ngFor="let category of categories" class="category-checkbox">
-              <input type="checkbox" [(ngModel)]="category.selected" id="editCategory{{category.id}}" name="editCategory{{category.id}}">
-              <label for="editCategory{{category.id}}">{{ category.type }}</label>
+              <input type="checkbox" [(ngModel)]="category.selected" [id]="'category' + category.id" [name]="'category' + category.id">
+              <label [for]="'category' + category.id">{{ category.type }}</label>
             </div>
           </div>
           </ng-template>

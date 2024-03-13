@@ -46,8 +46,7 @@ export class PostCommentComponent implements OnInit {
   getLoggedInUser() {
     this.auth.getLoggedInUser().subscribe({
       next: (currentUser) => (this.currentUser = currentUser),
-      error: (err) =>
-        (this.errorMessage = `Error loading current user: ${err}`),
+      error: (err) => (this.errorMessage = `Error loading current user: ${err}`),
     });
   }
 
@@ -79,19 +78,18 @@ export class PostCommentComponent implements OnInit {
     });
   }
 
-  loadCommentsForPost(post: Post): void {
-    this.comService.getAllCommentsForPost(post.id).subscribe({
-      next: (comments) => {
-        const activeComments = comments.filter((comment) => comment.enabled);
-        post.comments = activeComments.sort(
-          (a, b) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
-      },
-      error: (err) =>
-        console.error(`Error loading comments for post ${post.id}:`, err),
-    });
-  }
+loadCommentsForPost(post: Post): void {
+  this.comService.getAllCommentsForPost(post.id).subscribe({
+    next: (comments) => {
+      const activeComments = comments.filter(comment => comment.enabled);
+      post.comments = activeComments.sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+    },
+    error: (err) => console.error(`Error loading comments for post ${post.id}:`, err),
+  });
+}
+
   setPostsAndLoadComments(posts: Post[]): void {
     this.posts = posts;
     this.posts.forEach((post) => {
@@ -100,20 +98,23 @@ export class PostCommentComponent implements OnInit {
   }
 
   //****************************************** Post CRUD ******************************************
-  createPost(post: Post, selectedCategoryIds: number[]): void {
+  createPost(post: Post): void {
     if (!post.content.trim()) return;
 
-    selectedCategoryIds.forEach((catId) => {
+    const selectedCategoryIds = this.categories.filter(cat => cat.selected).map(cat => cat.id);
+
+    post.categories = [];
+    selectedCategoryIds.forEach(catId => {
       post.categories.push(new Category(catId));
     });
 
     this.postService.createPost(post).subscribe({
-      next: (post) => {
-        this.posts.unshift(post);
+      next: (newPost) => {
+        this.posts.unshift(newPost);
         this.newPost = new Post();
-        this.selectedCategoryIds = [];
-        console.log(post);
-        console.log(post.categories);
+        this.categories.forEach(cat => cat.selected = false);
+        console.log(newPost);
+        console.log(newPost.categories);
       },
       error: (error) => {
         console.error('Error creating post:', error);
@@ -124,7 +125,8 @@ export class PostCommentComponent implements OnInit {
   startEditPost(postId: number): void {
     this.editingPost[postId] = !this.editingPost[postId];
   }
-  updatePost(postId: number, updatedPost: Post, updatedCategoryIds: number[]): void {
+
+  updatePost(postId: number, updatedPost: Post): void {
     this.postService.updatePost(postId, updatedPost).subscribe({
       next: (post) => {
         const index = this.posts.findIndex((p) => p.id === postId);
@@ -153,6 +155,7 @@ export class PostCommentComponent implements OnInit {
       error: (error) => console.error('Error updating post:', error),
     });
   }
+
   deletePost(postId: number): void {
     this.postService.deletePost(postId).subscribe(
       () => {
@@ -207,11 +210,7 @@ export class PostCommentComponent implements OnInit {
     this.editingComment[commentId] = !this.editingComment[commentId];
   }
 
-  updateComment(
-    postId: number,
-    commentId: number,
-    updatedContent: string
-  ): void {
+  updateComment(postId: number, commentId: number, updatedContent: string): void {
     let updatedComment = new Comment();
     updatedComment.content = updatedContent;
 

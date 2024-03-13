@@ -1,5 +1,48 @@
-<div *ngFor="let follower of followers">
-    <h3>{{ follower.username }}</h3>
-    <button (click)="followUser(follower.id)">Follow</button>
-    <button (click)="unfollowUser(follower.id)">Unfollow</button>
+<!-- HTML template -->
+<div class="container bootstrap snippets bootdeys">
+  <div id="searchDiv">
+    <form (submit)="searchUsers()">
+      <input type="text" placeholder="Search by username" [(ngModel)]="searchKeyword" name="searchKeyword">
+      <button class="btn btn-primary btn" type="submit">Search</button>
+    </form>
+
+  <div id="show-all-button">
+    <button class="btn btn-primary btn" (click)="toggleUsers()">Show All Users</button>
   </div>
+
+  <div *ngIf="showUsers">
+    <div id="userPanelDisplay">
+      <div *ngFor="let user of users">
+        <div class="row">
+          <header>
+            <div class="col-lg-15 col-md-15 col-sm-5">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="panel panel-success rounded shadow">
+                    <div class="panel-heading no-border">
+                      <footer><br/></footer>
+                    </div>
+
+                    <div class="media">
+                      <div class="media-object pull-left circular-container">
+                        <img data-no-retina="" class="img-circle img-responsive img-bordered-primary custom-profile-pic" src="{{ user.profilePicture || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'}}" alt="User Profile">
+                      </div>
+                    </div>
+                    <div class="user-details">
+                      <p><strong>Username: </strong>{{ user.username }}</p>
+                    </div>
+                    <div class="follow-unfollow-buttons">
+                      <button *ngIf="!isUserFollowed(user.id)" class="btn btn-primary btn"(click)="followUser(user.id)">Follow</button>
+                      <button *ngIf="isUserFollowed(user.id)" class="btn btn-primary btn" (click)="unfollowUser(user.id)">Unfollow</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </header>
+        </div>
+      </div>
+    </div>
+      </div>
+    </div>
+    </div>

@@ -89,6 +89,9 @@ export class UserService {
     return this.http.get<User[]>(this.url, this.getHttpOptions());
   }
 
+  getAllFollowers(): Observable<User[]> {
+    return this.http.get<User[]>(this.url + '/followers', this.getHttpOptions());
+  }
   followUser(userId: number): Observable<any> {
     const url = `${this.url}/${userId}/follow`;
     return this.http.post(url, null, this.getHttpOptions());
@@ -97,5 +100,15 @@ export class UserService {
   unfollowUser(userId: number): Observable<any> {
     const url = `${this.url}/${userId}/unfollow`;
     return this.http.delete(url, this.getHttpOptions());
+  }
+
+  searchUsersByUsername(keyword: string): Observable<User[]> {
+    const searchUrl = `${this.url}/search/${keyword}`;
+    return this.http.get<User[]>(searchUrl, this.getHttpOptions()).pipe(
+      catchError((err: any) => {
+        console.error('Error searching users by username', err);
+        return throwError(() => new Error('UserService.searchUsersByUsername(): error searching users by username: ' + err));
+      })
+    );
   }
 }

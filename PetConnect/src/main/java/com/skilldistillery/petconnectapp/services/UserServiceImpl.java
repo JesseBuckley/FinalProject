@@ -140,4 +140,13 @@ public class UserServiceImpl implements UserService {
 		return userRepo.findByUsername(username);
 	}
 
+	@Override
+	public List<User> findAllFollowers(String name) {
+		return userRepo.findByFollowers_Username(name);
+	}
+	@Override
+	public List<User> findAllFollowedUsers(String name) {
+		return userRepo.findByFollowedUsers_Username(name);
+	}
+
 }

@@ -1,1 +1,24 @@
-<p>photos works!</p>
+<div>
+  <h2>Pet Pictures</h2>
+
+  <div *ngFor="let petPicture of petPictures" class="media">
+    <div class="media-object pull-left circular-container">
+        <img [src]="petPicture.imageUrl" alt="Pet Picture" class="pet-picture"
+             width="100" height="100"/>
+    </div>
+</div>
+
+  <div *ngFor="let petPicture of petPictures">
+    <div>
+      <img [src]="petPicture.imageUrl" alt="Pet Picture">
+      <input type="text" [(ngModel)]="petPicture.caption" placeholder="Caption">
+      <button (click)="deletePetPicture(petPicture.id)">Delete</button>
+    </div>
+  </div>
+
+  <div>
+    <input [(ngModel)]="newPetPicture.imageUrl" type="text" placeholder="Image URL">
+    <input [(ngModel)]="newPetPicture.caption" type="text" placeholder="Caption">
+    <button (click)="addPetPicture()">Add Picture</button>
+  </div>
+</div>

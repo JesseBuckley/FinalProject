@@ -34,7 +34,8 @@
 
 .custom-carousel .picsum-img-wrapper img {
   width: 100%;
-  height: auto;
+  height: 333px;
+  object-fit: cover;
   max-height: 400px;
   /* Adjust as needed */
 }
@@ -51,5 +52,5 @@
   }
 }
 .bg-light {
-  background-color: #f8f9fa; /* Subtle background color */
+  background-color: #f8f9fa;
 }

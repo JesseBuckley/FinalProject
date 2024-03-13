@@ -9,6 +9,7 @@ import { UserService } from '../../services/user.service';
 import { User } from '../../models/user';
 import { AuthService } from '../../services/auth.service';
 
+
 @Component({
   selector: 'app-home',
   standalone: true,

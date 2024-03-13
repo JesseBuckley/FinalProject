@@ -1,95 +1,98 @@
-<div class="container bootstrap snippets bootdeys bg-light"> <!-- Add class "bg-light" to apply background color -->
-<div class="container mb-4">
-  <!-- Toggle Button for New/Edit Resource Form -->
-  <button class="btn btn-primary mb-2" (click)="toggleFormVisibility()">
-    {{ showForm ? 'Hide Form' : (selectedResource.id ? 'Edit Resource' : 'Add New Resource') }}
-  </button>
-  <!-- Reset Filters Button -->
-<div class="mb-3">
-  <button class="btn btn-info" (click)="resetFilters()">Reset Filters</button>
-</div>
-  <!-- Search and Filter Section -->
-  <div class="d-flex justify-content-between flex-wrap mb-3">
-    <!-- Search by Keyword -->
-    <div class="input-group">
-      <input [(ngModel)]="keyword" type="text" class="form-control" placeholder="Keyword...">
-      <button class="btn btn-outline-secondary" type="button" (click)="searchResourcesByKeyword(keyword)">Search</button>
+<div class="container bootstrap snippets bootdeys bg-light">
+  <!-- Add class "bg-light" to apply background color -->
+  <div class="container mb-4">
+    <!-- Toggle Button for New/Edit Resource Form -->
+    <button class="btn btn-primary mb-2" (click)="toggleFormVisibility()">
+      {{ showForm ? 'Hide Form' : (selectedResource.id ? 'Edit Resource' : 'Add New Resource') }}
+    </button>
+    <!-- Reset Filters Button -->
+    <div class="mb-3">
+      <button class="btn btn-info" (click)="resetFilters()">Reset Filters</button>
     </div>
-    <!-- Filter by Location -->
-    <div class="input-group">
-      <input [(ngModel)]="location" type="text" class="form-control" placeholder="City/State/Zip...">
-      <button class="btn btn-outline-warning" type="button" (click)="filterByLocation(location)">Filter by Location</button>
-    </div>
-    <!-- Find Resources by Category -->
-    <div class="input-group mb-3">
-      <select #categorySelect class="form-select" (change)="findResourcesByCategory(categorySelect.value)">
-        <option value="all">All Categories</option> Option to select all categories
-       <option *ngFor="let category of categories" [value]="category.id">{{ category.type }}</option>
-      </select>
+    <!-- Search and Filter Section -->
+    <div class="d-flex justify-content-between flex-wrap mb-3">
+      <!-- Search by Keyword -->
+      <div class="input-group">
+        <input [(ngModel)]="keyword" type="text" class="form-control" placeholder="Keyword...">
+        <button class="btn btn-outline-secondary" type="button" (click)="searchResourcesByKeyword(keyword)">Search</button>
+      </div>
+      <!-- Filter by Location -->
+      <div class="input-group">
+        <input [(ngModel)]="location" type="text" class="form-control" placeholder="City/State/Zip...">
+        <button class="btn btn-outline-warning" type="button" (click)="filterByLocation(location)">Filter by Location</button>
+      </div>
+      <!-- Find Resources by Category -->
+      <div class="input-group mb-3">
+        <select #categorySelect class="form-select" (change)="findResourcesByCategory(categorySelect.value)">
+          <option value="all">All Categories</option>
+          <!-- Option to select all categories -->
+          <option *ngFor="let category of categories" [value]="category.id">{{ category.type }}</option>
+        </select>
+      </div>
     </div>
   </div>
   <!-- Resource Form (for Add/Edit) - Conditionally Displayed -->
   <div *ngIf="showForm" class="resource-form">
     <h3>{{selectedResource.id ? 'Edit' : 'Add'}} Resource</h3>
     <form>
-        <div class="input-group">
-            <input [(ngModel)]="selectedResource.name" name="name" type="text" class="form-control" placeholder="Resource Name" required>
-        </div>
-        <div class="input-group">
-            <textarea [(ngModel)]="selectedResource.description" name="description" class="form-control" placeholder="Description" required></textarea>
-        </div>
-        <div class="input-group">
-            <input [(ngModel)]="selectedResource.imageUrl" name="imageUrl" type="text" class="form-control" placeholder="Image URL">
-        </div>
-        <div class="input-group mb-2">
-          <select [(ngModel)]="selectedResource.category.id" name="category" class="form-select">
-              <option [ngValue]="null">Select a Category</option>
-              <option *ngFor="let category of categories" [ngValue]="category.id">{{category.type}}</option>
-          </select>
+      <!-- Form inputs -->
+      <div class="input-group">
+        <input [(ngModel)]="selectedResource.name" name="name" type="text" class="form-control" placeholder="Resource Name" required>
       </div>
-       <h4>Address:</h4>
-        <div class="input-group">
-            <input [(ngModel)]="selectedResource.address.street" name="street" type="text" class="form-control" placeholder="Street">
-        </div>
-        <div class="input-group">
-            <input [(ngModel)]="selectedResource.address.city" name="city" type="text" class="form-control" placeholder="City">
-        </div>
-        <div class="input-group">
-            <input [(ngModel)]="selectedResource.address.state" name="state" type="text" class="form-control" placeholder="State">
-        </div>
-        <div class="input-group">
-            <input [(ngModel)]="selectedResource.address.zip" name="zip" type="text" class="form-control" placeholder="ZIP Code">
-        </div>
-        <button (click)="createOrUpdateResource()" class="btn btn-success">{{selectedResource.id ? 'Update' : 'Add'}} Resource</button>
-        <button (click)="toggleFormVisibility()" class="btn btn-secondary">Cancel</button>
-        </form>
-    </div>
-    </div>
+      <div class="input-group">
+        <textarea [(ngModel)]="selectedResource.description" name="description" class="form-control" placeholder="Description" required></textarea>
+      </div>
+      <div class="input-group">
+        <input [(ngModel)]="selectedResource.imageUrl" name="imageUrl" type="text" class="form-control" placeholder="Image URL">
+      </div>
+      <div class="input-group mb-2">
+        <select [(ngModel)]="selectedResource.category.id" name="category" class="form-select">
+          <option [ngValue]="null">Select a Category</option>
+          <option *ngFor="let category of categories" [ngValue]="category.id">{{category.type}}</option>
+        </select>
+      </div>
+      <h4>Address:</h4>
+      <div class="input-group">
+        <input [(ngModel)]="selectedResource.address.street" name="street" type="text" class="form-control" placeholder="Street">
+      </div>
+      <div class="input-group">
+        <input [(ngModel)]="selectedResource.address.city" name="city" type="text" class="form-control" placeholder="City">
+      </div>
+      <div class="input-group">
+        <input [(ngModel)]="selectedResource.address.state" name="state" type="text" class="form-control" placeholder="State">
+      </div>
+      <div class="input-group">
+        <input [(ngModel)]="selectedResource.address.zip" name="zip" type="text" class="form-control" placeholder="ZIP Code">
+      </div>
+      <button (click)="createOrUpdateResource()" class="btn btn-success">{{selectedResource.id ? 'Update' : 'Add'}} Resource</button>
+      <button (click)="toggleFormVisibility()" class="btn btn-secondary">Cancel</button>
+    </form>
+  </div>
   <!-- Resources List with Edit and Delete Buttons -->
   <div class="resources-list">
     <div *ngFor="let resource of resources; let i = index" class="card mb-3">
-      <div class="card-body" (click)="selectResource(resource)" style="cursor: pointer;">
+      <div class="card-body" style="cursor: pointer;">
         <h5 class="card-title">{{resource.name}}</h5>
         <p class="card-text">{{resource.description}}</p>
         <p class="card-text"><small class="text-muted">Category: {{resource.category.type}}</small></p>
-        <!-- Edit Button (now integrated with the selection logic) -->
+        <!-- Button to view resource details -->
+        <button class="btn btn-primary btn-sm" (click)="viewResourceDetails(resource)">View Details</button>
+        <!-- Edit Button -->
         <button class="btn btn-primary btn-sm" (click)="editResource(resource); $event.stopPropagation();">Edit</button>
         <!-- Delete Button -->
         <button class="btn btn-danger btn-sm" (click)="deleteResource(resource.id); $event.stopPropagation();">Delete</button>
       </div>
+      <!-- Display the map only if the resource is selected -->
+      <div *ngIf="selectedResource && selectedResource.id === resource.id">
+        <iframe
+          width="600"
+          height="450"
+          style="border:0"
+          loading="lazy"
+          allowfullscreen
+          [src]="getGoogleMapsSrc(resource.address)">
+        </iframe>
+      </div>
     </div>
   </div>
-<div *ngFor="let resource of resources">
-  <h4>{{ resource.name }}</h4>
-  <iframe
-    width="600"
-    height="450"
-    style="border:0"
-    loading="lazy"
-    allowfullscreen
-    [src]="getGoogleMapsSrc(resource.address)">
-  </iframe>
 </div>
-
-
-

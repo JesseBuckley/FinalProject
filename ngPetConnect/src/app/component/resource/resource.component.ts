@@ -218,4 +218,8 @@ export class ResourceComponent implements OnInit {
 
     this.applyAllFilters();
   }
+
+  viewResourceDetails(resource: Resource) {
+    this.selectedResource = resource;
+  }
 }

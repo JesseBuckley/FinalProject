@@ -1,7 +1,10 @@
 /* Base adjustments */
-body, html {
-  background-color: #f0f2f5; /* Updated to a softer shade for comfort */
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern, readable font */
+body,
+html {
+  background-color: #f0f2f5;
+  /* Updated to a softer shade for comfort */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  /* Modern, readable font */
 }
 
 .container {
@@ -11,33 +14,46 @@ body, html {
 }
 
 /* Form and input groups */
-.input-group, .form-select, .resource-form {
+.input-group,
+.form-select,
+.resource-form {
   margin-bottom: 15px;
 }
 
 .resource-form {
-  background-color: #ffffff; /* Brighter background for focus */
+  background-color: #ffffff;
+  /* Brighter background for focus */
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Soft shadow for depth */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* Soft shadow for depth */
 }
 
 .input-group .form-control {
   flex-grow: 1;
-  margin-right: 10px; /* Adjust spacing */
-  border-radius: 20px; /* Rounded edges for inputs */
-  border: 1px solid #ced4da; /* Subtle border */
+  margin-right: 10px;
+  /* Adjust spacing */
+  border-radius: 20px;
+  /* Rounded edges for inputs */
+  border: 1px solid #ced4da;
+  /* Subtle border */
 }
 
 /* Buttons */
-.input-group button, .btn {
+.input-group button,
+.btn {
   color: #ffffff;
-  border-radius: 20px; /* Consistent rounded edges */
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Consistency in shadow */
-  font-weight: 600; /* Make text weightier */
+  border-radius: 20px;
+  /* Consistent rounded edges */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* Consistency in shadow */
+  font-weight: 600;
+  /* Make text weightier */
 }
 
-.btn-primary, .btn-success, .btn-danger, .btn-secondary {
+.btn-primary,
+.btn-success,
+.btn-secondary {
   background: linear-gradient(145deg, #007bff, #0056b3);
   border: none;
 }
@@ -49,21 +65,25 @@ body, html {
 
 .btn-outline-warning {
   background-color: #ffc107;
-  color: #212529; /* Contrast for readability */
+  color: #212529;
+  /* Contrast for readability */
 }
 
 /* Card styling */
 .card {
-  background-color: rgb(241, 235, 227); /* Subtle color for cards */
+  background-color: rgb(241, 235, 227);
+  /* Subtle color for cards */
   border: none;
-  border-radius: 8px; /* Rounded corners for cards */
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  /* Rounded corners for cards */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
 }
 
 .card:hover {
-  transform: translateY(-5px); /* Slight lift effect on hover */
-  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  transform: translateY(-5px);
+  /* Slight lift effect on hover */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
 .card-body {
@@ -71,12 +91,14 @@ body, html {
 }
 
 .card-title {
-  color: #333; /* Darker text for contrast */
+  color: #333;
+  /* Darker text for contrast */
   margin-bottom: 15px;
 }
 
 .card-text {
-  color: #555; /* Subtle text color */
+  color: #555;
+  /* Subtle text color */
   margin-bottom: 10px;
 }
 
@@ -86,5 +108,67 @@ iframe {
 }
 
 .bg-light {
-  background-color: #f8f9fa; /* Subtle background color */
+  background-color: #f8f9fa;
+  /* Subtle background color */
+}
+
+/* Adjust spacing for search and filter section */
+.input-group {
+  margin-right: 10px;
+  /* Adjust as needed */
+}
+
+/* Style the search button */
+.btn-outline-secondary {
+  background-color: green;
+  /* Change button background color */
+  border-color: green;
+  /* Change button border color */
+  color: white;
+  /* Change button text color */
+}
+
+/* Adjust spacing for edit and delete buttons */
+.card-body button {
+  margin-right: 5px;
+  /* Adjust as needed */
+}
+
+.btn-danger {
+  background: linear-gradient(145deg, #ff0000, #b30000); /* Gradient from red to dark red */
+  border: none;
+}
+/* Adjust spacing for add resource and cancel buttons in the form */
+.resource-form button {
+  margin-right: 5px;
+  /* Adjust as needed */
+}
+
+/* Adjust spacing for update resource and cancel buttons in the form */
+.resource-form button.btn-success {
+  margin-right: 5px;
+  /* Adjust as needed */
+}
+
+/* Style the update resource button */
+.resource-form button.btn-success {
+  background-color: green;
+  /* Change button background color */
+  border-color: green;
+  /* Change button border color */
+  color: white;
+  /* Change button text color */
+}
+/* Adjust the border-radius for the category dropdown */
+.input-group.mb-3 select {
+  border-top-left-radius: 20px; /* Rounded top-left corner */
+  border-bottom-left-radius: 20px; /* Rounded bottom-left corner */
+}
+iframe {
+  display: block; /* Ensure the iframe is treated as a block element */
+  margin: auto; /* Center the iframe horizontally within its container */
+}
+iframe {
+  display: block; /* Ensure the iframe is treated as a block element */
+  margin: auto; /* Center the iframe horizontally within its container */
 }

@@ -54,3 +54,8 @@
 .bg-light {
   background-color: #f8f9fa;
 }
+.custom-carousel {
+  margin-bottom: 20px; /* Increase margin bottom to create more space between carousel and button */
+  margin-top: 20px; /* Adjusted margin top */
+}
+

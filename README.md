@@ -53,3 +53,5 @@ Throughout our project, we learned valuable lessons:
 - **Frontend Design:** Prioritizing user experience and frontend technologies such as Angular enhanced usability and visual appeal.
 
 These experiences have equipped us with valuable insights for future projects.
+
+AWS LINK: http://44.222.56.254:8080/PetConnect
